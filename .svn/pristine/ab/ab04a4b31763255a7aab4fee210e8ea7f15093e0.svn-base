@@ -1,0 +1,32 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>商户 中心－星级查询</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	<link href="${ctxStaticTheme}/css/center.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	   $(function(){
+		   $("#busStars").addClass("dvCheck");
+	   });
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="busMenu.jsp" />
+        
+        <div id="dvContentRight" style="padding-top: 20px;">
+        
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/userstyle.css" rel="stylesheet" type="text/css">
+    <link href="${ctxStaticMobile}/css/community.css" rel="stylesheet" type="text/css">  
+</head>
+<body>
+<div class="wrap_box">
+<!--头部部分开始-->
+
+	<div class="user_center">
+		<p style="height: 20px;"></p>
+		<p><a class="back" href="${ctxMobile}/userMenu"><span> <  预订商家</span></a></p>
+		<p><img src="${mobileuser.imagesId }"></p>
+		<p style="text-align: center; color: #FFFFFF; margin-top: 20px;">欢迎你，<span style="border-bottom: 1px solid #FFFFFF;">${mobileuser.name }</span></p>
+	</div>
+	
+	<div class="title" style="height: auto;">
+       <div class="community" style="height: 6vh;">
+           <p style="font-size: 1em;line-height: 6vh;">全部</p>
+       </div>
+       <div class="community2" style="height: 6vh;">
+           <p style="font-size: 1em;line-height: 6vh;">预定中</p>
+       </div>
+       <div class="community2" style="height: 6vh;">
+           <p style="font-size: 1em;line-height: 6vh;">已收货</p>
+       </div>
+       <div class="community2" style="height: 6vh;">
+           <p style="font-size: 1em;line-height: 6vh;">已取消</p>
+       </div>
+       
+   </div>
+	
+	<c:forEach items="${page.list}" var="orders">
+		<div class="nav_box" style="margin-top: 0.16rem;height: 2.4rem;">
+			<div style="float: left;"><img src="${ctxStaticMobile}/images/index/logo1.png" style="width: 2rem;margin-top: .2rem;"></div> 
+			<div class="bus_order" style="margin-top: .1rem;margin-left: 2.2rem;">
+				<span style="font-size: 0.3rem;"><a href="${ctx}/mobile/userOrderDetail?id=${orders.id}">${orders.goods.fullName}</a></span>
+				<p>订单编号:${orders.code}</p>
+				<p>下单时间:<fmt:formatDate value="${orders.createDate}" pattern="yyyy-MM-dd"/></p>
+				<p>数量:${orders.numbers}</p>
+				<p>订单状态:${fns:getDictLabel(orders.status, 'goods_status', '')}</p>
+			</div>
+	   </div>
+    </c:forEach>
+</div>
+</body>
+</html>

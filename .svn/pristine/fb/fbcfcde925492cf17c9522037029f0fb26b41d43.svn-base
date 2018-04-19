@@ -1,0 +1,168 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.business.web;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Orders;
+import com.thinkgem.jeesite.modules.witcm.business.entity.OrdersRecord;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+import com.thinkgem.jeesite.modules.witcm.business.service.OrdersRecordService;
+import com.thinkgem.jeesite.modules.witcm.business.service.OrdersService;
+
+/**
+ * 订单Controller
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Controller
+@RequestMapping(value = "${adminPath}/business/orders")
+public class OrdersController extends BaseController {
+
+	@Autowired
+	private OrdersService ordersService;
+	@Autowired
+	private BusinessService businessService;
+	@Autowired
+	private OrdersRecordService ordersRecordService;
+	
+	@ModelAttribute
+	public Orders get(@RequestParam(required=false) String id) {
+		Orders entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = ordersService.get(id);
+		}
+		if (entity == null){
+			entity = new Orders();
+		}
+		return entity;
+	}
+	
+	@RequiresPermissions("business:orders:view")
+	@RequestMapping(value = {"list", ""})
+	public String list(Orders orders, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		for(Role role:user.getRoleList()){
+			if("社区管理人员".equals(role.getName())){
+				orders.setResidentOrgId(user.getCompany().getId());
+			}
+		}
+		Page<Orders> page = ordersService.findPage(new Page<Orders>(request, response), orders); 
+		model.addAttribute("page", page);
+		return "witcm/business/ordersList";
+	}
+
+	@RequiresPermissions("business:orders:view")
+	@RequestMapping(value = "form")
+	public String form(Orders orders, Model model) {
+		Business business = new Business();
+		List<OrdersRecord> list = new ArrayList<OrdersRecord>();
+		if(orders!=null && StringUtils.isNotEmpty(orders.getId())){
+			OrdersRecord record = new OrdersRecord();
+			record.setOrders(orders);
+			list = ordersRecordService.findList(record);
+		}
+		if(orders!=null && StringUtils.isNoneEmpty(orders.getId())){
+			business = businessService.get(orders.getBusinessId());
+		}
+		
+		model.addAttribute("orders", orders);
+		model.addAttribute("business", business);
+		model.addAttribute("list", list);
+		return "witcm/business/ordersForm";
+	}
+
+	@RequiresPermissions("business:orders:edit")
+	@RequestMapping(value = "save")
+	public String save(Orders orders, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, orders)){
+			return form(orders, model);
+		}
+		ordersService.save(orders);
+		addMessage(redirectAttributes, "保存订单成功");
+		return "redirect:"+Global.getAdminPath()+"/business/orders/?repage";
+	}
+	
+	@RequiresPermissions("business:orders:edit")
+	@RequestMapping(value = "delete")
+	public String delete(Orders orders, RedirectAttributes redirectAttributes) {
+		ordersService.delete(orders);
+		addMessage(redirectAttributes, "删除订单成功");
+		return "redirect:"+Global.getAdminPath()+"/business/orders/?repage";
+	}
+	
+	/**
+	 * 订单管理－处理 deal
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "orderDeal.do")
+	public Map<String,Object> orderDeal(String oid,String status,String remarks){
+		Map<String,Object> map = new HashMap<String, Object>();
+		User user = UserUtils.getUser();
+		if(user==null){
+			map.put("result", false);
+			map.put("msg", "响应超时或用户已失效，请重新登录");
+			return map;
+		}
+		Orders o = ordersService.get(oid);
+		if(o==null){
+			map.put("result", false);
+			map.put("msg", "该订单不存在或已删除，不能操作，请刷新页面");
+			return map;
+		}
+		if(Constants.ORDER_STATUS_3.equals(o.getStatus())){
+			map.put("result", false);
+			map.put("msg", "该订单已完成，不能操作，请刷新页面");
+			return map;
+		}
+		if(Constants.ORDER_STATUS_4.equals(o.getStatus())){
+			map.put("result", false);
+			map.put("msg", "该订单已取消，不能操作，请刷新页面");
+			return map;
+		}
+		
+		Orders orders = new Orders(oid);
+		orders.setStatus(status);
+		orders.setUpdateDate(new Date());
+		try {
+			ordersService.updateFront(orders, user.getName(), remarks);
+		} catch (Exception e) {
+			map.put("result", false);
+			map.put("msg", "保存失败，请稍候在试……");
+			e.printStackTrace();
+			return map;
+		}
+		map.put("result", true);
+		return map;
+	}
+
+}

@@ -1,0 +1,465 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.security.MD5Util;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.SiteService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Orders;
+import com.thinkgem.jeesite.modules.witcm.business.service.OrdersService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Collect;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Family;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.HealthRecord;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import com.thinkgem.jeesite.modules.witcm.resident.service.CollectService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.FamilyService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.HealthRecordService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.ResidentService;
+
+/**
+ * 个人中心Controller
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/res")
+public class FrontResController extends BaseController{
+	@Autowired
+	private SiteService siteService;
+	@Autowired
+	private ResidentService residentService;
+	@Autowired
+	private FamilyService familyService;
+	@Autowired
+	private HealthRecordService healthRecordService;
+	@Autowired
+	private CollectService collectService;
+	@Autowired
+	private OrdersService ordersService;
+	@Autowired
+	private OfficeService officeService;
+	
+	/**
+	 * 登录
+	 */
+	@ResponseBody
+	@RequestMapping(value = "loginAjax.do")
+	public Map<String,Object> login(String userName,String password) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		if(StringUtils.isEmpty(userName)){
+			map.put("result", false);
+			map.put("msg", "请输入手机号");
+			return map;
+		}
+		if(StringUtils.isEmpty(password)){
+			map.put("result", false);
+			map.put("msg", "请输入密码");
+			return map;
+		}
+		password = MD5Util.getMD5(password);
+		Resident resident = residentService.findByTelAndPswd(userName, password);
+		if(resident==null){
+			map.put("result", false);
+			map.put("msg", "手机号或密码错误，请重新输入");
+			return map;
+		}
+		resident.setLoginPswd("");
+		UserUtils.getSession().setAttribute(Constants.RES_USER_KEY, resident);
+		map.put("result", true);
+		return map;
+	}
+	
+	/**
+	 * 个人信息-form
+	 */
+	@RequestMapping(value = "resInfo")
+	public String resInfo(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		
+		model.addAttribute("resident", resident);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resInfo";
+	}
+	
+	/**
+	 * 个人信息-save
+	 */
+	@RequestMapping(value = "resInfoSave")
+	public String resInfoSave(Resident resident, Model model, RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident res = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(res==null || StringUtils.isEmpty(res.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		residentService.updateFront(resident);
+		res = residentService.get(resident.getId());
+		UserUtils.getSession().removeAttribute(Constants.RES_USER_KEY);
+		UserUtils.getSession().setAttribute(Constants.RES_USER_KEY, res);
+		addMessage(redirectAttributes, "保存成功");
+		return "redirect:"+Global.getFrontPath()+"/res/resInfo/?repage";
+	}
+	
+	/**
+	 * 家庭档案-list
+	 */
+	@RequestMapping(value = "resFamily")
+	public String resFamily(Family family, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		family.setResident(resident);
+		Page<Family> page = familyService.findPage(new Page<Family>(request,response), family); 
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resFamilyList";
+	}
+	
+	/**
+	 * 家庭档案-form
+	 */
+	@RequestMapping(value = "resFamilyForm")
+	public String resFamilyForm(@RequestParam(required=false) String id,Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		Family entity = null;
+		if (StringUtils.isNotBlank(id)) {
+			entity = familyService.get(id);
+		}
+		if (entity == null) {
+			entity = new Family();
+		}
+		model.addAttribute("family", entity);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resFamilyForm";
+	}
+	
+	/**
+	 * 家庭档案保存-save
+	 */
+	@RequestMapping(value = "resFamilySave")
+	public String resFamilySave(Family family, Model model,RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		family.setResident(resident);
+		family.setCreateBy(new User("1"));
+		family.setUpdateBy(new User("1"));
+		family.setCreateDate(new Date());
+		family.setUpdateDate(new Date());
+		
+		familyService.save(family);
+		addMessage(redirectAttributes, "保存成功");
+		return "redirect:"+Global.getFrontPath()+"/res/resFamily/?repage";
+	}
+	
+	/**
+	 * 家庭档案删除-delete
+	 */
+	@RequestMapping(value = "resFamilyDel")
+	public String resFamilyDel(Family family, RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		familyService.delete(family);
+		addMessage(redirectAttributes, "删除成功");
+		return "redirect:"+Global.getFrontPath()+"/res/resFamily/?repage";
+	}
+	
+	
+	/**
+	 * 健康档案-list
+	 */
+	@RequestMapping(value = "resHealth")
+	public String resHealth(HealthRecord healthRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		healthRecord.setResidentId(resident.getId());
+		Page<HealthRecord> page = healthRecordService.findPage(new Page<HealthRecord>(request, response), healthRecord);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resHealthList";
+	}
+	
+	/**
+	 * 健康档案-form
+	 */
+	@RequestMapping(value = "resHealthForm")
+	public String resHealthForm(@RequestParam(required = false) String id, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		
+		HealthRecord entity = null;
+		if (StringUtils.isNotBlank(id)) {
+			entity = healthRecordService.get(id);
+		}
+		if (entity == null) {
+			entity = new HealthRecord();
+		}
+		model.addAttribute("healthRecord", entity);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resHealthForm";
+	}
+	
+	/**
+	 * 健康档案-save
+	 */
+	@RequestMapping(value = "resHealthSave")
+	public String resHealthSave(HealthRecord healthRecord, Model model,RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		healthRecord.setResidentId(resident.getId());
+		healthRecord.setCreateBy(new User("1"));
+		healthRecord.setUpdateBy(new User("1"));
+		healthRecord.setCreateDate(new Date());
+		healthRecord.setUpdateDate(new Date());
+		healthRecordService.save(healthRecord);
+		addMessage(redirectAttributes, "保存成功");
+		return "redirect:"+Global.getFrontPath()+"/res/resHealth/?repage";
+	}
+	
+	/**
+	 * 健康档案-delete
+	 */
+	@RequestMapping(value = "resHealthDel")
+	public String resHealthDel(HealthRecord healthRecord,RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		healthRecordService.delete(healthRecord);
+		addMessage(redirectAttributes, "删除家庭健康档案成功");
+		return "redirect:"+Global.getFrontPath()+"/res/resHealth/?repage";
+	}
+	
+	/**
+	 * 个人积分－form
+	 */
+	@RequestMapping(value = "resPoint")
+	public String resPoint(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		model.addAttribute("resident", residentService.get(resident.getId()));
+		return "modules/cms/front/themes/"+site.getTheme()+"/resPoint";
+	}
+	
+	/**
+	 * 个人收藏－list
+	 */
+	@RequestMapping(value = "resCollect")
+	public String resCollect(Collect collect, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site); 
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		collect.setResident(resident);
+		Page<Collect> page = collectService.findPage(new Page<Collect>(request, response), collect);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resCollectList";
+	}
+	
+	/**
+	 * 个人收藏－delete
+	 */
+	@RequestMapping(value = "resCollectDel")
+	public String resCollectDel(Collect collect, RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		collectService.delete(collect);
+		addMessage(redirectAttributes, "删除成功");
+		return "redirect:"+Global.getFrontPath()+"/res/resCollect/?repage";
+	}
+	
+	/**
+	 * 预订商家－list
+	 */
+	@RequestMapping(value = "resOrder")
+	public String resOrder(Orders orders, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		
+		Page<Orders> page = ordersService.findPage(new Page<Orders>(request, response), orders); 
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resOrderList";
+	}
+	
+	/**
+	 * 密码修改－form
+	 */
+	@RequestMapping(value = "resPswd")
+	public String resPswdForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		
+		return "modules/cms/front/themes/"+site.getTheme()+"/resPswdForm";
+	}
+	
+	/**
+	 * 密码修改－update
+	 */
+	@ResponseBody
+	@RequestMapping(value = "resPswdUpd.do")
+	public Map<String,Object> resPswdUpd(String oldpswd,String newpswd) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident==null || StringUtils.isEmpty(resident.getId())){
+			map.put("result", false);
+			map.put("msg", "响应超时或用户已失效，请重新登录");
+			return map;
+		}
+		resident = residentService.get(resident.getId());
+		if(!MD5Util.getMD5(oldpswd).equals(resident.getLoginPswd())){
+			map.put("result", false);
+			map.put("msg", "旧密码不正确，请重新输入");
+			return map;
+		}
+		
+		residentService.updatePswd(MD5Util.getMD5(newpswd), resident.getId());
+		
+		map.put("result", true);
+		return map;
+	}
+	
+	//家庭用户选择
+	@ResponseBody
+	@RequestMapping(value = "familyTreeData")
+	public List<Map<String, Object>> familyTreeData(@RequestParam(required=false) String extId,HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		//判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(Constants.RES_USER_KEY);
+		if(resident!=null && StringUtils.isNotEmpty(resident.getId())){
+			Family family = new Family();
+			family.setResident(resident);
+			List<Family> list = familyService.findList(family);
+			for (int i = 0; i < list.size(); i++) {
+				Family e = list.get(i);
+				if (StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()))){
+					Map<String, Object> map = Maps.newHashMap();
+					map.put("id", e.getId());
+					map.put("pId", e.getResident()!=null ? e.getResident().getId() : "");
+					map.put("name", e.getName());
+					mapList.add(map);
+				}
+			}
+		}
+		return mapList;
+	}
+	
+	/**
+	 * 获取机构JSON数据。
+	 * @param extId 排除的ID
+	 * @param type	类型（1：公司；2：部门/小组/其它：3：用户）
+	 * @param grade 显示级别
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "orgTreeData")
+	public List<Map<String, Object>> orgTreeData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
+			@RequestParam(required=false) Long grade, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		UserUtils.getSession().removeAttribute("officeList");
+		List<Office> list = officeService.findAllList();
+		for (int i=0; i<list.size(); i++){
+			Office e = list.get(i);
+			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))
+					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
+					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
+					&& Global.YES.equals(e.getUseable())){
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", e.getParentId());
+				map.put("pIds", e.getParentIds());
+				map.put("name", e.getName());
+				mapList.add(map);
+			}
+		}
+		return mapList;
+	}
+	
+}

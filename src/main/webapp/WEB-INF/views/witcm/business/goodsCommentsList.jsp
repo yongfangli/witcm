@@ -1,0 +1,90 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>商品评价管理</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+		});
+		function page(n,s){
+			$("#pageNo").val(n);
+			$("#pageSize").val(s);
+			$("#searchForm").submit();
+        	return false;
+        }
+	</script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/business/goodsComments/">商品评价列表</a></li>
+		<shiro:hasPermission name="business:goodsComments:edit"><li><a href="${ctx}/business/goodsComments/form">商品评价添加</a></li></shiro:hasPermission>
+	</ul>
+	<form:form id="searchForm" modelAttribute="goodsComments" action="${ctx}/business/goodsComments/" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<ul class="ul-form">
+			<li><label>居民ID：</label>
+				<form:select path="resident.id" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>商品ID：</label>
+				<form:select path="goods.id" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>标题：</label>
+				<form:input path="titles" htmlEscape="false" maxlength="200" class="input-medium"/>
+			</li>
+			<li><label>内容：</label>
+				<form:input path="contents" htmlEscape="false" maxlength="2000" class="input-medium"/>
+			</li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="clearfix"></li>
+		</ul>
+	</form:form>
+	<sys:message content="${message}"/>
+	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>居民ID</th>
+				<th>商品ID</th>
+				<th>标题</th>
+				<th>内容</th>
+				<th>修改日期</th>
+				<shiro:hasPermission name="business:goodsComments:edit"><th>操作</th></shiro:hasPermission>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach items="${page.list}" var="goodsComments">
+			<tr>
+				<td><a href="${ctx}/business/goodsComments/form?id=${goodsComments.id}">
+					${fns:getDictLabel(goodsComments.resident.id, '', '')}
+				</a></td>
+				<td>
+					${fns:getDictLabel(goodsComments.goods.id, '', '')}
+				</td>
+				<td>
+					${goodsComments.titles}
+				</td>
+				<td>
+					${goodsComments.contents}
+				</td>
+				<td>
+					<fmt:formatDate value="${goodsComments.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
+				<shiro:hasPermission name="business:goodsComments:edit"><td>
+    				<a href="${ctx}/business/goodsComments/form?id=${goodsComments.id}">修改</a>
+					<a href="${ctx}/business/goodsComments/delete?id=${goodsComments.id}" onclick="return confirmx('确认要删除该商品评价吗？', this.href)">删除</a>
+				</td></shiro:hasPermission>
+			</tr>
+		</c:forEach>
+		</tbody>
+	</table>
+	<div class="pagination">${page}</div>
+</body>
+</html>

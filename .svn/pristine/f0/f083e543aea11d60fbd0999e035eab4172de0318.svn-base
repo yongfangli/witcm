@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>更换或者下载新的浏览器</title>
+    <script>
+        //判断浏览器类型，提示更新下载新的浏览器
+
+        isNewBrowsers();
+        function isNewBrowsers() {
+            var uA = navigator.userAgent.toLowerCase();
+
+            if(uA.indexOf("AppleWebKit") >-1){
+                console.log("chrome、safari、傲游 、浏览器");
+                return 1;
+            }else if(uA.indexOf("Firefox") >-1){
+                console.log("火狐浏览器");
+                return 1;
+            }else if(uA.indexOf("Trident") >-1 && uA.indexOf("rv:11.0")){
+                console.log("ie11");
+                return 1;
+            }
+
+        }
+
+    </script>
+    <style>
+        ul,li{
+            list-style: none;
+        }
+        .wrap{
+            width:500px;
+            height: 500px;
+            padding:30px 50px;
+
+
+            text-align: center;
+            color: #333;
+            background: #f5f5f5;
+            position: fixed;
+            top:50%;
+            left:50%;
+            -webkit-transform: translate(-50%,-50%);
+            -moz-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+            -o-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            border:1px solid #c2ccd1;
+        }
+        h3{
+            letter-spacing: 2px;
+            color:#666;
+            font-size:30px;
+        }
+        h3>img{
+            /*width:100px;*/
+            /*height: 50px;*/
+            padding-right:20px;
+            vertical-align: middle;
+        }
+        h6{
+            font-size:14px;
+            color:#666;
+        }
+        h6>i{
+            width:20px;
+            height: 20px;
+            line-height: 20px;
+            font-style: normal;
+            display: inline-block;
+            border:1px solid #666;
+            border-radius: 50%;
+        }
+
+       .browsers{
+           margin-top:50px;
+       }
+        .tip-bottom{
+            font-size:12px;
+        }
+        .tip-bottom i{
+            display: inline-block;
+            width:80px;
+            height:1px;
+            background: #0d3349;
+            vertical-align: middle;
+        }
+        .tip-bottom span{
+            display: inline-block;
+            padding:0 10px;
+        }
+        .browsers-list li{
+            display: inline-block;
+            text-align: center;
+            width:80px;
+            font-size:12px;
+        }
+        .browsers-list li img{
+                width:100%;
+
+        }
+        .browsers-list li +li{
+            margin-left:80px;
+        }
+        .browsers-list li a,
+        .browsers-list li a:link,
+        .browsers-list li a:visited
+        {
+            color:#333;
+        }
+        .browsers-list li a:hover{
+            color:#009bdb;
+        }
+        .browsers-list li button{
+          margin-top:10px;
+            width:70px;
+            height:30px;
+            background: #009bdb;
+            color:#fff;
+            outline: none;
+            border:0;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+
+        }
+        .browsers-list li button:hover{
+            color:rgba(1,17,27,0.5);
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="tip-top">
+            <h3 >
+                <img src="../images/logo_90.png" alt="">
+                <span class="title">井冈山智慧社区</span>
+            </h3>
+            <h6>
+                <i>!</i>
+                <span>
+                    您的浏览器版本过低，建议您对浏览器进行升级，以便获得更好的上网体验
+                </span>
+            </h6>
+        </div>
+        <div class="browsers">
+            <p class="tip-bottom">
+                <i></i>>
+                <span class="tip-content">推荐使用以下浏览器或浏览器版本</span>
+                < <i></i>
+            </p>
+            <div class="browsers-list">
+                <ul>
+                    <li>
+                        <a href="https://www.google.cn/intl/zh-CN/chrome/" target="_blank">
+                            <img src="../images/chrome-icon.PNG" alt="">
+                            <br>
+                            谷歌浏览器   <br>
+                            <button>下载</button>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="http://www.firefox.com.cn/download/" target="_blank">
+                            <img src="../images/firefox-icon.png" alt="">
+                            <br>
+                            火狐浏览器   <br>
+                            <button>下载</button>
+                        </a>
+
+                    </li>
+                    <li>
+                        <a href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads" target="_blank">
+                            <img src="../images/internet-icon.png" alt="">
+                            <br>
+                            internet Explorer Edge   <br>
+                            <button>下载</button>
+                        </a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

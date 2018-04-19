@@ -1,0 +1,107 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.goodscomments.entity;
+
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import com.thinkgem.jeesite.modules.witcm.goods.entity.Goods;
+import org.hibernate.validator.constraints.Length;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+/**
+ * 商品评价Entity
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class GoodsComments extends DataEntity<GoodsComments> {
+	
+	private static final long serialVersionUID = 1L;
+	private Resident resident;		// 居民ID
+	private Goods goods;		// 商品ID
+	private String titles;		// 标题
+	private String contents;		// 内容
+	private String stars;		// 星级
+	private String deleteFlag;		// 删除标记
+	private Office belongOrg;		// 归属机构
+	private String belongArea;		// 归属单位
+	
+	public GoodsComments() {
+		super();
+	}
+
+	public GoodsComments(String id){
+		super(id);
+	}
+
+	public Resident getResident() {
+		return resident;
+	}
+
+	public void setResident(Resident resident) {
+		this.resident = resident;
+	}
+	
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
+	}
+	
+	@Length(min=0, max=200, message="标题长度必须介于 0 和 200 之间")
+	public String getTitles() {
+		return titles;
+	}
+
+	public void setTitles(String titles) {
+		this.titles = titles;
+	}
+	
+	@Length(min=0, max=2000, message="内容长度必须介于 0 和 2000 之间")
+	public String getContents() {
+		return contents;
+	}
+
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
+	
+	@Length(min=0, max=11, message="星级长度必须介于 0 和 11 之间")
+	public String getStars() {
+		return stars;
+	}
+
+	public void setStars(String stars) {
+		this.stars = stars;
+	}
+	
+	@Length(min=0, max=2, message="删除标记长度必须介于 0 和 2 之间")
+	public String getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+	
+	public Office getBelongOrg() {
+		return belongOrg;
+	}
+
+	public void setBelongOrg(Office belongOrg) {
+		this.belongOrg = belongOrg;
+	}
+	
+	@Length(min=0, max=64, message="归属单位长度必须介于 0 和 64 之间")
+	public String getBelongArea() {
+		return belongArea;
+	}
+
+	public void setBelongArea(String belongArea) {
+		this.belongArea = belongArea;
+	}
+	
+}

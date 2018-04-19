@@ -1,0 +1,49 @@
+@charset "utf-8";
+*{
+	margin: 0;
+	padding: 0;
+	font-family:"微软雅黑";
+}
+a{text-decoration: none;color:#FFF}
+.clear{clear:both;}
+   
+.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/indexback.png)}
+.top{width:94vw;height:15vh;margin:0px auto}
+.logo{vertical-align:middle; width:4vw}
+.top_title{color:#45ab83;font-size:2.4em; font-weight:bold;margin-left:0.6vw;vertical-align:middle;}
+.conLe{line-height:15vh;float:left}
+.conRi{line-height:15vh;float:right}
+.loginimg{vertical-align:middle; width:2vw}
+.border{font-size:1.7em;margin-left:1vw;vertical-align:middle;border-right:1px solid #fff}
+.times{font-size:2.4em;margin-left:1vw;vertical-align:middle;color:#fff}
+.content{font-size:1em;margin-left:1vw;vertical-align:middle;color:#FFF}
+
+.bottom{width:100vw;height:15vh; background:url(../images/bottomback.png)}
+.bomCon{width:90vw;height:15vh;margin:0px auto}
+.bomHref:hover{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b}
+.bomHref{width:12.85vw;float:left;text-align:center;line-height:15vh;color:#FFF;}
+.bomHrefAct{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b}
+ p{font-size:1.7em;}
+
+.but_left{width:1vw;line-height:65vh; font-weight:bold; font-size:4em;color:#FFF;float:left;}
+.middle{width:96vw;height:70vh;margin:0px auto}
+.mid_con{width:89vw;height:65vh;float:left}
+
+.city{width:21vw;height:65vh; background:#9C0;float:left;margin-left:1vw;text-align:center}
+.cityimg{width:7vw;margin-top:19vh}
+.contentList{width:21vw;height:65vh;float:left;margin-left:1vw;text-align:center;color:#FFF}
+.content_img{width:5vw;margin-top:6vh}
+.con_top{width:21vw;height:31.5vh; background:#09C;}
+.con_bom{width:21vw;height:31.5vh; background:#09C; margin-top:2vh}
+.con_top:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.con_bom:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.city:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.mid_con_tour {
+    width: 89vw;
+    height: 65vh;
+	margin:0px auto;
+	}
+.contentTourList{width:21vw;height:65vh;float:right;text-align:center;color:#FFF}
+.tvimg{width:64vw;height:65vh;float:left;}
+.tvimg:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.TVimg{width:64vw;height:65vh}

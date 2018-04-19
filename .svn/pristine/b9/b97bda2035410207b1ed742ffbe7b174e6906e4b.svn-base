@@ -1,0 +1,243 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.business.entity;
+
+import java.util.Date;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+
+/**
+ * 商户Entity
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class Business extends DataEntity<Business> {
+	
+	private static final long serialVersionUID = 1L;
+	private BusinessTypes types;		// 商户类别
+	private String fullName;		// 商户全称
+	private String shortName;		// 商户简称
+	private String telphone;		// 手机号
+	private String loginPswd;		// 密码
+	private String phone;		// 电话
+	private String linkMan;		// 联系人
+	private String address;		// 商户地址
+	private String logoId;		// 商户logo
+	private String describes;		// 商户描述
+	private Date loginDate;		// 最后登录时间
+	private String loginFlag;		// 是否可登录
+	private String deleteFlag;		// 删除标记
+	private String longitude;		// 经度
+	private String latitude;		// 纬度
+	private Office belongOrg;		// 归属机构
+	private String belongArea;		// 归属单位
+	private Integer star;           //星级
+	private Long viewCount;      //访问量
+	private Long commentNum;     //评论量
+	private Long collectNum;     //收藏量
+	private String searchContent;  //搜索文本
+	public Business() {
+		super();
+	}
+
+	public Business(String id){
+		super(id);
+	}
+
+	public BusinessTypes getTypes() {
+		return types;
+	}
+
+	public void setTypes(BusinessTypes types) {
+		this.types = types;
+	}
+	
+	@Length(min=0, max=200, message="商户全称长度必须介于 0 和 200 之间")
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
+	@Length(min=0, max=100, message="商户简称长度必须介于 0 和 100 之间")
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	
+	@Length(min=0, max=30, message="手机号长度必须介于 0 和 30 之间")
+	public String getTelphone() {
+		return telphone;
+	}
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+	
+	@Length(min=0, max=200, message="密码长度必须介于 0 和 30 之间")
+	public String getLoginPswd() {
+		return loginPswd;
+	}
+
+	public void setLoginPswd(String loginPswd) {
+		this.loginPswd = loginPswd;
+	}
+	
+	@Length(min=0, max=30, message="电话长度必须介于 0 和 30 之间")
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	@Length(min=0, max=30, message="联系人长度必须介于 0 和 30 之间")
+	public String getLinkMan() {
+		return linkMan;
+	}
+
+	public void setLinkMan(String linkMan) {
+		this.linkMan = linkMan;
+	}
+	
+	@Length(min=0, max=200, message="商户地址长度必须介于 0 和 200 之间")
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	@Length(min=0, max=200, message="商户logo长度必须介于 0 和200 之间")
+	public String getLogoId() {
+		return logoId;
+	}
+
+	public void setLogoId(String logoId) {
+		this.logoId = logoId;
+	}
+	
+	@Length(min=0, max=2000, message="商户描述长度必须介于 0 和 2000 之间")
+	public String getDescribes() {
+		return describes;
+	}
+
+	public void setDescribes(String describes) {
+		this.describes = describes;
+	}
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(Date loginDate) {
+		this.loginDate = loginDate;
+	}
+	
+	@Length(min=0, max=64, message="是否可登录长度必须介于 0 和 64 之间")
+	public String getLoginFlag() {
+		return loginFlag;
+	}
+
+	public void setLoginFlag(String loginFlag) {
+		this.loginFlag = loginFlag;
+	}
+	
+	@Length(min=0, max=2, message="删除标记长度必须介于 0 和 2 之间")
+	public String getDeleteFlag() {
+		return deleteFlag;
+	}
+
+	public void setDeleteFlag(String deleteFlag) {
+		this.deleteFlag = deleteFlag;
+	}
+	
+	@Length(min=0, max=50, message="经度长度必须介于 0 和 50 之间")
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+	
+	@Length(min=0, max=50, message="纬度长度必须介于 0 和 50 之间")
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	
+	public Office getBelongOrg() {
+		return belongOrg;
+	}
+
+	public void setBelongOrg(Office belongOrg) {
+		this.belongOrg = belongOrg;
+	}
+	
+	@Length(min=0, max=64, message="归属单位长度必须介于 0 和 64 之间")
+	public String getBelongArea() {
+		return belongArea;
+	}
+
+	public void setBelongArea(String belongArea) {
+		this.belongArea = belongArea;
+	}
+
+	public Integer getStar() {
+		return star;
+	}
+
+	public void setStar(Integer star) {
+		this.star = star;
+	}
+
+	public Long getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(Long viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public Long getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(Long commentNum) {
+		this.commentNum = commentNum;
+	}
+
+	public String getSearchContent() {
+		return searchContent;
+	}
+
+	public void setSearchContent(String searchContent) {
+		this.searchContent = searchContent;
+	}
+
+	public Long getCollectNum() {
+		return collectNum;
+	}
+
+	public void setCollectNum(Long collectNum) {
+		this.collectNum = collectNum;
+	}
+
+}

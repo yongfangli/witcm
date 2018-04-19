@@ -1,0 +1,65 @@
+@charset "utf-8";
+*{
+	margin: 0;
+	padding: 0;
+	font-family:"微软雅黑";
+}
+a{text-decoration: none;color:#FFF}
+.clear{clear:both;}
+   
+.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index3.png);background-size:100vw 100vh}
+.list_left{width:20vw;height:100vh;float:left; border-right:0.2em solid #999;background:#83779C;color:#FFF}
+.title{font-size:2em;width:20vw;height:9vh;margin-left:2vw;margin-top:4vh}
+.left_user{width:79.8vw;height:100vh;float:left;background:url(../images/userinfo.png)}
+
+.close{
+  			width: 12vw;
+   		height: 5vh;
+  			background: #ec3b3b;
+   		border: 1px;
+   		border-radius: 5px;
+   		font-size: 1.3em;
+   		color: #fff;
+  			margin-left: 1vw;
+		margin-top:5vh
+}
+.list_left p{text-align:center}
+.headr{width:8vw;height:16vh;border-radius:5em;border:0.3em solid #FFF;margin-top:7vh}
+.welcome{text-align:center;color:#CCC;font-size:1.2em;margin-top:2vh}
+.nickname{text-align:center;color:#FFF;font-size:1.5em;margin-top:2vh}
+.xinxin{text-align:center;font-size:0.8em}
+.textarea{width:58vw;font-size:1.4em;height:30vh;border-radius:0.4em;border:1px;margin-left:1em; text-indent:1em;color:#666;padding:1em}
+.titleName{color:#FFF;font-size:1.4em; text-align:right}
+.content{width:25vw;font-size:1.4em;height:6vh;border-radius:0.4em;border:1px;margin-left:1em; text-indent:1em;color:#666}
+
+.last_page{width:79vw; text-align:center;margin-top:3vh;font-size:1.4em; color:#FFF}
+.rightBack{width:75vw;height:85vh;background:#CACCCB;border-radius:0.4em;margin:0px auto;margin-top:5vh}
+.tableDiv{width:75vw;height:78vh; overflow:hidden}
+.table{width:71vw;background:#EDEDED;margin-left:2vw;text-align:center}
+.th{font-size:1.5em;color:#666;height:6.5vh}
+.tr{font-size:1.2em;color:#666;height:5.93vh}
+.table a{color:#3D9972;}
+.table a:hover{color:red;}
+
+.orderbigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;}
+.top{width:100vw;height:11vh; background:#5C5171}
+.top_cen{width:94vw;height:11vh;margin:0px auto;color:#FFF}
+.title{
+	line-height: 11vh;
+	font-size: 2em;}
+.middle{width:94vw;height:82vh;margin:0px auto;background:#FFF;border-radius:10px;background-color:rgba(255, 255, 255, 0.7); }	
+.conten{width:91vw;height:79vh;margin: 0px auto; overflow:hidden}
+.top_title{color:#F00;font-size:1.6em;}
+.orderDiv{width:91vw;height:30vh;background:#EDEDED;border-radius:0.6em; overflow:hidden}
+.orderDivs{width:89vw;height:5.7vh;margin:0px auto;border-bottom:0.1em dashed #999}	
+.orderDivs p{font-size:1.4em; line-height:6vh;color:#666}	
+.orderDiv2{width:91vw;height:38vh;background:#EDEDED;border-radius:0.6em; overflow:hidden}
+.orderDivs2{width:89vw;height:5.7vh;margin:0px auto; background:url(../images/Order.png);background-size: 89vw 5.7vh;}
+.middleDiv{width:100vw;height:89vh;background:url(../images/userinfo.png);background-size: 100vw 89vh;}
+.orderDivs2 p{line-height:5.7vh;color:#FFF;font-size:1.4em}	
+.orderDivs2 p span{margin-left:5vw}
+
+.integral{color:#FFF;font-size:1.4em;margin-left:0.5em;margin-top:10vh}
+.integral1{width:60vw;height:7vh;background:#3D9972;border:0.17em solid #fff;border-radius:2em;font-size:1.4em;margin-top:1vh}
+.integral2{width:60vw;height:7vh;background:#FEC200;border:0.17em solid #fff;border-radius:2em;font-size:1.4em;margin-top:1vh}
+.integral3{width:60vw;height:7vh;background:#E25A68;border:0.17em solid #fff;border-radius:2em;font-size:1.4em;margin-top:1vh}

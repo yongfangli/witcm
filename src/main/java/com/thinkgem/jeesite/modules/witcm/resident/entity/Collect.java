@@ -1,0 +1,108 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.entity;
+
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+
+/**
+ * 收藏Entity
+ * 
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class Collect extends DataEntity<Collect> {
+
+	private static final long serialVersionUID = 1L;
+	private Resident resident; // 居民ID
+	private String collectItemId; // 收藏项目
+	private Business business;// 收藏的商家
+	private Date collectDate; // 收藏时间
+	private Office belongOrgId; // 归属机构
+	private String belongAreaId; // 归属单位
+
+	public Collect() {
+		super();
+	}
+
+	public Collect(String id) {
+		super(id);
+	}
+	
+	public Resident getResident() {
+		return resident;
+	}
+
+	public void setResident(Resident resident) {
+		this.resident = resident;
+	}
+
+	@Length(min = 0, max = 64, message = "收藏项目长度必须介于 0 和 64 之间")
+	public String getCollectItemId() {
+		return collectItemId;
+	}
+
+	public void setCollectItemId(String collectItemId) {
+		this.collectItemId = collectItemId;
+	}
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getCollectDate() {
+		return collectDate;
+	}
+
+	public void setCollectDate(Date collectDate) {
+		this.collectDate = collectDate;
+	}
+
+	@Length(min = 0, max = 64, message = "归属机构长度必须介于 0 和 64 之间")
+	public Office getBelongOrgId() {
+		return belongOrgId;
+	}
+
+	public void setBelongOrgId(Office belongOrgId) {
+		this.belongOrgId = belongOrgId;
+	}
+
+	@Length(min = 0, max = 64, message = "归属单位长度必须介于 0 和 64 之间")
+	public String getBelongAreaId() {
+		return belongAreaId;
+	}
+
+	public void setBelongAreaId(String belongAreaId) {
+		this.belongAreaId = belongAreaId;
+	}
+
+	@NotNull
+	public Business getBusiness() {
+		return business;
+	}
+
+	public void setBusiness(Business business) {
+		this.business = business;
+	}
+
+	public void setResidentOrgId(String id){
+		if(this.resident==null){
+			setResident( new Resident());
+		}
+		if(this.resident.getBelongOrg()==null){
+			Office office = new Office();
+			office.setId(id);
+			this.resident.setBelongOrg(office);
+		}else{
+			this.resident.getBelongOrg().setId(id);
+		}
+	}
+
+}

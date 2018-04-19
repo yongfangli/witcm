@@ -1,0 +1,69 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>登录</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/login.css" rel="stylesheet" type="text/css">
+    <link href="${ctxStatic}/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet" />
+    
+	<script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+	<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
+	<script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    function login(){
+    	var userName = $("#userName").val();
+		var password = $("#password").val();
+		if(userName==null || userName==""){
+			showTip('请输入手机号');
+			return false;
+		}
+		if(password==null || password==""){
+			showTip('请输入密码');
+			return false;
+		}
+		$.ajax({
+			type:"post",
+			async:false,
+			url:"${ctxMobile}/loginAjax.do?userName="+userName+"&password="+password,
+			cache:false,
+			success: function(data){
+				if(data && data.result){
+					window.location.href='${ctxMobile}/userMenu';
+				}else{
+					showTip(data.msg);
+				}
+			}
+		});
+    }
+   
+    </script>
+</head>
+<body>
+<div class="wrap_box">
+  <p class="return"><a href="${ctxMobile}/userMenu">&lt;</a></p>
+  <div class="Logodiv">
+	<img src="${ctxStaticMobile}/images/index/logo1.png" class="logo">
+    <p class="title">智慧社区微门户</p>
+  </div>
+  
+  <div class="inputDiv">
+      <img src="${ctxStaticMobile}/images/usesname.png">
+      <input type="text" id="userName" maxlength="30" placeholder="手机号"/>
+  </div>
+  <div class="inputDiv">
+      <img src="${ctxStaticMobile}/images/password.png">
+      <input type="password" id="password" maxlength="30" placeholder="密码"/>
+  </div>
+  <input type="button" class="login_button" value="登 录" onclick="login();"/>
+  <p class="noneuser">没有账户？<span class="register" onclick="window.location.href='${ctxMobile}/register'">注册</span><span class="register" onclick="window.location.href='${ctxMobile}/resetPassword'">忘记密码？</span></p>
+</div>
+</body>
+</html>

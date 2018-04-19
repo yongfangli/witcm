@@ -1,0 +1,665 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Article;
+import com.thinkgem.jeesite.modules.cms.entity.ArticleData;
+import com.thinkgem.jeesite.modules.cms.entity.Category;
+import com.thinkgem.jeesite.modules.cms.entity.Comment;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.ArticleDataService;
+import com.thinkgem.jeesite.modules.cms.service.ArticleService;
+import com.thinkgem.jeesite.modules.cms.service.CategoryService;
+import com.thinkgem.jeesite.modules.cms.service.CommentService;
+import com.thinkgem.jeesite.modules.cms.service.LinkService;
+import com.thinkgem.jeesite.modules.cms.service.SiteService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.cms.web.client.BusinessCriteria;
+import com.thinkgem.jeesite.modules.cms.web.search.SearchContent;
+import com.thinkgem.jeesite.modules.cms.web.search.SearchContent.ListPage;
+import com.thinkgem.jeesite.modules.cms.web.search.SearchEntity;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.entity.BusinessTypes;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Convenient;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Goods;
+import com.thinkgem.jeesite.modules.witcm.business.entity.GoodsComments;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Promotion;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessTypesService;
+import com.thinkgem.jeesite.modules.witcm.business.service.ConvenientService;
+import com.thinkgem.jeesite.modules.witcm.business.service.GoodsCommentsService;
+import com.thinkgem.jeesite.modules.witcm.business.service.GoodsService;
+import com.thinkgem.jeesite.modules.witcm.business.service.PromotionService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Comments;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import com.thinkgem.jeesite.modules.witcm.resident.service.CollectService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.CommentsService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.ResidentService;
+
+/**
+ * 网站Controller
+ * 
+ * @author ThinkGem
+ * @version 2013-5-29
+ */
+@Controller
+@RequestMapping(value = "${frontPath}")
+public class FrontController extends BaseController {
+
+	@Autowired
+	private ArticleService articleService;
+	@Autowired
+	private ArticleDataService articleDataService;
+	@Autowired
+	private LinkService linkService;
+	@Autowired
+	private CommentService commentService;
+	@Autowired
+	private CategoryService categoryService;
+	@Autowired
+	private SiteService siteService;
+	@Autowired
+	private CommentsService commentsService;
+	@Autowired
+	private ResidentService residentService;
+	@Autowired
+	private ConvenientService convenientService;
+	@Autowired
+	private BusinessService businessService;
+	@Autowired
+	private BusinessTypesService businessTypesService;
+	@Autowired
+	private GoodsService goodsService;
+	@Autowired
+	private GoodsCommentsService goodsCommentsService;
+	@Autowired
+	private CollectService collectService;
+	@Autowired
+	private PromotionService promotionService;
+	@Autowired
+	private SearchContent searchContent;
+
+	/**
+	 * 网站首页
+	 */
+	@RequestMapping
+	public String index(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		List<Convenient> convenients = convenientService
+				.findList(new Convenient());
+		// 查找顶级节点
+		BusinessTypes businessTypes = new BusinessTypes();
+		businessTypes.setParent(new BusinessTypes("1"));
+		List<BusinessTypes> businessTypess = businessTypesService
+				.findList(businessTypes);
+		// 查找商家促销活动
+		Promotion promotion = new Promotion();
+		promotion.setOfflineFlag(Global.NO);
+		Page<Promotion> page = new Page<Promotion>(1, 15);
+		page = promotionService.findPage(page, promotion);
+		model.addAttribute("site", site);
+		model.addAttribute("isIndex", true);
+		model.addAttribute("cvList", convenients);
+		model.addAttribute("bTypeList", businessTypess);
+		model.addAttribute("ppage", page);
+		return "modules/cms/front/themes/" + site.getTheme() + "/index";
+	}
+
+	/**
+	 * 网站首页
+	 */
+	@RequestMapping(value = "index-{siteId}${urlSuffix}")
+	public String index(@PathVariable String siteId, Model model) {
+		if (siteId.equals("1")) {
+			return "redirect:" + Global.getFrontPath();
+		}
+		Site site = CmsUtils.getSite(siteId);
+		// 子站有独立页面，则显示独立页面
+		if (StringUtils.isNotBlank(site.getCustomIndexView())) {
+			model.addAttribute("site", site);
+			model.addAttribute("isIndex", true);
+			return "modules/cms/front/themes/" + site.getTheme()
+					+ "/frontIndex" + site.getCustomIndexView();
+		}
+		// 否则显示子站第一个栏目
+		List<Category> mainNavList = CmsUtils.getMainNavList(siteId);
+		if (mainNavList.size() > 0) {
+			String firstCategoryId = CmsUtils.getMainNavList(siteId).get(0)
+					.getId();
+			return "redirect:" + Global.getFrontPath() + "/list-"
+					+ firstCategoryId + Global.getUrlSuffix();
+		} else {
+			model.addAttribute("site", site);
+			return "modules/cms/front/themes/" + site.getTheme()
+					+ "/frontListCategory";
+		}
+	}
+
+	/**
+	 * 内容列表
+	 */
+	@RequestMapping(value = "list{pageNo}-{categoryId}-{pageName}${urlSuffix}")
+	public String list(
+			@PathVariable String categoryId,
+			@PathVariable Integer pageNo,
+			@RequestParam(required = false, defaultValue = "15") Integer pageSize,
+			@PathVariable String pageName, Model model) {
+		if (null == pageNo) {
+			pageNo = 1;
+		}
+		if (null != pageName && pageName.equals("faces")) {
+			pageSize = 8;
+		}
+		Category category = categoryService.get(categoryId);
+		if (category == null) {
+			return "client/common/404";
+		}
+		Site site = siteService.get(category.getSite().getId());
+		// 获取文章列表
+		Page<Article> page = new Page<Article>(pageNo, pageSize);
+		Article article = new Article();
+		article.setCategory(new Category(categoryId));
+		page = articleService.findPage(page, article);
+		if (page.getList().size() > 0) {
+			List<Article> aList = page.getList();
+			for (int i = 0; i < aList.size(); i++) {
+				Article a = aList.get(i);
+				ArticleData articleData = articleDataService.get(a.getId());
+				articleData.setContent(StringUtils.abbr(
+						articleData.getContent(), 600));
+				a.setArticleData(articleData);
+			}
+		}
+		model.addAttribute("site", site);
+		model.addAttribute("page", page);
+		model.addAttribute("pageName", pageName);
+		return "modules/cms/front/themes/" + site.getTheme() + "/" + "List";
+	}
+
+	/**
+	 * 文章详情
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/{pageName}-view{pageNo}-{id}${urlSuffix}")
+	public String articleDetail(@PathVariable String id,
+			@PathVariable String pageName, @PathVariable Integer pageNo,
+			Model model) {
+		if (null == pageNo) {
+			pageNo = 1;
+		}
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		// 文章阅读次数+1
+		articleService.updateHitsAddOne(id);
+		Article article = articleService.get(id);
+		article.setComments(articleService.getCommentCount(article.getId()));
+		article.setArticleData(articleDataService.get(id));
+		Article article2 = new Article();
+		article2.setCategory(new Category(article.getCategory().getId()));
+		List<Article> articles = articleService.findList(article2);
+		int index = articles.indexOf(article);
+		// 取前一个和后一个
+		int preIndex = index - 1;
+		int nextIndex = index + 1;
+		if (preIndex >= 0 && preIndex < articles.size() & nextIndex >= 0
+				&& nextIndex < articles.size()) {
+			model.addAttribute("pre", articles.get(preIndex));
+			model.addAttribute("next", articles.get(nextIndex));
+		} else if (preIndex >= 0 && preIndex < articles.size()) {
+			model.addAttribute("pre", articles.get(preIndex));
+			model.addAttribute("next", null);
+		} else if (nextIndex >= 0 && nextIndex < articles.size()) {
+			model.addAttribute("pre", null);
+			model.addAttribute("next", articles.get(nextIndex));
+		} else {
+			model.addAttribute("pre", null);
+			model.addAttribute("next", null);
+		}
+		Page<Comments> page = new Page<Comments>(pageNo, 4);
+		Comments comments = new Comments();
+		comments.setArticle(new Article(id));
+		page.setOrderBy("a.create_date desc");
+		page = commentsService.findPage(page, comments);
+		model.addAttribute("commentsPage", page);
+		model.addAttribute("article", article);
+		return "modules/cms/front/themes/" + site.getTheme() + "/" + pageName
+				+ "Detail";
+	}
+
+	/**
+	 * 居民评论
+	 * 
+	 * @param id
+	 * @param content
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/comment-{id}.json", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String articleComment(@PathVariable("id") String id, String content) {
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(
+				Constants.RES_USER_KEY);
+		if (null == resident) {
+			return "{\"msg\":\"nologin\"}";
+		} else {
+			if (StringUtils.isEmpty(content)) {
+				return "{\"msg\":\"false\"}";
+			} else {
+				Comments comments = new Comments();
+				comments.setArticle(new Article(id));
+				comments.setContent(content);
+				comments.setHasReply(Constants.TYPE_STATUS_0);
+				comments.setCreateDate(new Date());
+				comments.setResident(resident);
+				comments.setCreateBy(new User("1"));
+				commentsService.save(comments);
+				return "{\"msg\":\"true\"}";
+			}
+		}
+	}
+
+	/**
+	 * 便民热线
+	 * 
+	 * @param model
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping(value = "convenient-list{pageNo}-{pageSize}{urlSuffix}")
+	public String convenient(Model model, @PathVariable Integer pageNo,
+			@PathVariable Integer pageSize) {
+		if (null == pageNo) {
+			pageNo = 1;
+		}
+		if (null == pageSize) {
+			pageSize = 8;
+		}
+		Page<Convenient> cPage = new Page<Convenient>(pageNo, pageSize);
+		cPage = convenientService.findPage(cPage, new Convenient());
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		model.addAttribute("page", cPage);
+		return "modules/cms/front/themes/" + site.getTheme()
+				+ "/convenientList";
+	}
+
+	/**
+	 * 周边商家
+	 * 
+	 * @param model
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping(value = "business-list{pageNo}-{pageSize}{urlSuffix}")
+	public String businessList(Model model, @PathVariable Integer pageNo,
+			@PathVariable Integer pageSize, BusinessCriteria criteria) {
+		if (null == pageNo) {
+			pageNo = 1;
+		}
+		if (null == pageSize) {
+			pageSize = 6;
+		}
+		Page<Business> cPage = new Page<Business>(pageNo, pageSize);
+		Business business = new Business();
+
+		if (null != criteria && !criteria.typeAll()) {
+			BusinessTypes types = new BusinessTypes();
+			types.setParent(new BusinessTypes(criteria.getTypeId()));
+			business.setTypes(types);
+
+		}
+		model.addAttribute("sortflag", "0");
+		// TODO 按评价排序
+		if (null != criteria && criteria.sortByCommentsOnly()) {
+			cPage.setOrderBy("star DESC");
+			model.addAttribute("sortflag", "1");
+		}
+		if (null != criteria && criteria.sortByCollectOnly()) {
+			cPage.setOrderBy("collectNum DESC");
+			model.addAttribute("sortflag", "2");
+		}
+		if (null != criteria && criteria.sortByCollectAndComment()) {
+			cPage.setOrderBy("star collectNum DESC");
+			model.addAttribute("sortflag", "3");
+		}
+		// 前台的商家类型列表
+		BusinessTypes businessTypes = new BusinessTypes();
+		businessTypes.setParent(new BusinessTypes("1"));
+		List<BusinessTypes> businessTypess = businessTypesService
+				.findList(businessTypes);
+		cPage = businessService.findPage(cPage, business);
+		GoodsComments goodsComments = new GoodsComments();
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		model.addAttribute("page", cPage);
+		model.addAttribute("bTypeList", businessTypess);
+		model.addAttribute("criteria", criteria);
+		return "modules/cms/front/themes/" + site.getTheme() + "/businessList";
+	}
+
+	/**
+	 * 周边商家详情
+	 * 
+	 * @param model
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	@RequestMapping(value = "business-detail-{id}-{bpageNo}-{cpageNo}")
+	public String businessDetail(
+			@PathVariable String id,
+			@PathVariable Integer bpageNo,
+			@PathVariable Integer cpageNo,
+			@RequestParam(required = false, defaultValue = Constants.TYPE_STATUS_0) String tagFlag,
+			Model model) {
+		if (null == bpageNo) {
+			bpageNo = 1;
+		}
+		if (null == cpageNo) {
+			cpageNo = 1;
+		}
+		businessService.updateViewCount(id);
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		// 详情
+		Business business = businessService.get(id);
+		if (null == business) {
+			return "modules/cms/front/themes/" + site.getTheme() + "/404";
+		}
+		model.addAttribute("business", business);
+		// 评价
+		GoodsComments goodsComments = new GoodsComments();
+		goodsComments.setBusiness(business);
+		Page<GoodsComments> page = new Page<GoodsComments>(cpageNo, 8);
+		page = goodsCommentsService.findPage(page, goodsComments);
+		model.addAttribute("page", page);
+		// 商品列表
+		Goods goods = new Goods();
+		goods.setBusiness(business);
+		goods.setUnshelFlag(Constants.TYPE_STATUS_0);
+		Page<Goods> goodsPage = new Page<Goods>(bpageNo, 8);
+		goodsPage = goodsService.findPage(goodsPage, goods);
+		model.addAttribute("goodsPage", goodsPage);
+		model.addAttribute("tagFlag", tagFlag);
+		return "modules/cms/front/themes/" + site.getTheme()
+				+ "/businessDetail";
+	}
+
+	/**
+	 * 收藏商家
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "collect-{id}.json", produces = MediaType.APPLICATION_JSON_VALUE)
+	public String collect(@PathVariable String id) {
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(
+				Constants.RES_USER_KEY);
+		if (null == resident) {
+			return "{\"msg\":\"nologin\"}";
+		} else {
+			try {
+				collectService.saveNewInstance(resident.getId(), id);
+			} catch (Exception e) {
+				return "{\"msg\":\"false\"}";
+			}
+			return "{\"msg\":\"true\"}";
+		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "promotion-list-{pageNo}${urlSuffix}")
+	public String promotion(@PathVariable Integer pageNo, Model model) {
+		if (null == pageNo) {
+			pageNo = 1;
+		}
+		Site site = siteService.get(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		Promotion promotion = new Promotion();
+		// 下线促销不显示
+		promotion.setOfflineFlag(Global.NO);
+		Page<Promotion> page = new Page<Promotion>(pageNo, 8);
+		page = promotionService.findPage(page, promotion);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/" + site.getTheme() + "/promotionList";
+	}
+
+	/**
+	 * 内容列表（通过url自定义视图）
+	 */
+	@RequestMapping(value = "list-{categoryId}-{customView}${urlSuffix}")
+	public String listCustom(
+			@PathVariable String categoryId,
+			@PathVariable String customView,
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "15") Integer pageSize,
+			Model model) {
+		Category category = categoryService.get(categoryId);
+		if (category == null) {
+			Site site = CmsUtils.getSite(Site.defaultSiteId());
+			model.addAttribute("site", site);
+			return "error/404";
+		}
+		Site site = siteService.get(category.getSite().getId());
+		model.addAttribute("site", site);
+		List<Category> categoryList = categoryService.findByParentId(
+				category.getId(), category.getSite().getId());
+		model.addAttribute("category", category);
+		model.addAttribute("categoryList", categoryList);
+		CmsUtils.addViewConfigAttribute(model, category);
+		return "modules/cms/front/themes/" + site.getTheme()
+				+ "/frontListCategory" + customView;
+	}
+
+	/**
+	 * 显示内容
+	 */
+	@RequestMapping(value = "view-{categoryId}-{contentId}${urlSuffix}")
+	public String view(@PathVariable String categoryId,
+			@PathVariable String contentId, Model model) {
+		Category category = categoryService.get(categoryId);
+		if (category == null) {
+			Site site = CmsUtils.getSite(Site.defaultSiteId());
+			model.addAttribute("site", site);
+			return "error/404";
+		}
+		model.addAttribute("site", category.getSite());
+		if ("article".equals(category.getModule())) {
+			// 如果没有子栏目，并父节点为跟节点的，栏目列表为当前栏目。
+			List<Category> categoryList = Lists.newArrayList();
+			if (category.getParent().getId().equals("1")) {
+				categoryList.add(category);
+			} else {
+				categoryList = categoryService.findByParentId(category
+						.getParent().getId(), category.getSite().getId());
+			}
+			// 获取文章内容
+			Article article = articleService.get(contentId);
+			if (article == null
+					|| !Article.DEL_FLAG_NORMAL.equals(article.getDelFlag())) {
+				return "error/404";
+			}
+			// 文章阅读次数+1
+			articleService.updateHitsAddOne(contentId);
+			// 获取推荐文章列表
+			List<Object[]> relationList = articleService
+					.findByIds(articleDataService.get(article.getId())
+							.getRelation());
+			// 将数据传递到视图
+			model.addAttribute("category",
+					categoryService.get(article.getCategory().getId()));
+			model.addAttribute("categoryList", categoryList);
+			article.setArticleData(articleDataService.get(article.getId()));
+			model.addAttribute("article", article);
+			model.addAttribute("relationList", relationList);
+			CmsUtils.addViewConfigAttribute(model, article.getCategory());
+			CmsUtils.addViewConfigAttribute(model, article.getViewConfig());
+			Site site = siteService.get(category.getSite().getId());
+			model.addAttribute("site", site);
+			// return
+			// "modules/cms/front/themes/"+category.getSite().getTheme()+"/"+getTpl(article);
+			return "modules/cms/front/themes/" + site.getTheme() + "/"
+					+ getTpl(article);
+		}
+		return "error/404";
+	}
+
+	/**
+	 * 内容评论
+	 */
+	@RequestMapping(value = "comment", method = RequestMethod.GET)
+	public String comment(String theme, Comment comment,
+			HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		Page<Comment> page = new Page<Comment>(request, response);
+		Comment c = new Comment();
+		c.setCategory(comment.getCategory());
+		c.setContentId(comment.getContentId());
+		c.setDelFlag(Comment.DEL_FLAG_NORMAL);
+		page = commentService.findPage(page, c);
+		model.addAttribute("page", page);
+		try {
+			comment.setTitle(URLDecoder.decode(comment.getTitle(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.addAttribute("comment", comment);
+		return "modules/cms/front/themes/" + theme + "/frontComment";
+	}
+
+	/**
+	 * 内容评论保存
+	 */
+	@ResponseBody
+	@RequestMapping(value = "comment", method = RequestMethod.POST)
+	public String commentSave(Comment comment, String validateCode,
+			@RequestParam(required = false) String replyId,
+			HttpServletRequest request) {
+		if (StringUtils.isNotBlank(validateCode)) {
+			if (ValidateCodeServlet.validate(request, validateCode)) {
+				if (StringUtils.isNotBlank(replyId)) {
+					Comment replyComment = commentService.get(replyId);
+					if (replyComment != null) {
+						comment.setContent("<div class=\"reply\">"
+								+ replyComment.getName() + ":<br/>"
+								+ replyComment.getContent() + "</div>"
+								+ comment.getContent());
+					}
+				}
+				comment.setIp(request.getRemoteAddr());
+				comment.setCreateDate(new Date());
+				comment.setDelFlag(Comment.DEL_FLAG_AUDIT);
+				commentService.save(comment);
+				return "{result:1, message:'提交成功。'}";
+			} else {
+				return "{result:2, message:'验证码不正确。'}";
+			}
+		} else {
+			return "{result:2, message:'验证码不能为空。'}";
+		}
+	}
+
+	/**
+	 * 站点地图
+	 */
+	@RequestMapping(value = "map-{siteId}${urlSuffix}")
+	public String map(@PathVariable String siteId, Model model) {
+		Site site = CmsUtils.getSite(siteId != null ? siteId : Site
+				.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/" + site.getTheme() + "/frontMap";
+	}
+
+	private String getTpl(Article article) {
+		if (StringUtils.isBlank(article.getCustomContentView())) {
+			String view = null;
+			Category c = article.getCategory();
+			boolean goon = true;
+			do {
+				if (StringUtils.isNotBlank(c.getCustomContentView())) {
+					view = c.getCustomContentView();
+					goon = false;
+				} else if (c.getParent() == null || c.getParent().isRoot()) {
+					goon = false;
+				} else {
+					c = c.getParent();
+				}
+			} while (goon);
+			return StringUtils.isBlank(view) ? Article.DEFAULT_TEMPLATE : view;
+		} else {
+			return article.getCustomContentView();
+		}
+	}
+
+	@RequestMapping(value = "promotionDetail-{id}${urlSuffix}")
+	public String promotionDetail(@PathVariable String id, Model model) {
+		Promotion promotion = promotionService.get(id);
+		Site site = siteService.get(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		model.addAttribute("promotion", promotion);
+		return "modules/cms/front/themes/" + site.getTheme()
+				+ "/promotionDetail";
+	}
+
+	/**
+	 * 全局搜索
+	 * 
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	@RequestMapping(value = "search${urlSuffix}")
+	public String search(String content, HttpServletRequest request,
+			Model model,
+			@RequestParam(required = false, defaultValue = "0") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "8") Integer pageSize)
+			throws UnsupportedEncodingException {
+		String scontent = URLDecoder.decode(content, "utf-8");
+		Site site = siteService.get(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		ListPage page = searchContent.search(scontent, request, pageSize,
+				pageNo);
+		model.addAttribute("page", page);
+		model.addAttribute("searchName", scontent);
+		return "modules/cms/front/themes/" + site.getTheme() + "/searchList";
+	}
+
+}

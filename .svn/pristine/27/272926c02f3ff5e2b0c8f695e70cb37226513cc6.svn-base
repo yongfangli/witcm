@@ -1,0 +1,22 @@
+@charset "utf-8";
+*{
+		margin: 0;
+		padding: 0;
+		font-family:"微软雅黑";
+	}
+	a{text-decoration: none;color:#FFF}
+	.clear{clear:both;}
+    
+	.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png);background-size:100vw 100vh}
+	.top{width:100vw;height:11vh; background:url(../images/twobackbom.png);background-size:100vw 11vh}
+	.top_cen{width:94vw;height:11vh;margin:0px auto;color:#FFF}
+	.title{
+		line-height: 11vh;
+		font-size: 2em;}
+	.middle{width:94vw;height:75vh;margin:0px auto;background:#FFF;border-radius:10px;margin-top:4vh;background-color:rgba(255, 255, 255, 0.6); }	
+	.conten{width:80vw;height:67vh;margin: 0px auto; overflow:hidden}
+	.last_page{width:100vw; text-align:center;margin-top:4vh;font-size:1.4em}
+	.addr{width:80vw;height:17.5vh;}
+	.phoneimg{width:7vw;height:14vh}
+	.contentDiv{width:71.5vw;height:14vh; overflow:hidden;float:right;}
+	

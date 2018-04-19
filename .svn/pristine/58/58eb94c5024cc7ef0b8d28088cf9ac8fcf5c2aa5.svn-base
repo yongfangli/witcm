@@ -1,0 +1,50 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import com.thinkgem.jeesite.modules.witcm.resident.dao.ResidentDao;
+
+/**
+ * 居民Service
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Service
+@Transactional(readOnly = true)
+public class ResidentService extends CrudService<ResidentDao, Resident> {
+
+	public Resident get(String id) {
+		return super.get(id);
+	}
+	
+	public List<Resident> findList(Resident resident) {
+		return super.findList(resident);
+	}
+	
+	public Page<Resident> findPage(Page<Resident> page, Resident resident) {
+		return super.findPage(page, resident);
+	}
+	
+	@Transactional(readOnly = false)
+	public void save(Resident resident) {
+		super.save(resident);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(Resident resident) {
+		super.delete(resident);
+	}
+	@Transactional(readOnly = false)
+	public List<Resident> findByName(String name){
+		return dao.findByName(name);
+	}
+}

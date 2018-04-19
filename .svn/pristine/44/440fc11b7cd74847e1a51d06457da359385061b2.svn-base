@@ -1,0 +1,71 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.thinkgem.jeesite.common.web.BaseController;
+/**
+ * itv Controller
+ * 
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/itv")
+public class FrontITVController extends BaseController {
+	
+	
+	/**
+	 * 登录页面
+	 */
+	@RequestMapping(value = "login")
+	public String loginPage(Model model) {
+		
+		return "modules/cms/front/themes/itv/login";
+	}
+	/**
+	 * 网站首页
+	 */
+	@RequestMapping
+	public String index(Model model){
+		
+		return "modules/cms/front/themes/itv/index";
+	}
+	
+	/**
+	 * 红色旅游-首页
+	 */
+	@RequestMapping(value = "tour")
+	public String tourIndex(Model model){
+		
+		return "modules/cms/front/themes/itv/tourIndex";
+	}
+	
+	/**
+	 * 二级列表－页面
+	 */
+	@RequestMapping(value = "list")
+	public String list(Model model){
+		
+		return "modules/cms/front/themes/itv/list";
+	}
+	
+	/**
+	 * 二级列表详情－页面
+	 */
+	@RequestMapping(value = "listDetail")
+	public String listDetail(Model model){
+		
+		return "modules/cms/front/themes/itv/list_detail";
+	}
+	
+	/**
+	 * 详情－页面
+	 */
+	@RequestMapping(value = "detail")
+	public String detail(Model model){
+		
+		return "modules/cms/front/themes/itv/detail";
+	}
+}

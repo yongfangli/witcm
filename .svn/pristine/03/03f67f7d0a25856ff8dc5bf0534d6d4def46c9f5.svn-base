@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.business.dao.BusinessTypesDao">
+    
+	<sql id="businessTypesColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.orders AS "orders",
+		a.explains AS "explains",
+		a.parent_id AS "parent.id",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongAreaId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		p.name AS "parent.name"
+	</sql>
+	
+	<sql id="businessTypesJoins">
+		LEFT JOIN sc_business_types p ON p.id = a.parent_id
+	</sql>
+    
+	<select id="get" resultType="BusinessTypes">
+		SELECT 
+			<include refid="businessTypesColumns"/>
+		FROM sc_business_types a
+		<include refid="businessTypesJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="BusinessTypes">
+		SELECT 
+			<include refid="businessTypesColumns"/>
+		FROM sc_business_types a
+		<include refid="businessTypesJoins"/>
+		<where>
+			<if test="parent != null and parent.id != '' and parent.id != null">
+				AND a.parent_id =#{parent.id}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.orders
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="BusinessTypes">
+		SELECT 
+			<include refid="businessTypesColumns"/>
+		FROM sc_business_types a
+		<include refid="businessTypesJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.orders
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_business_types(
+			id,
+			name,
+			orders,
+			explains,
+			parent_id,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{name},
+			#{orders},
+			#{explains},
+			#{parent.id},
+			#{belongOrg.id},
+			#{belongAreaId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_business_types SET 	
+			name = #{name},
+			orders = #{orders},
+			explains = #{explains},
+			parent_id = #{parent.id},
+			belong_org_id = #{belongOrg.id},
+			belong_area_id = #{belongAreaId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_business_types
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

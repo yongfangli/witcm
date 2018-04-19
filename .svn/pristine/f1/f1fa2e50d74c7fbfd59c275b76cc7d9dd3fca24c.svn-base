@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.business.dao.PromotionDao">
+    
+	<sql id="promotionColumns">
+		a.id AS "id",
+		a.business AS "business.id",
+		a.titles AS "titles",
+		a.contents AS "contents",
+		a.offline_flag AS "offlineFlag",
+		a.end_date AS "endDate",
+		a.issus_status AS "issusStatus",
+		a.delete_flag AS "deleteFlag",
+		a.issus_date AS "issusDate",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrgId",
+		a.belong_area_id AS "belongAreaId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		p.full_name AS "business.fullName"
+	</sql>
+	
+	<sql id="promotionJoins">
+		LEFT JOIN sc_business p ON p.id = a.business
+	</sql>
+    
+	<select id="get" resultType="Promotion">
+		SELECT 
+			<include refid="promotionColumns"/>
+		FROM sc_promotion a
+		<include refid="promotionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Promotion">
+		SELECT 
+			<include refid="promotionColumns"/>
+		FROM sc_promotion a
+		<include refid="promotionJoins"/>
+		<where>
+			<if test="business != null and business.id != null and business.id != ''">
+				AND a.business = #{business.id}
+			</if>
+			<if test="offlineFlag != null and offlineFlag  != ''">
+				AND a.offline_flag = #{offlineFlag}
+			</if>
+			<if test="business != null and business.fullName != null and business.fullName != ''">
+				AND p.full_name LIKE
+					<if test="dbName == 'oracle'">'%'||#{business.fullName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{business.fullName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{business.fullName},'%')</if>
+			</if>
+			<if test="belongOrgId != '' and belongOrgId != null">
+				ANd a.belong_org_id = #{belongOrgId}
+			</if>
+			<if test="titles != null and titles != ''">
+				AND a.titles LIKE 
+					<if test="dbName == 'oracle'">'%'||#{titles}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{titles}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{titles},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Promotion">
+		SELECT 
+			<include refid="promotionColumns"/>
+		FROM sc_promotion a
+		<include refid="promotionJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_promotion(
+			id,
+			business,
+			titles,
+			contents,
+			offline_flag,
+			end_date,
+			issus_status,
+			delete_flag,
+			issus_date,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{business.id},
+			#{titles},
+			#{contents},
+			#{offlineFlag},
+			#{endDate},
+			#{issusStatus},
+			#{deleteFlag},
+			#{issusDate},
+			#{remarks},
+			#{belongOrgId},
+			#{belongAreaId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_promotion SET 	
+			business = #{business.id},
+			titles = #{titles},
+			contents = #{contents},
+			offline_flag = #{offlineFlag},
+			end_date = #{endDate},
+			delete_flag = #{deleteFlag},
+			issus_date = #{issusDate},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrgId},
+			belong_area_id = #{belongAreaId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_promotion
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

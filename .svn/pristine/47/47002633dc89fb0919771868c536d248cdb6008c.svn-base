@@ -1,0 +1,128 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+<!DOCTYPE html>
+<html>
+<head>
+	<title><sitemesh:title default="欢迎光临"/> - ${site.title} - Powered By 电信江西分公司</title>
+	<%@include file="/WEB-INF/views/modules/cms/front/include/head.jsp" %>
+	<!-- Baidu tongji analytics --><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script>
+	<sitemesh:head/>
+	<script type="text/javascript">
+		$(function (){
+			$(".js-silder").silder({
+				auto: true,//自动播放，传入任何可以转化为true的值都会自动轮播
+				speed: 20,//轮播图运动速度
+				sideCtrl: true,//是否需要侧边控制按钮
+				bottomCtrl: true,//是否需要底部控制按钮
+				defaultView: 0,//默认显示的索引
+				interval: 300000,//自动轮播的时间，以毫秒为单位，默认3000毫秒
+				activeClass: "active",//小的控制按钮激活的样式，不包括作用两边，默认active
+			});
+		});
+	</script>
+</head>
+<body>
+	 <!--头部-->
+	   <div class="top">
+			<div class="top_left">
+			<img src="${ctxStaticTheme}/images/logo.png" class="top_left_img">
+				<b class="img_font">井冈山智慧社区</b>
+			</div>
+			
+			<div class="top_right">
+			   <div class="top_right_login">
+					<input type="button" value="登录" class="top_login"/>
+					<input type="button" value="注册" class="top_reg"/>
+				</div>	
+				
+				<div class="top_right_img">
+				  <div class="top_weixin">
+					<img src="${ctxStaticTheme}/images/weixin.png">
+				  </div>	
+				  <div style="float:right">
+					<img src="${ctxStaticTheme}/images/app.png" style="float:right">
+				  </div>	
+				</div>
+				
+			</div>
+	   </div>
+	   <!--轮播图-->
+		<div class="mar">
+            <div class="js-silder">
+   				<div class="silder-scroll">
+				  <div class="silder-main">
+					 <div class="silder-main-img">
+				       <img src="${ctxStaticTheme}/images/lunbo-01.png" class="lun_mar">
+			         </div>
+		        	 <div class="silder-main-img">
+					   <img src="${ctxStaticTheme}/images/lunbo-01.png" class="lun_mar">
+					 </div>
+			  		 <div class="silder-main-img">
+				       <img src="${ctxStaticTheme}/images/lunbo-01.png" class="lun_mar">
+			   		 </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+		<!--导航条-->
+		<div class="navi_div">
+			<div class="navi_middle">
+				<ul>
+				<a href="${ctx}"><li class="li"><div style="height:16px"></div>首页</li></a>
+				  <c:forEach items="${fnc:getMainNavList(site.id)}" var="category" varStatus="status">
+				  <c:if test="${status.index ==0}">
+				  <a href="${ctx}/list-${category.id}-news${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				  <c:if test="${status.index == 1}">
+				  <a href="${ctx}/list-${category.id}-trands${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				 <c:if test="${status.index == 2}">
+				  <a href="${ctx}/list-${category.id}-faces${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				 <c:if test="${status.index == 3}">
+				  <a href="${ctx}/list-${category.id}-guide${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				 <c:if test="${status.index == 4}">
+				  <a href="${ctx}/list-${category.id}-legal${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				  <c:if test="${status.index == 5}">
+				  <a href="${ctx}/list-${category.id}-facts${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				 <c:if test="${status.index == 6}">
+				  <a href="${ctx}/list-${category.id}-activity${fns:getUrlSuffix()}"><li class="li"><div style="height:16px"></div>${category.name}</li></a>
+				 </c:if>
+				  </c:forEach>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="contents">
+			<sitemesh:body/>
+		</div>
+    
+     <!--友情链接-->
+       <div style="height:25px"></div>
+       <div class="friend_link">
+           <ul>
+              <li class="lianjieli">友情链接：</li>
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+           </ul>
+       </div>
+     <!--底部-->  
+     <div class="company_bottom">
+           <div style="height:20px"></div>
+           ${site.copyright}
+     </div>
+</body>
+</html>

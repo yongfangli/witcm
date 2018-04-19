@@ -1,0 +1,74 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人中心－个人信息</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	<link href="${ctxStaticTheme}/css/center.css" type="text/css" rel="stylesheet" />
+	<link href="/witcm/static/bootstrap/2.3.1/awesome/font-awesome.min.css" type="text/css" rel="stylesheet">
+	
+	
+	<link href="/witcm/static/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet">
+	<script src="/witcm/static/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+	   $(function(){
+		   $("#resInfo").addClass("dvCheck");
+	   });
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="resMenu.jsp" />
+        
+        <div id="dvContentRight" style="padding-top: 20px;">
+        
+        <form:form id="inputForm" action="${ctx}/guestbook" method="post" class="form-horizontal">
+	        <div class="control-group">
+				<label class="control-label">商品类别：</label>
+				<div class="controls">
+					<sys:treeselect id="goodsTypes" name="types.id" value="" labelName="types.name" labelValue=""
+						title="类别" url="/business/goodsTypes/treeData" extId="" cssClass="required"/>
+				</div>
+			</div>
+        	<div class="control-group">
+				<label class="control-label">名称:</label>
+				<div class="controls">
+					<input type="text" name="name" maxlength="11" class="required" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">邮箱:</label>
+				<div class="controls">
+					<input type="text" name="email" maxlength="50" class="required email" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">电话:</label>
+				<div class="controls">
+					<input type="text" name="phone" maxlength="50" class="required phone" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">留言内容:</label>
+				<div class="controls">
+					<textarea name="content" rows="4" maxlength="200" class="required" style="width:400px;"></textarea>
+				</div>
+			</div>
+			<div class="form-actions">
+				<input class="btn" type="button" value="提 交"/>&nbsp;
+			</div>
+        
+        </form:form>
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

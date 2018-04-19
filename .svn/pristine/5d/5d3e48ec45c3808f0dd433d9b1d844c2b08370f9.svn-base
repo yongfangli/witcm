@@ -1,0 +1,164 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.entity;
+
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+
+/**
+ * 家庭健康档案Entity
+ * 
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class HealthRecord extends DataEntity<HealthRecord> {
+
+	private static final long serialVersionUID = 1L;
+	private String residentId;//居民ID
+	private Family familyUser; // 家庭用户ID
+	private Integer bloods; // 舒张压(mmHg)
+	private Integer tbloods; // 收缩压
+	private Float cholesterol; // 总胆固醇(mmol/L)
+	private Float triglyceride; // 甘油三酯(mmol/L)
+	private Float cholest; // 胆固醇酯(mmol/L)
+	private Float fastBloods; // 空腹血糖(mmol/L)
+	private Float oneBloods; // 餐后1小时血糖(mmol/L)
+	private Float twoBloods; // 餐后2小时血糖(mmol/L)
+	private String doctorAdvice; // 医嘱
+	private Date testDate; // 测量时间
+	private Office belongOrg; // 归属机构
+	private String belongArea; // 归属单位
+
+	public HealthRecord() {
+		super();
+	}
+
+	public HealthRecord(String id) {
+		super(id);
+	}
+
+	public Integer getTbloods() {
+		return tbloods;
+	}
+
+	public void setTbloods(Integer tbloods) {
+		this.tbloods = tbloods;
+	}
+
+	public String getResidentId() {
+		return residentId;
+	}
+
+	public void setResidentId(String residentId) {
+		this.residentId = residentId;
+	}
+
+	@NotNull(message = "家属不能为空")
+	public Family getFamilyUser() {
+		return familyUser;
+	}
+
+	public void setFamilyUser(Family familyUser) {
+		this.familyUser = familyUser;
+	}
+
+	public Integer getBloods() {
+		return bloods;
+	}
+
+	public void setBloods(Integer bloods) {
+		this.bloods = bloods;
+	}
+
+	public Float getCholesterol() {
+		return cholesterol;
+	}
+
+	public void setCholesterol(Float cholesterol) {
+		this.cholesterol = cholesterol;
+	}
+
+	public Float getTriglyceride() {
+		return triglyceride;
+	}
+
+	public void setTriglyceride(Float triglyceride) {
+		this.triglyceride = triglyceride;
+	}
+
+	public Float getCholest() {
+		return cholest;
+	}
+
+	public void setCholest(Float cholest) {
+		this.cholest = cholest;
+	}
+
+	public Float getFastBloods() {
+		return fastBloods;
+	}
+
+	public void setFastBloods(Float fastBloods) {
+		this.fastBloods = fastBloods;
+	}
+
+	public Float getOneBloods() {
+		return oneBloods;
+	}
+
+	public void setOneBloods(Float oneBloods) {
+		this.oneBloods = oneBloods;
+	}
+
+	public Float getTwoBloods() {
+		return twoBloods;
+	}
+
+	public void setTwoBloods(Float twoBloods) {
+		this.twoBloods = twoBloods;
+	}
+
+	@Length(min = 0, max = 2000, message = "医嘱长度必须介于 0 和 2000 之间")
+	public String getDoctorAdvice() {
+		return doctorAdvice;
+	}
+
+	public void setDoctorAdvice(String doctorAdvice) {
+		this.doctorAdvice = doctorAdvice;
+	}
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getTestDate() {
+		return testDate;
+	}
+
+	public void setTestDate(Date testDate) {
+		this.testDate = testDate;
+	}
+
+	public Office getBelongOrg() {
+		return belongOrg;
+	}
+
+	public void setBelongOrg(Office belongOrg) {
+		this.belongOrg = belongOrg;
+	}
+
+	@Length(min = 0, max = 64, message = "归属单位长度必须介于 0 和 64 之间")
+	public String getBelongArea() {
+		return belongArea;
+	}
+
+	public void setBelongArea(String belongArea) {
+		this.belongArea = belongArea;
+	}
+
+}

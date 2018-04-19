@@ -1,0 +1,236 @@
+@charset "utf-8";
+/*reset*/
+html {
+	font-size: 312.5%;
+}
+body {
+	font-family: Microsoft Yahei,'roboto', helvetica, arial, sans-serif;
+	line-height: 1.5;
+	font-size: .28rem;
+	color: #333333;
+	background-color: #e8e8e8;
+}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+img {
+	vertical-align: middle;
+	border: 0
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+ul, ol, li {
+	list-style: none;
+}
+em, i {
+	font-style: normal
+}
+img {
+	border: none;
+}
+input, img {
+	vertical-align: middle
+}
+input, select, textarea {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-appearance: none;
+	border: 0;
+	border-radius: 0;
+}
+textarea:focus {
+	outline: 0
+}
+a {
+	color: #6E7D8B;
+	text-decoration: none;
+	outline: 0
+}
+a:active, a:hover, a.current {
+	outline: 0
+}
+html {
+	font-size: 312.5%;
+}
+img {
+	border: none;
+	display: block
+}
+input {
+	border: none;
+	font-size: .28rem;
+}
+input:focus {
+	outline: none;
+}
+
+.user_center {background-image: url(../images/center_bg.png);
+			background-repeat:no-repeat;
+			background-size: 100% 100%;
+			height: 200px;}
+			
+.user_center a{color: white;}
+
+.user_center .back{ display: block;
+					    width: 22%;
+					    height: .26rem;
+					    margin-left: .25rem;}
+.user_center p{width: 100%;}
+					    				    
+.user_center img{width: 15%;
+				 margin: 0px auto;
+    			 border: 3px solid #fff;
+                 border-radius: 40px;
+                 margin-top: 25px;}
+                 
+.integral1{
+	width: 60vw;
+    height: 3vh;
+    background: #3d9972;
+    color: #000000;
+    border-radius: 2em;
+    font-size: 0.8em;
+    margin-top: 1vh;} 
+	
+.integral2{
+	width: 60vw;
+	height: 3vh;
+    background: orange;
+    color: #000000;
+    border-radius: 2em;
+    font-size: 0.8em;
+    margin-top: 1vh;}               
+                 
+.integral3{
+	width: 60vw;
+	height: 3vh;
+    background: pink;
+    color: #000000;
+    border-radius: 2em;
+    font-size: 0.8em;
+    margin-top: 1vh;}
+	                 
+.wrap_box {
+	max-width:640px;
+	margin: 0 auto;
+	height:auto;
+	position:relative;
+	background:#E8E8E8;
+	overflow:hidden;
+}
+.logo{ display:block;
+       width:100%;}
+.logo img{ display:block;
+           width:40%;
+		   margin:.2rem auto;}
+.nav_box{ width:90%;
+          height:.7rem;
+		  padding:0 5%;
+		  overflow:hidden;
+		  background:#f8f8f8;
+		  /*box-shadow:0 2px 4px #999;*/
+		  margin-bottom:.06rem;
+		  z-index:100;}
+.back_but{ display:block;
+           width:10%;
+		   height:.26rem;
+		   float:left;
+		   margin-top:.12rem;}
+.back_but img{ width:100%;
+                display:block;}
+.nav_title{ float:left;
+            color:#3c9871;
+			width:80%;
+			text-align:center;
+			line-height:.7rem;
+			font-size:.35rem;}
+
+/********人才招聘开始****/
+.rczp_box{ width:90%;
+           padding:0 5%;}
+.rczp_show{ width:100%;
+            overflow:hidden;
+            padding: 5px 0;
+			line-height:.4rem;
+			border-bottom:1px solid #cccccc;}
+.rczp_show a{overflow:hidden;
+			 padding-left:6%;
+			 display:block;
+			 width:94%;
+			 background:url(../images/info_icon2.png) no-repeat left center;}				
+.hidden_box3{ display:none;}		  
+ 
+/********人才招聘结束****/
+
+
+
+/********留言开始******/
+.ly_box{ width:auto;
+		 background-color: #F8F8F8;
+         padding:1% 0;
+		 margin:.2rem 0;
+		 overflow:hidden;}
+.ly_text{ width:30%;
+          float:left;
+		  text-align:right;}
+.ly_text p{ margin:.2rem 0;
+            line-height:.6rem;}	
+.ly_text span{color: red;}	  
+.ly_input{ width:68%;
+          float:right;}
+.ly_input input{ height:.6rem;
+                 display:block;
+				 width:80%;
+                 margin:.2rem 0;
+                 border-radius: 5px;
+                 text-indent: 10px}
+.ly_validate input{ height:.6rem;
+                 display:block;
+				 width:25%;
+				 margin: 0 7px;
+                 float: left;}
+.ly_validate img{width: 80px;
+				 height: 32.828px;
+				 float: left;
+				}
+.ly_validate span{float:left;
+				  font-size: 15px;
+				  margin: 7px 7px;
+				  color: red;
+				}
+.ly_submit button{ height:.6rem;
+                  display:block;
+				  width:80%;
+				  background:#ec3b3b;
+				  color:white;
+				  border:none;
+				  border-radius:4px;
+                  margin:.2rem 10%;}	
+.ly_register button{ height:.6rem;
+                  display:block;
+				  width:40%;
+				  color:white;
+				  float: right;
+				  border:none;
+				  border-radius:4px;
+                  margin:.2rem 5%;}
+.ly_register .register{background: #EC3B3B;
+					   font-size: 18px}
+.ly_register .reset{background: #555555;
+					font-size: 18px} 
+.ly_login p{text-align: center;
+			font-size: 15px;
+			margin-top: 65px}
+.ly_login span{color: #EC3B3B;
+    		   padding: 0px 14px}			                     			 		  
+.ly_content{ width:80%;
+             height:1.8rem;}		  
+/********留言结束******/
+.bus_order p{
+	font-size: 0.26rem;
+}

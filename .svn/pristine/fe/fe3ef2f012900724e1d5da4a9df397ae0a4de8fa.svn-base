@@ -1,0 +1,226 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>周边商户详细介绍</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/common.css" rel="stylesheet" type="text/css"> 
+        <link href="${ctxStaticMobile}/css/mark_details.css" rel="stylesheet" type="text/css">
+        <link href="${ctxStaticMobile}/css/mark_comment.css  " rel="stylesheet" type="text/css">
+       <link href="${ctxStaticMobile}/css/mark_commodity.css" rel="stylesheet" type="text/css"> 
+     <script src="${ctxStatic}/client/js/jquery-1.11.3.min.js" type="text/javascript"></script> 
+    <script src="${ctxStatic}/client/js/message.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/message.css"/>
+    <style>
+     .c-message{
+      margin-left: -135px !important;
+    }
+.list{
+overflow: hidden;
+}
+	.more{
+	  position:relative;
+        margin-top: 10px;
+    }
+#wrapper {
+	position: relative;
+	z-index: 1;
+	    height: 10vh;
+	background: #ccc;
+	overflow: hidden;
+	-ms-touch-action: none;
+}
+	.grade{color:#F00}
+</style>
+ <script type="text/javascript">
+ var type;
+ var gpageNo=1;
+ var cpageNo=1;
+ var pageSize=8;
+ var id='${business.id}';
+ function render(delay){
+	 if(type==1){
+		
+		 $(".content").show();
+		 $(".more").hide();
+		 $(".list").hide();
+	 }
+	 if(type==2){
+		 $(".list").show();
+		 $(".more").show();
+		 $(".content").hide();
+			$.ajax({
+		        type: 'GET',
+		        url: '${ctxMobile}/businessGoodsJson.json',
+		        dataType: 'json',
+		        data:{'pageNo':gpageNo,'pageSize':pageSize,"id":id},
+		        success: function(data){
+		        	if(data){
+		        		var html="";
+		        		 gpageNo++;
+		        		if(data.length==0){
+		        			$(".more").text("已经是最后一页了");	
+		        		}else{
+		        		  data.forEach(function( val, index ) {
+		        			  html=html+"<div class='commodityDiv'>"+
+		        		   	  "<img src='"+val.imagesId+"'>"+
+		        		      "<p class='money'>￥"+val.price+"</p>"+
+		        		      "<p style='margin-top:1vh'>"+val.price+"</p>"+
+		        		      "<input type='button' onclick='order(\""+val.id+"\")' value='预订'></div>";
+		        		  })
+		        		  $('.list').append(html);
+		        		  }
+		        	}
+		         }
+			})
+			 
+		 } 
+	 if(type==3){
+		 $(".list").show();
+		 $(".more").show();
+		 $(".content").hide(); 
+			$.ajax({
+		        type: 'GET',
+		        url: '${ctxMobile}/businessComment.json',
+		        dataType: 'json',
+		        data:{'pageNo':cpageNo,'pageSize':pageSize,"id":id},
+		        success: function(data){
+		        	if(data){
+		        		var html="";
+		        		 cpageNo++;
+		        		if(data.length==0){
+		        			$(".more").text("已经是最后一页了");	
+		        		}else{
+		        		  data.forEach(function( val, index ) {
+		        			  var date=val.createDate;
+		        			  html=html+"  <div class='username' style='height: 11vh'>"+
+		           	   		"<img src='"+val.resident.imagesId+"' class='userlogo'><div style='float:right;width:70vw'>"+
+		         	       	  "<div style='height:2vh'></div>  <p style='font-size: 0.7em'>"+val.contents+"</p>"+
+		         	         "<p class='comm'>"+val.resident.name+" ｜ "+date+" </p> </div> <div style='clear:both'></div></div>";
+		        			  
+		        		  })
+		        		  $('.list').append(html);
+		        		  }
+		        	}
+		         }
+			}) 
+	 }
+	 }
+	//预定
+	function order(id){
+		window.open("${ctxMobile}/goodOrderPage?id="+id,"商品预定", "width=300px, height=300px,top=400px,left=500px,location=no,toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no,alwaysRaised=yes,depended=yes");
+	}
+	
+	 function collect(bid){
+		var url="${ctxMobile}"+'/collect-'+bid+".json";
+		$.get(url,function(data){
+			if(data.msg=='nologin'){
+				$.message({
+			        message:'请先登录',
+			        type:'warning',
+			        time:'1000'
+			    });
+			}
+			else if(data.msg=='true'){
+					$.message({
+				        message:'收藏成功',
+				        type:'success',
+				        time:'1000'
+				    });
+				}else{
+					$.message({
+				        message:'你已经收藏了该商家',
+				        type:'error',
+				        time:'1000'
+				    });
+				}
+		})
+	}
+	 
+	 function more(){
+			render();
+		}
+ function toggleContent(tagert,type){
+	 window.type=type;
+	  gpageNo=1;
+	  cpageNo=1;
+		$(tagert).removeClass("community2").addClass("community");
+		$(tagert).siblings().removeClass("community").addClass("community2");
+		$(".more").text("加载更多");
+		$('.list').empty();
+		render();
+	}
+ </script>
+</head>
+<body>
+<div class="wrap_box">
+   <div class="top">
+      <p class="return"><a style="text-decoration: none; outline: 0;    color: #FFF;" href="javascript:history.back(-1)">< &nbsp;返回</a></p>
+      
+ <div class="commercial">
+    <img src="${business.logoId }" class="markimg">
+    <div class="right_info">
+       <p style="font-size:1.2em">${business.shortName}
+	<span>
+             	<c:forEach begin="1" end="5" step="1" var="num">
+							<c:if test="${num gt business.star}">
+							<span class="grade-ignore">★</span>
+							</c:if>
+							<c:if test="${num le business.star}">
+							<span class="grade">★</span>
+							</c:if>
+							</c:forEach>
+				</span>	
+</p>
+       <p>电话：${business.phone }</p>
+       <p>地址：${fns:abbr(business.address,30)}</p>
+       <input type="button" value="收藏" class="save" onclick="collect('${business.id}')">
+    </div>
+   </div>
+   </div>
+   <div style="width:100vw;height:10vh; background:#E8E8E8">
+       <div class="community" onclick="toggleContent(this,1)">
+           <p>商家</p>
+       </div>
+       <div class="community2" onclick="toggleContent(this,2)">
+           <p>商品</p>
+       </div>
+       <div class="community2" onclick="toggleContent(this,3)">
+           <p>评论</p>
+       </div>
+   </div>
+   <p class="content">${business.describes}</p>
+   <div class="list">
+   </div>
+    <div class="more" style="display:none" onclick="more()">加载更多</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

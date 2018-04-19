@@ -1,0 +1,165 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>智慧社区首页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/index.css" rel="stylesheet" type="text/css">  
+    <script src='${ctxStaticMobile}/js/hhSwipe.js' type="text/javascript"></script> 
+    <style>
+    .swipet {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrapt {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrapt div {
+  float:left;
+  width:100%;
+  position: relative;
+  line-height: 0.5rem;
+}
+.swipe-wrapt a{
+  line-height: 0.5rem;
+}
+    </style>
+</head>
+
+<body>
+<div class="wrap_box">
+<!--头部部分开始-->
+<div style="height:9vh;text-align:center">
+	<img src="${ctxStaticMobile}/images/index/logo1.png" class="logo"/>
+    <p class="title">智慧社区微门户</p>
+</div>
+<div style="clear:both"></div>
+<!--头部部分结束-->     
+<!--banner图开始-->     
+<div class="addWrap">
+       <div class="swipe" id="mySwipe">
+             <div class="swipe-wrap">
+             <c:forEach items="${fnc:getMainFaceList('1', '城区鸟瞰图')}" var="article">
+                  <div><a href="javascript:void(0)"><img class="img-responsive" src="${article.image}"/></a></div>
+            </c:forEach>
+             </div>
+            </div>
+	      <!--按转换按钮开始-->
+            <ul id="position">
+            
+                   <li class="cur"></li>
+                   <li></li>
+                   <li></li>
+            </ul>
+          <!--按转换按钮结束-->  
+</div>
+<script type="text/javascript">
+	var bullets = document.getElementById('position').getElementsByTagName('li');
+	var banner = Swipe(document.getElementById('mySwipe'), {
+		auto: 4000,
+		continuous: true,
+		disableScroll:false,
+		callback: function(pos) {
+			var i = bullets.length;
+			while (i--) {
+				bullets[i].className = ' ';
+			}
+			bullets[pos].className = 'cur';
+		}
+     })
+     
+</script>
+<!--banner结束-->
+<div class="gonggao">
+	<div class="gonggaoimg">
+      <div class="img">
+        <img src="${ctxStaticMobile}/images/index/gonggao.png">
+      </div>
+          <div class="swipet" id="mySwipet">
+             <div class="swipe-wrapt">
+             <c:forEach items="${ppage.list}" var="promotion">
+           <div> <a href="${ctxMobile}/promotionDetail?id=${promotion.id}"> <p class="scoll_p">&emsp;${fns:abbr(promotion.titles,70)}</p></a></div>
+             </c:forEach>
+          </div>
+      </div>
+     
+    </div>
+</div>
+<script>
+var bannert = Swipe(document.getElementById('mySwipet'), {
+	direction: 'vertical',
+	auto: 2000,
+	continuous: true,
+	disableScroll:false,
+	
+ })
+</script>
+<div style="height:0.5rem;"></div>
+<div class="footer_box" style="background:#FFF;height:1.3rem">
+<c:forEach items="${cList}" var="c" varStatus="sta" begin="0" end="2">
+<a href="${ctxMobile}/categoryIndex?id=${c.id}"><img src="${c.image}" style="margin-top:.10rem; width:30% !important;"/>${c.name}</a>
+</c:forEach>
+</div>
+<div class="footer_box" style="background:#FFF;height:1.3rem">
+     <c:forEach items="${cList}" var="c" varStatus="sta" begin="3" end="5">
+<a href="${ctxMobile}/categoryIndex?id=${c.id}"><img src="${c.image}" style="margin-top:.10rem"/>${c.name}</a>
+</c:forEach>
+</div>
+<div style="height:0.2rem;background:#CCC"></div>
+<div style="width:92vw;height:6vh;border-bottom:1px solid #CCC;margin:0px auto">
+  <p style="line-height:6vh; font-size:1.2em;color:#F00">${last.name}</p>
+</div>
+<!---内容开始-->
+<ul class="cgal_list">
+  <c:forEach items="${apage.list}" var="a" varStatus="sta" >
+   <li class="show_box"><a href="${ctxMobile}/articleView?id=${a.id}"><img src="${a.image}"/>
+       <div class="cgal_list_text">
+            <p>${a.title }</p>
+            <div style="color:#999">
+               发布人：${a.createBy.name}<br/>发布时间： <fmt:formatDate value="${a.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </div>
+       </div>
+       </a>
+   </li>
+   </c:forEach>
+</ul>
+<div style="height:0.2rem;background:#CCC;margin-top:2vh"></div>
+<div style="width:96vw;height:9vh;"></div>
+<div class="footer_box" style=" position: fixed; bottom:0;width:100%">
+     <a href="${ctxMobile}" style="color: #ec3b3b;"><img src="${ctxStaticMobile}/images/bottom/pagehome2.png"/>首页</a>
+     <a href="${ctxMobile}/discover"><img src="${ctxStaticMobile}/images/bottom/service1.png"/>发现</a>
+     <a href="${ctxMobile}/userMenu"><img src="${ctxStaticMobile}/images/bottom/me1.png"/>我的</a>
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

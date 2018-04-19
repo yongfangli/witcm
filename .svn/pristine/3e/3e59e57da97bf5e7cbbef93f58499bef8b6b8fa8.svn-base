@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.goods.dao.GoodsDao">
+    
+	<sql id="goodsColumns">
+		a.id AS "id",
+		a.business AS "business.id",
+		a.types AS "types.id",
+		a.full_name AS "fullName",
+		a.short_name AS "shortName",
+		a.images_id AS "imagesId",
+		a.price AS "price",
+		a.describes AS "describes",
+		a.shel_date AS "shelDate",
+		a.delete_flag AS "deleteFlag",
+		a.unshel_flag AS "unshelFlag",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongArea",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="goodsJoins">
+	</sql>
+    
+	<select id="get" resultType="Goods">
+		SELECT 
+			<include refid="goodsColumns"/>
+		FROM sc_goods a
+		<include refid="goodsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Goods">
+		SELECT 
+			<include refid="goodsColumns"/>
+		FROM sc_goods a
+		<include refid="goodsJoins"/>
+		<where>
+			
+			<if test="business != null and business.id != null and business.id != ''">
+				AND a.business = #{business.id}
+			</if>
+			<if test="types != null and types.id != null and types.id != ''">
+				AND a.types = #{types.id}
+			</if>
+			<if test="fullName != null and fullName != ''">
+				AND a.full_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{fullName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{fullName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{fullName},'%')</if>
+			</if>
+			<if test="shortName != null and shortName != ''">
+				AND a.short_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{shortName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{shortName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{shortName},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Goods">
+		SELECT 
+			<include refid="goodsColumns"/>
+		FROM sc_goods a
+		<include refid="goodsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_goods(
+			id,
+			business,
+			types,
+			full_name,
+			short_name,
+			images_id,
+			price,
+			describes,
+			shel_date,
+			delete_flag,
+			unshel_flag,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{business.id},
+			#{types.id},
+			#{fullName},
+			#{shortName},
+			#{imagesId},
+			#{price},
+			#{describes},
+			#{shelDate},
+			#{deleteFlag},
+			#{unshelFlag},
+			#{remarks},
+			#{belongOrg.id},
+			#{belongArea},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_goods SET 	
+			business = #{business.id},
+			types = #{types.id},
+			full_name = #{fullName},
+			short_name = #{shortName},
+			images_id = #{imagesId},
+			price = #{price},
+			describes = #{describes},
+			shel_date = #{shelDate},
+			delete_flag = #{deleteFlag},
+			unshel_flag = #{unshelFlag},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrg.id},
+			belong_area_id = #{belongArea}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_goods
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

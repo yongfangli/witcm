@@ -1,0 +1,47 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.business.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.witcm.business.entity.GoodsComments;
+import com.thinkgem.jeesite.modules.witcm.business.dao.GoodsCommentsDao;
+
+/**
+ * 商品评价Service
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Service
+@Transactional(readOnly = true)
+public class GoodsCommentsService extends CrudService<GoodsCommentsDao, GoodsComments> {
+
+	public GoodsComments get(String id) {
+		return super.get(id);
+	}
+	
+	public List<GoodsComments> findList(GoodsComments goodsComments) {
+		return super.findList(goodsComments);
+	}
+	
+	public Page<GoodsComments> findPage(Page<GoodsComments> page, GoodsComments goodsComments) {
+		return super.findPage(page, goodsComments);
+	}
+	
+	@Transactional(readOnly = false)
+	public void save(GoodsComments goodsComments) {
+		super.save(goodsComments);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(GoodsComments goodsComments) {
+		super.delete(goodsComments);
+	}
+	
+}

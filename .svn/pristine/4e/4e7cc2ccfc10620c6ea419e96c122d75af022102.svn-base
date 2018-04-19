@@ -1,0 +1,77 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/orderDetail.css" type="text/css" rel="stylesheet" />
+	<link rel="stylesheet" href="${ctxStaticItv}/css/common.css" />
+	<script type="text/javascript">
+	/* 长宽占位 rem算法, 根据root的rem来计算各元素相对rem, 默认html 320/20 = 16px */
+	 function placeholderPic(){
+	  var w = document.documentElement.offsetWidth;
+	  document.documentElement.style.fontSize=w/100+'px';
+	 }
+	 placeholderPic();
+	 window.onresize=function(){
+	  placeholderPic();
+	 };
+	</script>
+</head>
+<body>
+<div class="bigdiv">
+     <!--头部标题-->
+     <div class="top">
+         <div class="top_cen">
+           <p class="title"><a href="${ctx}/itv/userOrder"><img class="return" src="${ctxStaticItv }/images/return.png" ></img>
+</a> <span style="margin-left:40vw">订单详情</span></p>
+    	 </div>
+     </div>
+     <!--中间内容-->
+     <div class="middleDiv">
+     <div style="height:4vh"></div>
+     <div class="middle">
+        <div style="height:1vh"></div>
+        <div class="conten">
+        
+           <p class="top_title">订单信息</p>
+           <div class="orderDiv">
+              <div class="orderDivs">
+                  <p>订单编号：${orders.code }</p>
+              </div>
+               <div class="orderDivs">
+                  <p>数量：${orders.numbers }</p>
+              </div>
+               <div class="orderDivs">
+                  <p>商品名称：${orders.goods.fullName }</p>
+              </div>
+               <div class="orderDivs">
+                  <p>联系电话：${business.phone }</p>
+              </div>
+               <div class="orderDivs">
+                  <p>订单状态：${fns:getDictLabel(orders.status, 'goods_status', '')}</p>
+              </div>
+             </div> 
+              
+              <div style="height:2vh"></div>
+              
+              <p class="top_title">订单跟踪记录</p>
+           	 <div class="orderDiv2">
+	           	 <c:forEach items="${list}" var="record">
+	           	 	<div style="height:1.7vh"></div>
+					<div class="orderDivs2">
+                   		<p>
+	                   		<span style="width:10vw;margin-left: 5vw;">${record.dealUserName}</span>
+	                   		<span style="width:17vw;"><fmt:formatDate value="${record.dealDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+	                   		<span style="width:8vw;">${fns:getDictLabel(record.dealStatus, 'goods_status', '')}</span>
+	                   		<span style="width:48vw;">${record.remarks}</span>
+                   		</p>
+                	</div>
+	           	 </c:forEach>
+              </div>	
+        </div>
+     </div>
+     </div>
+</div>
+</body>
+</html>

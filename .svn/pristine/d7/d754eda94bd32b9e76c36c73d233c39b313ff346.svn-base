@@ -1,0 +1,43 @@
+@charset "utf-8";
+#BBS{width:980px;margin: 20px auto 0 auto;}
+#BBS .theme{
+	display: block;
+	width: 180px;
+	font-family: "寰蒋闆呴粦" "Regular";
+font-size: 20px;
+border-radius: 5px;
+color: white;
+background-color: #EC3B3B;
+text-decoration: none;
+text-align: center;
+margin: 20px 0px 10px 0px;
+padding: 10px 0px;
+}
+#BBS .div_img img{
+width: 80px;
+height: 80px;
+border-radius: 50%;
+}
+.content{overflow: hidden;margin-top:10px;}
+.content div{float: left;}
+.content_info{margin-bottom:8px;display:flex;}
+.content_info a{font-size: 22px;font-family: "寰蒋闆呴粦" "Regular";color: #333;text-decoration: none;}
+.content_info a:hover{color: #EC3B3B;}
+.content_info img{vertical-align: middle;}
+.content_info .content_info_td{font-size: 14px;font-family: "寰蒋闆呴粦" "Regular";color: #858585;}
+#page{text-align: center;margin-top:60px;}
+#page a{
+display: inline-block;
+font-size: 12px;
+text-decoration: none;
+color: #000;
+}
+.a_2{
+border: 1px solid #cccccc;
+border-radius: 2px;
+padding: 0px 10px;
+}
+#page .a_2:hover{
+color:#fff;
+background-color: #EC3B3B;
+}

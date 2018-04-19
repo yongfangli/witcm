@@ -1,0 +1,179 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<meta name="decorator" content="cms_default_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	<link rel="stylesheet" type="text/css" href="${ctxStaticTheme}/css/businessDetail.css"/>
+	<script src="${ctxStaticTheme}/js/paging.min.js" type="text/javascript"></script>
+	<style>
+	.hid{
+	  display:none;
+	}
+	.cgcolor{
+	      background: #ec3b3b;
+	}
+	</style>
+	<script>
+	$(function(){
+		var _divs=$(".review_div");
+		$(".communt").click(function(){
+			$(".communt").addClass("cgcolor");
+			$(".tiesre").removeClass("cgcolor");
+			_divs.eq(0).removeClass("hid");
+			_divs.eq(1).addClass("hid");
+		})
+		$(".tiesre").click(function(){
+			$(".tiesre").addClass("cgcolor");
+			$(".communt").removeClass("cgcolor");
+			_divs.eq(1).removeClass("hid");
+			_divs.eq(0).addClass("hid");
+		})
+	})
+	
+	window.onload=function(){
+		var star=${star};
+		for(var i=1;i<=star;i++){
+			
+		}
+	}
+	
+	</script>
+</head>
+<body>
+   <div id="dvContent">
+    <div class="shapping">
+        <div class="market_logo">
+   	 		 <img src="img/02.png" class="logo"/>
+             <input type="button" class="collect" value="收藏"/>
+             <div style="height:10px;"></div>
+       		 <img src="img/liulan.jpg" class="browse"/>
+             <p class="market_con">168</p>
+             <img src="img/weixin.jpg" class="browse"/>
+             <p class="market_con">68</p>
+       </div>
+      <div class="mar_jiao">
+        <p class="chaoshiming"><span>${business.fullName}</span>
+        <span style="color:#ec3b3b"> <span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span><span>&#9733;</span></span></p>
+        <p class="mar_tem">电话：${business.phone}</p>
+        <p class="add_mar">地址：${business.address}</p>
+        <p class="mar_con">${business.describes}</p>
+      </div>
+     </div>
+   </div>
+
+   <div class="review">
+   <c:if test="${tagFlag=='0'}">
+      <input type="button" value="商品" class="communt cgcolor">
+      <input type="button" value="评论" class="tiesre">
+      </c:if>
+         <c:if test="${tagFlag=='1'}">
+      <input type="button" value="商品" class="communt">
+      <input type="button" value="评论" class="tiesre cgcolor">
+      </c:if>
+      <div class="review_div">
+         <!--商品循环结束--> 
+         <!--商品循环-->
+          <c:forEach items="${goodsPage.list}" var="bz"  varStatus="status">
+          <div class="goods">
+          	<img src="${bz.imagesId}"/>
+            <p class="goods_money">￥${bz.price }</p>
+            <p class="com_variety">${bz.fullName}</p>
+            <input type="button" class="goods_book" value="预订"/>
+          </div>
+          </c:forEach>
+         <!--商品循环结束--> 
+         <!--商品循环-->
+         
+             <div class="box business" id="box"></div>
+	
+	<script type="text/javascript">
+	
+	var talpage=${goodsPage.last};
+	var nowpage=${goodsPage.pageNo};
+     $('#box').paging({
+    	    initPageNo: ${goodsPage.pageNo}, // 初始页码
+    	    totalPages: ${goodsPage.last}, //总页数
+    	    totalCount:'共：'+ ${goodsPage.count}+'条数据', // 条目总数
+    	    slideSpeed: 600, // 缓动速度。单位毫秒 
+    	    callback: function(page){
+    	    	
+    	    }
+    	});
+    	$("#pageSelect li").click(function(){
+    		var pageNo=this.innerText;
+    		 var url='${ctx}'+"/business-detail-${business.id}"+"-"+pageNo+'${fns:getUrlSuffix()}';
+    		 window.location.href=url;
+    	});
+    	$("#nextPage").click(function(){
+    		if(nowpage==talpage){
+    			return;
+    		}
+    		else{
+    			var pageNo=nowpage+1;
+    			 var url='${ctx}'+"/business-detail-${business.id}"+"-"+pageNo+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    		}
+    	})
+    	$("#prePage").click(function(){
+    		if(nowpage==1){
+    			return;
+    		}
+    		else{
+    			var pageNo=nowpage-1;
+    			 var url='${ctx}'+"/business-detail-${business.id}"+"-"+pageNo+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    		}
+    	})
+    	$("#firstPage").click(function(){
+    			var pageNo=1;
+    			 var url='${ctx}'+"/business-detail-${business.id}"+"-"+pageNo+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    	})
+    	$("#lastPage").click(function(){
+    			var pageNo=talpage;
+    			 var url='${ctx}'+"/business-detail-${business.id}"+"-"+pageNo+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    	})
+    	
+     </script> 
+ 
+          
+          </div>
+         <!--商品循环结束--> 
+         <!--评论框开始：循坏-->
+         <div class="review_div hid">
+         <c:forEach items="${page.list}" var="comment"  varStatus="status">
+          <div class="commu_img">
+              <img src="img/02.png" class="commu_img_logo"/>
+              <div class="right_con">
+               <span class="grade">★&nbsp;★&nbsp;★&nbsp;★&nbsp;★</span>
+               <span class="com_name">
+               对方昵称&nbsp;｜&nbsp;2017-12-11&nbsp;15:30:30 &nbsp; 红谷滩新区</span>
+               <div class="con_text">建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其量的生活需求建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其量的生活需求建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好</div>
+               <div style="height:15px"></div>
+              </div>
+          </div>
+          </c:forEach>
+         <!--评论框结束-->
+         <!--评论框开始：循坏-->
+          <div class="commu_img">
+              <img src="img/02.png" class="commu_img_logo"/>
+              <div class="right_con">
+               <span class="grade">★&nbsp;★&nbsp;★&nbsp;★&nbsp;★</span>
+               <span class="com_name">
+               对方昵称&nbsp;｜&nbsp;2017-12-11&nbsp;15:30:30 &nbsp; 红谷滩新区</span>
+               <div class="con_text">建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其量的生活需求建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其量的生活需求建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好的为人们提供高质量的生活需求，建设智慧社区其意宗旨在更好</div>
+               <div style="height:15px"></div>
+              </div>
+          </div>
+          </div>
+         <!--评论框结束-->
+      </div>
+   </div>
+   
+</body>
+</html>

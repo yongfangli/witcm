@@ -1,0 +1,143 @@
+package com.thinkgem.jeesite.modules.witcm.chart.web;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+import com.thinkgem.jeesite.modules.witcm.chart.frontEntity.DateUtil;
+import com.thinkgem.jeesite.modules.witcm.chart.frontEntity.SortEntity;
+import com.thinkgem.jeesite.modules.witcm.chart.frontEntity.SortEntity.DataEntity;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.HealthRecord;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import com.thinkgem.jeesite.modules.witcm.resident.service.HealthRecordService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.ResidentService;
+
+@Controller
+@RequestMapping(value = "${adminPath}/chart/")
+public class ChartController extends BaseController {
+	@Autowired
+	public BusinessService businessService;
+	@Autowired
+	public ResidentService residentService;
+	@Autowired
+	public HealthRecordService healthRecordService;
+	@Autowired
+	public OfficeService officeService;
+	@RequiresPermissions("user")
+	@RequestMapping(value = "businessSort")
+	public String businessSort(Model model) {
+		int top = 10;
+		List<Business> businesses = businessService.sortByComment(top,
+				"star desc");
+		TreeSet<String> nameSet = new TreeSet<String>();
+		SortEntity sortEntity = new SortEntity();
+		sortEntity.setType(SortEntity.PIE_CHART);
+		for (Business b : businesses) {
+			nameSet.add(b.getBelongOrg().getName());
+		}
+		sortEntity.setLabels(nameSet);
+		DataEntity dataEntity = new DataEntity();
+		List<Number> data = new ArrayList<Number>();
+		List<String> colorList = new ArrayList<String>();
+		for (String s : nameSet) {
+			int num = 0;
+			for (Business b : businesses) {
+				if (b.getBelongOrg().getName().equals(s)) {
+					num++;
+				}
+			}
+			data.add(num);
+			colorList.add(SortEntity.getRandColorCode());
+		}
+		dataEntity.setData(data);
+		dataEntity.setColorList(colorList);
+		List<DataEntity> datasets = new ArrayList<SortEntity.DataEntity>();
+		datasets.add(dataEntity);
+		sortEntity.setDatasets(datasets);
+		model.addAttribute("config", sortEntity);
+		model.addAttribute("businesses", businesses);
+		model.addAttribute("top", top);
+		return "modules/chart/businessSort";
+	}
+	@RequiresPermissions("user")
+	@RequestMapping(value = "intSort")
+	public String intSort(Model model) {
+		int top = 10;
+		List<Resident> residents = residentService.sortBy(top,
+				"usablePoints desc");
+		TreeSet<String> nameSet = new TreeSet<String>();
+		SortEntity sortEntity = new SortEntity();
+		sortEntity.setType(SortEntity.PIE_CHART);
+		for (Resident r : residents) {
+			nameSet.add(r.getBelongOrg().getName());
+		}
+		sortEntity.setLabels(nameSet);
+		DataEntity dataEntity = new DataEntity();
+		List<Number> data = new ArrayList<Number>();
+		List<String> colorList = new ArrayList<String>();
+		for (String s : nameSet) {
+			int num = 0;
+			for (Resident b : residents) {
+				if (b.getBelongOrg().getName().equals(s)) {
+					num++;
+				}
+			}
+			data.add(num);
+			colorList.add(SortEntity.getRandColorCode());
+		}
+		dataEntity.setData(data);
+		dataEntity.setColorList(colorList);
+		List<DataEntity> datasets = new ArrayList<SortEntity.DataEntity>();
+		datasets.add(dataEntity);
+		sortEntity.setDatasets(datasets);
+		model.addAttribute("config", sortEntity);
+		model.addAttribute("residents", residents);
+		model.addAttribute("top", top);
+		return "modules/chart/intSort";
+	}
+	
+	@RequiresPermissions("user")
+	@RequestMapping(value = "healthStatistics")
+	public String healthStatistics(Model model) throws ParseException {
+		int top=4;
+		DateUtil dateUtil=new DateUtil(top);
+		
+		SortEntity sortEntity = new SortEntity();
+		sortEntity.setType(SortEntity.BAR_CHART);
+		sortEntity.setLabels(dateUtil.getLabels());
+		List<DataEntity> dataEntities=new ArrayList<SortEntity.DataEntity>();
+	    //查找所有小区
+		Office o=new Office();
+		o.setParentIds("%1%");
+		o.setType(Constants.COMMUNITY_FLAG);
+		List<Office> c=officeService.findList(o);
+		for (Office oc : c) {
+			DataEntity dataEntity = new DataEntity();
+			dataEntity.setLabel(oc.getName());
+			List<Number> data = new ArrayList<Number>();
+			dataEntity.setBackgroundColor(SortEntity.getRandColorCode());
+		       for (String m: sortEntity.getLabels()) {
+				data.add(healthRecordService.getListByDate(oc.getId(),dateUtil.changeToDate(m),dateUtil.changeToDate(sortEntity.getLabels().higher(m))));
+			}
+		    dataEntity.setData(data);
+		    dataEntities.add(dataEntity);
+		}
+		sortEntity.setDatasets(dataEntities);
+		model.addAttribute("config", sortEntity);
+		model.addAttribute("top", top);
+		return "modules/chart/healthStatistics";
+	}
+}

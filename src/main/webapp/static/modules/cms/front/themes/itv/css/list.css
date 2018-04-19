@@ -1,0 +1,22 @@
+@charset "utf-8";
+ *{
+	margin: 0;
+	padding: 0;
+	font-family:"微软雅黑";
+}
+a{text-decoration: none;color:#FFF}
+.clear{clear:both;}
+   
+.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png)}
+.list_left{width:20vw;height:100vh;float:left; border-right:0.2vw solid #999;background-color:rgba(255, 255, 255, 0.2);color:#FFF}
+.title{font-size:2em;width:20vw;height:9vh;margin-left:2vw;margin-top:4vh}
+.left_p{width:20vw;text-align:center;color:#FFF;font-size:1.3em;height:6vh}
+.left_p span{line-height:6vh}
+.left_p:hover{background:#ec3b3b;}
+.left_pAct{background:#ec3b3b;}
+.left_content{width:75vw;height:85vh;background:#00F;margin-left:2.5vw;margin-top:4vh;border-radius:10px;background-color:rgba(255, 255, 255, 0.6); overflow:hidden;}
+.right_list{width:67vw;height:6vh;border-radius:10px;border:1px solid #000; text-indent:1em;font-size:1.5em;margin:0px auto;margin-top:3vh;}
+.right_list p{line-height:6vh}
+.right_list:hover{border:1px solid #ec3b3b;box-shadow:0px 0px  10px 5px #ec3b3b;}
+.right_listAct{border:1px solid #ec3b3b;box-shadow:0px 0px  10px 5px #ec3b3b;}
+.last_page{width:79vw; text-align:center;margin-top:3vh;font-size:1.4em}

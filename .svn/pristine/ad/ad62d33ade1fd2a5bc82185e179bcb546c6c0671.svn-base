@@ -1,0 +1,155 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.SiteService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Orders;
+import com.thinkgem.jeesite.modules.witcm.business.service.OrdersService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Collect;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Family;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.HealthRecord;
+import com.thinkgem.jeesite.modules.witcm.resident.service.CollectService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.FamilyService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.HealthRecordService;
+
+/**
+ * 个人中心Controller
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/res")
+public class FrontResController extends BaseController{
+	@Autowired
+	private SiteService siteService;
+	@Autowired
+	private FamilyService familyService;
+	@Autowired
+	private HealthRecordService healthRecordService;
+	@Autowired
+	private CollectService collectService;
+	@Autowired
+	private OrdersService ordersService;
+	
+	/**
+	 * 登录页面
+	 */
+	@RequestMapping(value = "login${urlSuffix}")
+	public String loginPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/login";
+	}
+	
+	/**
+	 * 注册页面
+	 */
+	@RequestMapping(value = "register${urlSuffix}")
+	public String registerPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/register";
+	}
+	
+	/**
+	 * 个人信息
+	 */
+	@RequestMapping(value = "resInfo${urlSuffix}")
+	public String resInfo(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resInfo";
+	}
+	
+	/**
+	 * 家庭档案-list
+	 */
+	@RequestMapping(value = "resFamily${urlSuffix}")
+	public String resFamily(Family family, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		Page<Family> page = familyService.findPage(new Page<Family>(request,response), family); 
+		model.addAttribute("site", site);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resFamilyList";
+	}
+	
+	/**
+	 * 家庭档案修改-form
+	 */
+	@RequestMapping(value = "resFamilyForm${urlSuffix}")
+	public String resFamilyForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resFamilyForm";
+	}
+	
+	/**
+	 * 健康档案-list
+	 */
+	@RequestMapping(value = "resHealth${urlSuffix}")
+	public String resHealth(HealthRecord healthRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		Page<HealthRecord> page = healthRecordService.findPage(new Page<HealthRecord>(request, response), healthRecord);
+		model.addAttribute("site", site);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resHealthList";
+	}
+	
+	/**
+	 * 个人积分－form
+	 */
+	@RequestMapping(value = "resPoint${urlSuffix}")
+	public String resPoint(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resPoint";
+	}
+	
+	/**
+	 * 个人收藏－list
+	 */
+	@RequestMapping(value = "resCollect${urlSuffix}")
+	public String resCollect(Collect collect, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		Page<Collect> page = collectService.findPage(new Page<Collect>(request, response), collect);
+		model.addAttribute("site", site); 
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resCollectList";
+	}
+	
+	/**
+	 * 预订商家－list
+	 */
+	@RequestMapping(value = "resOrder${urlSuffix}")
+	public String resOrder(Orders orders, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		Page<Orders> page = ordersService.findPage(new Page<Orders>(request, response), orders); 
+		model.addAttribute("site", site);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resOrderList";
+	}
+	
+	/**
+	 * 密码修改－form
+	 */
+	@RequestMapping(value = "resPswd${urlSuffix}")
+	public String resPswdForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/resPswdForm";
+	}
+	
+	
+}

@@ -1,0 +1,203 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Article;
+import com.thinkgem.jeesite.modules.cms.entity.ArticleData;
+import com.thinkgem.jeesite.modules.cms.entity.Category;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.ArticleDataService;
+import com.thinkgem.jeesite.modules.cms.service.ArticleService;
+import com.thinkgem.jeesite.modules.cms.service.CategoryService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+
+/**
+ * itv Controller
+ * 
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/itv")
+public class FrontITVController extends BaseController {
+	@Autowired
+	private CategoryService categoryService;
+	@Autowired
+	private ArticleService articleService;
+	@Autowired
+	private ArticleDataService articleDataService;
+
+	/**
+	 * 登录页面
+	 */
+	@RequestMapping(value = "login")
+	public String loginPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/itv/login";
+	}
+
+	/**
+	 * 网站首页
+	 */
+	@RequestMapping
+	public String index(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "7") Integer pageSize,
+			String categoryId, String parentId, String curId, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		if (StringUtils.isBlank(categoryId)) {
+			List<Category> categories = CmsUtils.getMainNavList(site.getId());
+			categoryId = categories.get(0).getId();
+		}
+		Page<Category> cPage = new Page<Category>(pageNo, pageSize);
+		Category category = new Category();
+		category.setParent(new Category(categoryId));
+		category.setSite(site);
+		cPage = categoryService.findPage(cPage, category);
+		if (cPage.getCount() > 0 && StringUtils.isEmpty(parentId)) {
+			List<Category> categories = new ArrayList<Category>();
+			for (Category c : cPage.getList()) {
+				if (c.getModule().equals(Constants.PICTURE)) {
+					model.addAttribute("picture", c);
+				} else {
+					categories.add(c);
+				}
+			}
+			cPage.setList(categories);
+			model.addAttribute("site", site);
+			model.addAttribute("page", cPage);
+			model.addAttribute("categoryId", categoryId);
+			return "modules/cms/front/themes/itv/index";
+		} else {
+			// 当前的类别id
+			String cateId = new String();
+			// 获取分类子节点列表
+			List<Category> categories = CmsUtils.getCategoryList(category
+					.getSite().getId(),
+					StringUtils.isEmpty(parentId) ? categoryId : parentId, -1,
+					"");
+			if (categories.size() > 0) {
+				Page<Article> page = new Page<Article>(pageNo, pageSize);
+				Article article = new Article();
+				if (StringUtils.isNotEmpty(curId)) {
+					cateId = curId;
+					article.setCategory(new Category(curId));
+				} else {
+					cateId = categories.get(0).getId();
+					article.setCategory(categories.get(0));
+				}
+				page = articleService.findPage(page, article);
+				if (page.getList().size() > 0) {
+					List<Article> aList = page.getList();
+					for (int i = 0; i < aList.size(); i++) {
+						Article a = aList.get(i);
+						ArticleData articleData = articleDataService.get(a
+								.getId());
+						if (null != articleData) {
+							articleData.setContent(StringUtils.abbr(
+									articleData.getContent(), 600));
+							a.setArticleData(articleData);
+						}
+					}
+				}
+				model.addAttribute("categoryLists", categories);
+				model.addAttribute("parent", categoryService.get(StringUtils
+						.isEmpty(parentId) ? categoryId : parentId));
+				model.addAttribute("curId", cateId);
+				model.addAttribute("page", page);
+				if (CmsUtils.isPicture(cateId)) {
+					return "modules/cms/front/themes/itv/tourIndex";
+				}
+				if (CmsUtils.isSpecial(cateId)) {
+					return "modules/cms/front/themes/itv/list_detail";
+				}
+				return "modules/cms/front/themes/itv/list";
+			} else {
+				Page<Article> page = new Page<Article>(pageNo, pageSize);
+				Article article = new Article();
+				article.setCategory(new Category(
+						StringUtils.isEmpty(parentId) ? categoryId : parentId));
+				page = articleService.findPage(page, article);
+				if (page.getList().size() > 0) {
+					List<Article> aList = page.getList();
+					for (int i = 0; i < aList.size(); i++) {
+						Article a = aList.get(i);
+						ArticleData articleData = articleDataService.get(a
+								.getId());
+						if (null != articleData) {
+							articleData.setContent(StringUtils.abbr(
+									articleData.getContent(), 600));
+							a.setArticleData(articleData);
+						}
+					}
+				}
+				model.addAttribute("parent", categoryService.get(StringUtils
+						.isEmpty(parentId) ? categoryId : parentId));
+				model.addAttribute("page", page);
+				if (CmsUtils.isPicture(categoryId)) {
+					return "modules/cms/front/themes/itv/tourIndex";
+				}
+				if (CmsUtils.isSpecial(categoryId)) {
+					return "modules/cms/front/themes/itv/list_detail";
+				}
+				return "modules/cms/front/themes/itv/list";
+			}
+		}
+	}
+
+
+	/**
+	 * 红色旅游-首页
+	 */
+	@RequestMapping(value = "tour")
+	public String tourIndex(Model model) {
+
+		return "modules/cms/front/themes/itv/tourIndex";
+	}
+
+	/**
+	 * 二级列表－页面
+	 */
+	@RequestMapping(value = "list")
+	public String list(Model model) {
+
+		return "modules/cms/front/themes/itv/list";
+	}
+
+	/**
+	 * 二级列表详情－页面
+	 */
+	@RequestMapping(value = "listDetail")
+	public String listDetail(Model model) {
+
+		return "modules/cms/front/themes/itv/list_detail";
+	}
+
+	/**
+	 * 详情－页面
+	 */
+	@RequestMapping(value = "detail-{id}")
+	public String detail(Model model,@PathVariable String id) {
+        Article article=new Article();
+        article=articleService.get(id);
+        article.setArticleData(articleDataService.get(id));
+        Category parent=categoryService.get(article.getCategory().getId()).getParent();
+        article.getCategory().setParent(parent);
+        model.addAttribute("article",article);
+		return "modules/cms/front/themes/itv/detail";
+	}
+
+}

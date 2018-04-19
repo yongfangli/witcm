@@ -1,0 +1,77 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>${category.name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/Community_affairs.css" rel="stylesheet" type="text/css">  
+</head>
+<body>
+<div class="wrap_box">
+   <div class="nav_box">
+     <a class="back_but" href=""><</a>
+     <p class="nav_title">${category.name}</p>
+   </div>
+   <div style="width:100vw;height:10vh; background:#E8E8E8">
+       <div class="community2">
+           <p>走进红星</p>
+       </div>
+       <div class="community2">
+           <p>城区一览</p>
+       </div>
+       <div class="community">
+           <p>社区办事</p>
+       </div>
+       <div class="community2">
+           <p>街道办事</p>
+       </div>
+   </div>
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="城镇基本医疗" class="comm_type2">
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="80岁以上" class="comm_type">
+   <input type="button" value="80岁以上" class="comm_type">
+   <div style="height:2vh;background:#CCC;width:100vw;margin-top:2vh"></div>
+   <div class="news_title_box">
+       <h1 class="news_title">城镇基本医疗</h1>
+   </div>
+   <div style="width:90%;margin:0px auto">
+     <p style="text-indent:2em">人才是华企最宝贵的资源。我们为员工提供广阔的舞台和空间，鼓励员工发挥聪明才智，激发潜能，以优良的业绩展示自己，实现抱负。人才是华企最宝贵的资源。我们为员工提供广阔的舞台和空间，鼓励员工发挥聪明才智，激发潜能，以优良的业绩展示自己，实现抱负。
+     <img src="images/index/lunbo.png" style="width:100%">
+     </p>
+   </div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

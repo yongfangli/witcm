@@ -1,0 +1,4 @@
+<script src="${ctxStatic}/client/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/client/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script src="${ctxStatic}/client/js/wySilder.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/client/js/jquery1.42.min.js" type="text/javascript"></script>

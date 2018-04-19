@@ -1,0 +1,47 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.family.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.witcm.family.entity.Family;
+import com.thinkgem.jeesite.modules.witcm.family.dao.FamilyDao;
+
+/**
+ * 家属Service
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Service
+@Transactional(readOnly = true)
+public class FamilyService extends CrudService<FamilyDao, Family> {
+
+	public Family get(String id) {
+		return super.get(id);
+	}
+	
+	public List<Family> findList(Family family) {
+		return super.findList(family);
+	}
+	
+	public Page<Family> findPage(Page<Family> page, Family family) {
+		return super.findPage(page, family);
+	}
+	
+	@Transactional(readOnly = false)
+	public void save(Family family) {
+		super.save(family);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(Family family) {
+		super.delete(family);
+	}
+	
+}

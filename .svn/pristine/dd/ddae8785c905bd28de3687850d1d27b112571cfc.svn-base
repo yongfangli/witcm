@@ -1,0 +1,140 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人中心－家庭档案修改</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/center.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	$(function(){
+		$("#resFamily").addClass("dvCheck");
+		
+		$("#inputForm").validate({
+			submitHandler: function(form){
+				loading('正在提交，请稍等...');
+				form.submit();
+			},
+			errorContainer: "#messageBox",
+			errorPlacement: function(error, element) {
+				$("#messageBox").text("输入有误，请先更正。");
+				if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+					error.appendTo(element.parent().parent());
+				} else {
+					error.insertAfter(element);
+				}
+			}
+		});
+	});
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="resMenu.jsp" />
+        
+        <div id="dvContentRight" style="padding-top: 20px;">
+        
+        <form:form id="inputForm" modelAttribute="family" action="${ctx}/res/resFamilySave" method="post" class="form-horizontal">
+	        <form:hidden path="id"/>
+	        <div class="control-group">
+				<label class="control-label">姓名：</label>
+				<div class="controls">
+					<form:input path="name" htmlEscape="false" maxlength="64" class="input-xlarge required" style="width:300px;"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">出生年月：</label>
+				<div class="controls">
+					<form:input path="birthday" htmlEscape="false" maxlength="64" class="input-xlarge isborth required" style="width:300px;"/>
+				<span class="help-inline"><font color="red" style="font-size: 12px;">*格式如：1975-02</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">身份证号码：</label>
+				<div class="controls">
+					<form:input path="identityNo" htmlEscape="false" maxlength="64" class="input-xlarge isidcard required" style="width:300px;"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">手机号码：</label>
+				<div class="controls">
+					<form:input path="telphone" htmlEscape="false" maxlength="64" class="input-xlarge isMobile required" style="width:300px;"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">QQ号：</label>
+				<div class="controls">
+					<form:input path="qqNo" htmlEscape="false" maxlength="64" class="input-xlarge isqq" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">性别：</label>
+			    <div class="controls">
+					<form:radiobuttons path="gender" items="${fns:getDictList('gender')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否户主：</label>
+				<div class="controls">
+					<form:radiobuttons path="houserMaster" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否残疾：</label>
+				<div class="controls">
+					<form:radiobuttons path="deformity" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否扶贫对象：</label>
+				<div class="controls">
+					<form:radiobuttons path="helpPoor" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否矫正人员：</label>
+				<div class="controls">
+					<form:radiobuttons path="correct" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">是否养老对象：</label>
+				<div class="controls">
+					<form:radiobuttons path="pension" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">个人简介：</label>
+				<div class="controls">
+					<form:textarea path="usersDesc" htmlEscape="false" rows="4" maxlength="64" class="input-xlarge " style="width:400px;"/>
+				</div>
+			</div>
+        	
+			<div class="form-actions">
+				<input class="btn" type="submit" value="提 交"/>&nbsp;
+				<input class="btn" type="button" value="返 回" onclick="window.location.href='${ctx}/res/resFamily'"/>
+			</div>
+        
+        </form:form>
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

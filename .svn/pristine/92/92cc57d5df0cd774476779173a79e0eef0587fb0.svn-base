@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.resident.dao.CommentsDao">
+    
+	<sql id="commentsColumns">
+		a.id AS "id",
+		a.resident_id AS "resident.id",
+		a.article_id AS "article.id",
+		ar.title AS "article.title",
+		a.content AS "content",
+		a.create_date AS "createDate",
+		a.has_reply AS "hasReply",
+		if(ISNULL(r.images_id) || LENGTH(trim(r.images_id))&lt;1,"/witcm/static/modules/cms/front/themes/witcm/images/notimg.png",r.images_id) AS "resident.imagesId",
+		r.name AS "resident.name",
+		o.name AS "resident.belongOrg.name"
+	</sql>
+	
+	<sql id="commentsJoins">
+	LEFT JOIN sc_resident r ON r.id=a.resident_id
+	LEFT JOIN cms_article ar ON ar.id=a.article_id
+	LEFT JOIN sys_office o ON o.id=r.belong_org_id
+	</sql>
+    
+	<select id="get" resultType="Comments">
+		SELECT 
+			<include refid="commentsColumns"/>
+		FROM sc_comment a
+		<include refid="commentsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Comments">
+		SELECT 
+			<include refid="commentsColumns"/>
+		FROM sc_comment a
+		<include refid="commentsJoins"/>
+		<where>
+			<if test="article != null and article.id != null and article.id != ''">
+			    AND  a.article_id = #{article.id}
+			</if>
+		</where>
+		<choose>
+		
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Comments">
+		SELECT 
+			<include refid="commentsColumns"/>
+		FROM sc_comment a
+		<include refid="commentsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_comment(
+			id,
+			resident_id,
+			article_id,
+			content,
+			create_date,
+			has_reply
+		) VALUES (
+			#{id},
+			#{resident.id},
+			#{article.id},
+			#{content},
+			#{createDate},
+			#{hasReply}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_comment SET 	
+			resident_id = #{resident.id},
+			article_id = #{article.id},
+			content = #{content},
+			hasReply= #{hasReply},
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_comment
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

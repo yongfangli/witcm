@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.resident.dao.FamilyDao">
+    
+	<sql id="familyColumns">
+		a.id AS "id",
+		a.resident_id AS "resident.id",
+		a.name AS "name",
+		a.gender AS "gender",
+		a.birthday AS "birthday",
+		a.identity_no AS "identityNo",
+		a.telphone AS "telphone",
+		a.qq_no AS "qqNo",
+		a.houser_master AS "houserMaster",
+		a.deformity AS "deformity",
+		a.help_poor AS "helpPoor",
+		a.correct AS "correct",
+		a.users_desc AS "usersDesc",
+		a.pension AS "pension",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongAreaId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		o.name AS "belongOrg.name",
+		r.name AS "resident.name",
+		r.building_no AS "resident.buildingNo"
+	</sql>
+	
+	<sql id="familyJoins">
+	LEFT JOIN sys_office o ON o.id=a.belong_org_id
+	LEFT JOIN sc_resident r ON r.id=a.resident_id
+	</sql>
+    
+	<select id="get" resultType="Family">
+		SELECT 
+			<include refid="familyColumns"/>
+		FROM sc_family_users a
+		<include refid="familyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findByName" resultType="Family">
+		SELECT 
+			<include refid="familyColumns"/>
+		FROM sc_family_users a
+		<include refid="familyJoins"/>
+		<where>
+		a.name=#{name}
+		</where>
+	</select>
+	
+	<select id="findList" resultType="Family">
+		SELECT 
+			<include refid="familyColumns"/>
+		FROM sc_family_users a
+		<include refid="familyJoins"/>
+		<where>
+			<if test="name != null and name != ''">
+				AND a.name =#{name}
+				
+			</if>
+			<if test="likeName != null and likeName != ''">
+				AND a.name LIKE 
+				<if test="dbName == 'oracle'">'%'||#{likeName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{likeName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{likeName},'%')</if>
+			</if>
+			<if test="gender != null and gender != ''">
+				AND a.gender = #{gender}
+			</if>
+			<if test="belongOrg != null and belongOrg.id  != '' and belongOrg.id  != null">
+				AND (a.belong_org_id = #{belongOrg.id} or 
+				a.belong_org_id in (select id from sys_office so where find_in_set(#{belongOrg.id},so.parent_ids)>0))
+			</if>
+			<if test="birthday != null and birthday != ''">
+				AND a.birthday &gt;= #{birthday}
+			</if>
+			<if test="resident != null and resident.buildingNo != null and resident.buildingNo != ''">
+				AND r.building_no LIKE 
+					<if test="dbName == 'oracle'">'%'||#{resident.buildingNo}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{resident.buildingNo}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{resident.buildingNo},'%')</if>
+			</if>
+			<if test="resident != null and resident.id != null and resident.id != ''">
+				AND a.resident_id = #{resident.id}
+			</if>
+			<if test="telphone != null and telphone != ''">
+				AND a.telphone = #{telphone}
+			</if>
+			<if test="houserMaster != null and houserMaster != ''">
+				AND a.houser_master = #{houserMaster}
+			</if>
+			<if test="deformity != null and deformity != ''">
+				AND a.deformity = #{deformity}
+			</if>
+			<if test="helpPoor != null and helpPoor != ''">
+				AND a.help_poor = #{helpPoor}
+			</if>
+			<if test="correct != null and correct != ''">
+				AND a.correct = #{correct}
+			</if>
+			<if test="pension != null and pension != ''">
+				AND a.pension = #{pension}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Family">
+		SELECT 
+			<include refid="familyColumns"/>
+		FROM sc_family_users a
+		<include refid="familyJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_family_users(
+			id,
+			resident_id,
+			name,
+			gender,
+			birthday,
+			identity_no,
+			telphone,
+			qq_no,
+			houser_master,
+			deformity,
+			help_poor,
+			correct,
+			users_desc,
+			pension,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{resident.id},
+			#{name},
+			#{gender},
+			#{birthday},
+			#{identityNo},
+			#{telphone},
+			#{qqNo},
+			#{houserMaster},
+			#{deformity},
+			#{helpPoor},
+			#{correct},
+			#{usersDesc},
+			#{pension},
+			#{remarks},
+			#{belongOrg.id},
+			#{belongAreaId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_family_users SET 	
+			resident_id = #{resident.id},
+			name = #{name},
+			gender = #{gender},
+			birthday = #{birthday},
+			identity_no = #{identityNo},
+			telphone = #{telphone},
+			qq_no = #{qqNo},
+			houser_master = #{houserMaster},
+			deformity = #{deformity},
+			help_poor = #{helpPoor},
+			correct = #{correct},
+			users_desc = #{usersDesc},
+			pension = #{pension},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrg.id},
+			belong_area_id = #{belongAreaId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_family_users
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

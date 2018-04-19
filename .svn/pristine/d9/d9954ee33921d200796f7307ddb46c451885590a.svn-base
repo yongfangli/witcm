@@ -1,0 +1,79 @@
+* {
+  list-style: none;
+}
+.fl {
+  float: left;
+}
+.box {
+  height: 28px;
+  line-height: 28px;
+  position: absolute;
+  left: 35%;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.business {
+  height: 28px;
+  line-height: 28px;
+  margin-top: 800px;
+  text-align: center;
+}
+#pageSelect{
+	margin:0px;
+	padding:0px;
+}
+.box button {
+  padding: 0 10px;
+  margin: 0 10px;
+  height: 28px;
+  float: left;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  background-color: #ffffff;
+}
+.box .first-page,
+.box .last-page {
+  margin: 0;
+}
+.box .pageWrap {
+  height: 28px;
+  float: left;
+  overflow: hidden;
+}
+.box .pageWrap ul {
+  width: 100000px;
+  height: 28px;
+  float: left;
+}
+.box .pageWrap ul li {
+  width: 60px;
+  height: 28px;
+  border: 1px solid #ebebeb;
+  line-height: 28px;
+  box-sizing: border-box;
+  cursor: pointer;
+  float: left;
+  margin-left: 5px;
+}
+.box .pageWrap ul .sel-page {
+  background-color: red;
+}
+.box .jump-text {
+  width: 60px;
+  height: 28px;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0 5px;
+  float: left;
+}
+.box .jump-button {
+  margin: 0;
+  float: left;
+}
+.box .total-pages,
+.box .total-count {
+  margin-left: 10px;
+  float: left;
+  font-size: 14px;
+}

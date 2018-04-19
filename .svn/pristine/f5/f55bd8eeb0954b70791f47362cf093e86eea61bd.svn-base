@@ -1,0 +1,183 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>社区互动</title>
+	<link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/Extra11.css"/>
+    <link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/paging.css">
+     <%@ include file="/WEB-INF/views/client/include/head.jsp"%>
+    <link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/message.css"/>
+    
+           
+</head>
+	<body>
+<div id="page">
+    <div id="content">
+        <div id="dvTitle">
+            <span>${article.title}</span>
+        </div>
+        <hr id="hrUp"/>
+        <div id="dvDate">
+            <div id="dvDateLeft">
+            <span>${article.user.name}&nbsp;&nbsp;|&nbsp;&nbsp;
+          <fmt:formatDate value="${article.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/> &nbsp;&nbsp;
+            </span>
+            </div>
+            <div id="dvDateRight">
+                <img src="${ctxStatic}/client/img/liulan.jpg"/>${article.hits}&nbsp;&nbsp;
+                <img src="${ctxStatic}/client/img/weixin.jpg"/>${article.comments }
+            </div>
+        </div>
+        <div id="dvBook">
+            <div class="word">
+                <p>
+                 ${article.articleData.content}
+                </p>
+            </div>
+            <div id="dvBookImage">
+                 <img src="${article.image}" /><!-- &nbsp;&nbsp;&nbsp;&nbsp;<img src="img/02.png" /> -->
+            </div>
+        </div>
+        <div id="dvMyRemark">
+            <input type="hidden" name="pageName" value="communityActivityDetail">
+            <textarea id="content1" name="content" type="text"></textarea><button id="sub1">发表</button>
+     <script>
+            $("#sub1").click(function(){
+            	var url='${ctxClient}'+'/articleComment'+'${fns:getUrlSuffix()}'+'/'+'${article.id}';
+            	var content=$("#content1").val();
+            	if(content!=''&&content!=null){
+            		$.post(url,{content:content},function(data){
+            			if(data=='true'){
+            				$.message({
+            			        message:'评论成功',
+            			        type:'success'
+            			    });
+            				window.location.href='${ctxClient}'+'/articleDetail'+'${fns:getUrlSuffix()}'+'/'+'${article.id}';
+            			}else{
+            				$.message({
+            			        message:'评论失败',
+            			        type:'error'
+            			    });
+            			}
+            		})
+            	}else{
+            		$.message({
+    			        message:'请填写评论内容',
+    			        type:'warn'
+    			    });
+            	}
+            	
+            })
+            </script>
+        </div>
+		<div class="pinglun">最新评论</div>
+		<div class="content">
+			<div class="div_img">
+				<img src="img/02.png"/>
+			</div>
+			<div class="content_info">
+				<table width="900px" cellpadding="0" cellspacing="0">
+					<tr height="45px">
+						<td class="content_info_td" align="left">我的昵称 | 2017-11-12 15:30:35 | 会师路社区·来自PC</td>
+					</tr>
+					<tr>
+						<td align="left">
+							<p>
+								一种新型的城市建设理念——“智慧城市”在各国不断摸索中诞生。它的定义是通过互联网，
+								把无处不在的、被植入城市物体的智能化传感器连接起来，
+								最终实现人们对物理城市的全面感知，并调控城市各个方面达成节能减排的目的。
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<hr />
+		</div>
+		<div class="content">
+			<div class="div_img">
+				<img src="img/02.png"/>
+			</div>
+			<div class="content_info">
+				<table width="900px" cellpadding="0" cellspacing="0">
+					<tr height="45px">
+						<td class="content_info_td" align="left">我的昵称 | 2017-11-12 15:30:35 | 会师路社区·来自PC</td>
+					</tr>
+					<tr>
+						<td align="left">
+							<p>
+								一种新型的城市建设理念——“智慧城市”在各国不断摸索中诞生。它的定义是通过互联网，
+								把无处不在的、被植入城市物体的智能化传感器连接起来，
+								最终实现人们对物理城市的全面感知，并调控城市各个方面达成节能减排的目的。
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<hr />
+		</div>
+				<div class="content">
+			<div class="div_img">
+				<img src="img/02.png"/>
+			</div>
+			<div class="content_info">
+				<table width="900px" cellpadding="0" cellspacing="0">
+					<tr height="45px">
+						<td class="content_info_td" align="left">我的昵称 | 2017-11-12 15:30:35 | 会师路社区·来自PC</td>
+					</tr>
+					<tr>
+						<td align="left">
+							<p>
+								一种新型的城市建设理念——“智慧城市”在各国不断摸索中诞生。它的定义是通过互联网，
+								把无处不在的、被植入城市物体的智能化传感器连接起来，
+								最终实现人们对物理城市的全面感知，并调控城市各个方面达成节能减排的目的。
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<hr />
+		</div>
+				<div class="content">
+			<div class="div_img">
+				<img src="img/02.png"/>
+			</div>
+			<div class="content_info">
+				<table width="900px" cellpadding="0" cellspacing="0">
+					<tr height="45px">
+						<td class="content_info_td" align="left">我的昵称 | 2017-11-12 15:30:35 | 会师路社区·来自PC</td>
+					</tr>
+					<tr>
+						<td align="left">
+							<p>
+								一种新型的城市建设理念——“智慧城市”在各国不断摸索中诞生。它的定义是通过互联网，
+								把无处不在的、被植入城市物体的智能化传感器连接起来，
+								最终实现人们对物理城市的全面感知，并调控城市各个方面达成节能减排的目的。
+							</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+        <div style="clear:both;" id="page">
+            <a href="#">首页
+            </a>
+            <a href="#">上一页 &lt; </a>
+            <a href="#" class="a_2"> 1</a>
+            <a href="#" class="a_2">2</a>
+            <a href="#" class="a_2">3</a>
+            <a href="#" class="a_2">4</a>
+            <a href="#" class="a_2">5</a>
+            <a href="#" class="a_2">6</a>
+            <a href="#" class="a_2">7</a>
+            <a href="#" class="a_2">8</a>
+            <a href="#" class="a_2">9</a>
+            <a href="#" class="a_2">10</a>
+            <a href="#"> &gt; 下一页</a>
+            <a href="#">尾页</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

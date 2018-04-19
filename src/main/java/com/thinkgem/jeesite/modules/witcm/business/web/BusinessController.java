@@ -1,0 +1,128 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.business.web;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.security.MD5Util;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+
+/**
+ * 商户Controller
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Controller
+@RequestMapping(value = "${adminPath}/business/business")
+public class BusinessController extends BaseController {
+
+	@Autowired
+	private BusinessService businessService;
+	@Autowired
+	private OfficeService officeService;
+	
+	@ModelAttribute
+	public Business get(@RequestParam(required=false) String id) {
+		Business entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = businessService.get(id);
+		}
+		if (entity == null){
+			entity = new Business();
+		}
+		return entity;
+	}
+	
+	@RequiresPermissions("business:business:view")
+	@RequestMapping(value = {"list", ""})
+	public String list(Business business, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		for(Role role:user.getRoleList()){
+			if("社区管理人员".equals(role.getName())){
+				business.setOrgId(user.getCompany().getId());
+			}
+		}
+		Page<Business> page = businessService.findPage(new Page<Business>(request, response), business); 
+		model.addAttribute("page", page);
+		return "witcm/business/businessList";
+	}
+	
+	@RequiresPermissions("business:business:add")
+	@RequestMapping(value = "add")
+	public String add() {
+		return "witcm/business/businessForm";
+	}
+
+	@RequiresPermissions("business:business:view")
+	@RequestMapping(value = "form")
+	public String form(Business business, Model model) {
+		model.addAttribute("business", business);
+		return "witcm/business/bussForm";
+	}
+
+	@RequiresPermissions("business:business:edit")
+	@RequestMapping(value = "save")
+	public String save(Business business, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, business)){
+			return form(business, model);
+		}
+		if(businessService.findByTel(business.getTelphone(), business.getId())){
+			addMessage(model, "该手机号已存在，请重新输入");
+			return form(business, model);
+		}
+		
+		if(StringUtils.isNotEmpty(business.getId())){//修改
+			
+			if(StringUtils.isNotEmpty(business.getLoginPswd())){
+				business.setLoginPswd(MD5Util.getMD5(business.getLoginPswd()));
+			}else{
+				Business bus = businessService.get(business.getId());
+				business.setLoginPswd(bus.getLoginPswd());
+			}
+		}else{//新增
+			if(StringUtils.isNotEmpty(business.getLoginPswd())){
+				business.setLoginPswd(MD5Util.getMD5(business.getLoginPswd()));
+			}
+		}
+		
+		Office o = business.getBelongOrg();
+		if(o!=null && StringUtils.isNotEmpty(o.getId())){
+			o = officeService.get(o.getId());
+			business.setBelongArea(o.getArea()!=null ? o.getArea().getId() : "");
+		}
+		
+		businessService.save(business);
+		addMessage(redirectAttributes, "保存商户成功");
+		return "redirect:"+Global.getAdminPath()+"/business/business/?repage";
+	}
+	
+	@RequiresPermissions("business:business:edit")
+	@RequestMapping(value = "delete")
+	public String delete(Business business, RedirectAttributes redirectAttributes) {
+		businessService.delete(business);
+		addMessage(redirectAttributes, "删除商户成功");
+		return "redirect:"+Global.getAdminPath()+"/business/business/?repage";
+	}
+
+}

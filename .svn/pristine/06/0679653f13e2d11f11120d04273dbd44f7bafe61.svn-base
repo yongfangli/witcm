@@ -1,0 +1,56 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<meta name="decorator" content="cms_default_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/newsDetail.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	   
+	</script>
+</head>
+<body>
+    <div id="out">
+			<h3>机遇与挑战并存 因地制宜发展智慧社区</h3>
+			<hr color="#DADADA"/>
+			<div class="author">
+				<span>发布人：会师路社区编辑部</span>
+				<span>发布时间：2017-11-12 15:30:35</span>
+			</div>
+			<div class="div_center">
+				<div class="div_center_1">
+					<img src="${ctxStaticTheme}/images/01.png"/>
+				</div>
+				<p>
+					井冈山市，江西省直管市，吉安市代管县级市，地处江西省西南部，地处赣湘两省交界的罗霄山脉中段，古有“郴衡湘赣之交，千里罗霄之腹”之称。井冈山市位于北纬26.34°，东经114.10°之间，东邻泰和县，井冈山市，江西省直管市，吉安市代管县级市，地处江西省西南部，地处赣湘两省交界的罗霄山脉中段，古有“郴衡湘赣之交，千里罗霄之腹”之称。井冈山市位于北纬26.34°，东经114.10°之间，东邻泰和县，
+				</p>
+				<p>
+					井冈山市，江西省直管市，吉安市代管县级市，地处江西省西南部，地处赣湘两省交界的罗霄山脉中段，古有“郴衡湘赣之交，千里罗霄之腹”之称。井冈山市位于北纬26.34°，东经114.10°之间，东邻泰和县，井冈山市，江西省直管市，吉安市代管县级市，地处江西省西南部，地处赣湘两省交界的罗霄山脉中段，古有“郴衡湘赣之交，千里罗霄之腹”之称。井冈山市位于北纬26.34°，东经114.10°之间，东邻泰和县，
+				</p>
+				<div class="div_center_2">
+					<img src="${ctxStaticTheme}/images/01.png"/>
+					<img src="${ctxStaticTheme}/images/02.png"/>
+					<img src="${ctxStaticTheme}/images/03.png"/>
+				</div>
+				<p>
+					井冈山市，江西省直管市，吉安市代管县级市，地处江西省西南部，地处赣湘两省交界的罗霄山脉中段，古有“郴衡湘赣之交，千里罗霄之腹”之称。井冈山市位于北纬26.34°，东经114.10°之间，东邻泰和县，井冈山市，江西省直管市，吉安市代管县级市，地处江西省西南部，地处赣湘两省交界的罗霄山脉中段，古有“郴衡湘赣之交，千里罗霄之腹”之称。井冈山市位于北纬26.34°，东经114.10°之间，东邻泰和县，
+				</p>
+			</div>
+			<div class="bottom">
+				<div class="bottom_left">
+					<a href="#"> &lt; 上一篇 </a>
+					机遇与挑战并存 因地制宜发展智慧社区
+				</div>
+				<div class="bottom_right">
+					机遇与挑战并存 因地制宜发展智慧社区
+					<a href="#">下一篇&gt; </a>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

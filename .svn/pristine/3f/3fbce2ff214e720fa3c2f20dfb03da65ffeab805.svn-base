@@ -1,0 +1,21 @@
+@charset "utf-8";
+*{
+		margin: 0;
+		padding: 0;
+		font-family:"微软雅黑";
+	}
+	a{text-decoration: none;color:#FFF}
+	.clear{clear:both;}
+    
+	.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png);background-size:100vw 100vh}
+	.top{width:100vw;height:11vh; background:url(../images/twobackbom.png);background-size:100vw 11vh}
+	.top_cen{width:94vw;height:11vh;margin:0px auto;color:#FFF}
+	.title{
+		line-height: 11vh;
+		font-size: 2em;}
+	.middle{width:94vw;height:75vh;margin:0px auto;background:#FFF;border-radius:10px;margin-top:4vh;background-color:rgba(255, 255, 255, 0.6); }	
+	.conten{width:89vw;height:72vh;margin: 0px auto; overflow:hidden}
+	.last_page{width:100vw; text-align:center;margin-top:4vh;font-size:1.4em}
+	.titleArticle{width:88vw;height:7vh;border:1px solid #000;border-radius:1em;margin-top:3vh;margin-left:0.5vw}
+	.titleArticle p{line-height:7vh;font-size:1.6em;margin-left:2vw}
+	.titleArticle:hover{border:1px solid #ec3b3b;box-shadow:0px 0px  0.2em 0.2em #ec3b3b;}

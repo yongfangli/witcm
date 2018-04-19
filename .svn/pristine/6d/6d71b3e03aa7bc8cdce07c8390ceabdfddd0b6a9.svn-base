@@ -1,0 +1,151 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/index.css" type="text/css" rel="stylesheet" />
+	
+	 <%@include file="/WEB-INF/views/modules/cms/front/include/head_itv.jsp" %>
+</head>
+<body>
+    <div class="bigdiv">
+   	 <!--头部-->
+     <jsp:include page="head.jsp" />
+     <div class="clear"></div>
+     <!--中间--> 
+     <div class="middle">
+      <c:if test="${!page.firstPage}">
+        <div class="but_left"><a href="${ctx}/itv?pageNo=${page.prev}"><</a></div>
+     </c:if>
+       <c:if test="${page.firstPage}">
+        <div style="width: 2vw;height: 1.5vh;float: left;"></div>
+     </c:if>
+        <div class="mid_con">
+       <c:if test="${page.count>0||picture!=null}">
+             <div class="contentList"> 
+             <c:forEach items="${page.list}" var="category" begin="0" end="1" varStatus="status"> 
+             <c:if test="${status.index==0}">
+               <div class="con_top"  style="background:#008BCC" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+                 <div class="con_top1">
+                 <img src="${category.image}" class="content_img" />
+                 <br/><br/>
+              	 <p>${category.name}</p>
+                  </div>
+               </div>
+               </c:if>
+                 <c:if test="${status.index==1}">
+               <div class="con_bom"  style="background:#E25A68" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+                 <div class="con_top1">
+                 <img src="${category.image}" class="content_img" />
+                 <br/><br/>
+              	 <p>${category.name}</p>
+                  </div>
+               </div>
+               </c:if>
+               </c:forEach>
+            </div> 
+            
+            <c:if test="${picture!=null}">
+            <div class="city" style="background:#FEC200" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${picture.id}'">
+         	  <img src="${picture.image}" class="cityimg"/>
+              <br/><br/>
+              <p>${picture.name}</p>
+            </div>
+            </c:if>
+              <c:if test="${picture==null}">
+            <div class="city" style="background:#FEC200">
+         	  <img src="${ctxStaticItv}/images/city.png" class="cityimg"/>
+              <br/><br/>
+              <p></p>
+            </div>
+            </c:if>
+            <div class="contentList">
+                  <c:forEach items="${page.list}" var="category" begin="2" end="3" varStatus="status"> 
+               <c:if test="${status.index==2}">
+               <div class="con_top"  style="background:#4A991C" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+                 <div class="con_top1">
+                 <img src="${category.image}" class="content_img" />
+                 <br/><br/>
+              	 <p>${category.name}</p>
+                  </div>
+               </div>
+               </c:if>
+                <c:if test="${status.index==3}">
+               <div class="con_bom"  style="background:#4A991C" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+                 <div class="con_top1">
+                 <img src="${category.image}" class="content_img" />
+                 <br/><br/>
+              	 <p>${category.name}</p>
+                  </div>
+               </div>
+               </c:if>
+               </c:forEach>
+            </div>
+            <div class="contentList">
+              <c:forEach items="${page.list}" var="category" begin="4" end="5" varStatus="status"> 
+               <c:if test="${status.index==4}">
+               <div class="con_top"  style="background:#3D9972" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+                 <div class="con_top1">
+                 <img src="${category.image}" class="content_img" />
+                 <br/><br/>
+              	 <p>${category.name}</p>
+                  </div>
+               </div>
+               </c:if>
+                <c:if test="${status.index==5}">
+               <div class="con_bom"  style="background:#FF6606" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+                 <div class="con_top1">
+                 <img src="${category.image}" class="content_img" />
+                 <br/><br/>
+              	 <p>${category.name}</p>
+                  </div>
+               </div>
+               </c:if>
+               </c:forEach>
+            </div>
+            </c:if>
+           <c:if test="${!page.lastPage}">
+        <div class="but_left"><a href="${ctx}/itv?pageNo=${page.next}">></a></div>
+        </c:if>
+            
+        </div>
+       
+     </div>
+     <!--底部-->
+     <div class="bottom">
+     	  <div class="bomCon">
+             <!--开始循环-->
+              <c:forEach items="${fnc:getMainNavList(site.id)}" var="category" varStatus="status">
+           <c:if test="${status.index==0&&categoryId==category.id}">
+            
+             <div class="bomHref bomHrefAct" onclick="window.location.href='${ctx}/itv'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+             <c:if test="${status.index==0&&categoryId!=category.id}">
+             <div class="bomHref" onclick="window.location.href='${ctx}/itv'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+            <c:if test="${status.index!=0&&categoryId==category.id}">
+            
+             <div class="bomHref bomHrefAct" onclick="window.location.href='${ctx}/itv/indexToggle?categoryId=${category.id}'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+             <c:if test="${status.index!=0&&categoryId!=category.id}" >
+             
+             <div class="bomHref" onclick="window.location.href='${ctx}/itv/indexToggle?categoryId=${category.id}'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+             </c:forEach>
+          
+             <!--循环结束-->
+          </div>
+     </div> 
+     
+   </div>
+</body>
+</html>

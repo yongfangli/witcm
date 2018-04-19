@@ -1,0 +1,107 @@
+@charset "utf-8";
+#dvMain {
+    width: 100%;
+    min-height: 600px;
+    background: #e9e9e9;
+}
+
+#dvContent {
+    width: 990px;
+    min-height: 600px;
+    margin: 0px auto;
+    overflow: hidden;
+}
+
+/**********************内容**********************/
+#dvInner {
+
+    width: 100%;
+    margin-top: 30px;
+    height: 490px;
+    border-radius: 4px;
+    box-shadow: 0px 0px 15px 1px #c2c2c2;
+    background: #fff;
+    overflow: hidden;
+}
+
+#dvInner table {
+    width: 880px;
+    margin: 30px auto 0px;
+}
+#dvInner table tr{
+	height: 45px;
+}
+
+#dvInner table tr td a{
+	color:red;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+/*标题列*/
+#dvInner table td.title {
+    height: 35px;
+    width:100px;
+    padding: 5px;
+    font-size: 16px;
+    color: #555;
+    font-family: 宋体;
+    font-weight: bold;
+    text-align: right;
+}
+#dvInner table td span {
+    color:red;
+}
+
+/************文本框 下拉框 多行文本框************/
+#dvInner table select, input {
+    font-size: 14px;
+    color: #696969;
+    font-family: 宋体;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px 1px #c2c2c2;
+	border:1px;
+}
+
+#dvInner table input {
+    width: 500px;
+    height: 35px;
+}
+#dvInner .selectOffice input{
+	width: 450px;
+	background-color: #f3f3f3;
+}
+/****************按扭样式******************/
+#dvContent #dv_btn {
+    text-align: center;
+    padding-top: 30px;
+}
+
+#dvContent #dv_btn button.submit {
+    width: 260px;
+    height: 40px;
+    background: #ec3b3b;
+    border-radius: 10px;
+    color: #feffff;
+    margin-right: 80px;
+	border:1px;
+	outline: none;
+	font-size: 20px;
+}
+#dvContent #dv_btn button.submit:HOVER{
+	cursor: pointer;
+}
+
+#dvContent #dv_btn button.reset {
+    width: 260px;
+    height: 40px;
+    background: #20292b;
+    border-radius: 10px;
+    color: #feffff;
+	border:1px;
+	outline: none;
+	font-size: 20px;
+}
+#dvContent #dv_btn button.reset:HOVER {
+	cursor: pointer;
+}

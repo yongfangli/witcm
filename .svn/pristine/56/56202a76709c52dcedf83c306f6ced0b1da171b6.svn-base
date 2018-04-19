@@ -1,0 +1,10 @@
+package com.thinkgem.jeesite.common.constants;
+
+public class Constants {
+
+	/**
+	 * 类型状态(0：正常、1：停用)
+	 */
+	public static final String TYPE_STATUS_0 = "0";
+	public static final String TYPE_STATUS_1 = "1";
+}

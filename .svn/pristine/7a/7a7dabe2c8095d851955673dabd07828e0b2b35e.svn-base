@@ -1,0 +1,246 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.web;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Family;
+import com.thinkgem.jeesite.modules.witcm.resident.service.FamilyService;
+import com.thinkgem.jeesite.modules.witcm.resident.service.ResidentService;
+
+/**
+ * 家属Controller
+ * 
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Controller
+@RequestMapping(value = "${adminPath}/resident/family")
+public class FamilyController extends BaseController {
+
+	@Autowired
+	private FamilyService familyService;
+	@Autowired
+	private ResidentService residentService;
+	@ModelAttribute
+	public Family get(@RequestParam(required = false) String id) {
+		Family entity = null;
+		if (StringUtils.isNotBlank(id)) {
+			entity = familyService.get(id);
+		}
+		if (entity == null) {
+			entity = new Family();
+		}
+		return entity;
+	}
+
+	@RequiresPermissions("resident:family:view")
+	@RequestMapping(value = { "list", "" })
+	public String list(Family family, HttpServletRequest request,
+			HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		for(Role role:user.getRoleList()){
+			if("社区管理人员".equals(role.getName())){
+				family.setResidentOrgId(user.getCompany().getId());
+			}
+		}
+		//过滤数据，该小区的只能看到该小区的数据
+		familyService.setScope(family);
+		Page<Family> page = familyService.findPage(new Page<Family>(request,
+				response), family);
+		model.addAttribute("page", page);
+		return "witcm/resident/familyList";
+	}
+
+	@RequiresPermissions("resident:family:view")
+	@RequestMapping(value = "form")
+	public String form(Family family, Model model) {
+		model.addAttribute("family", family);
+		return "witcm/resident/familyForm";
+	}
+
+	@RequiresPermissions("resident:family:edit")
+	@RequestMapping(value = "save")
+	public String save(Family family, Model model,
+			RedirectAttributes redirectAttributes) {
+		// 防止正则表达式在字符串为空的时候验证
+		if (StringUtils.isEmpty(family.getQqNo())) {
+			family.setQqNo(null);
+		}
+		if (!beanValidator(model, family)) {
+			return form(family, model);
+		}
+		familyService.save(family);
+		addMessage(redirectAttributes, "保存家属成功");
+		return "redirect:" + Global.getAdminPath() + "/resident/family/?repage";
+	}
+
+	@RequiresPermissions("resident:family:edit")
+	@RequestMapping(value = "delete")
+	public String delete(Family family, RedirectAttributes redirectAttributes) {
+		familyService.delete(family);
+		addMessage(redirectAttributes, "删除家属成功");
+		return "redirect:" + Global.getAdminPath() + "/resident/family/?repage";
+	}
+
+	/**
+	 * 导入家属数据
+	 * 
+	 * @param file
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("resident:family:edit")
+	@RequestMapping(value = "import", method = RequestMethod.POST)
+	public String importFile(MultipartFile file,
+			RedirectAttributes redirectAttributes) {
+		if (Global.isDemoMode()) {
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + adminPath + "/resident/resident/list?repage";
+		}
+		try {
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(file, 1, 0);
+			List<Family> list = ei.getDataList(Family.class);
+			for (Family family : list) {
+				try {
+					if ("true".equals(checkLoginName("", family.getName()))) {
+						BeanValidators.validateWithException(validator, family);
+						familyService.save(family);
+						successNum++;
+					} else {
+						failureMsg.append("<br/>登录名 " + family.getName()
+								+ " 已存在; ");
+						failureNum++;
+					}
+				} catch (ConstraintViolationException ex) {
+					failureMsg
+							.append("<br/>登录名 " + family.getName() + " 导入失败：");
+					List<String> messageList = BeanValidators
+							.extractPropertyAndMessageAsList(ex, ": ");
+					for (String message : messageList) {
+						failureMsg.append(message + "; ");
+						failureNum++;
+					}
+				} catch (Exception ex) {
+					failureMsg.append("<br/>登录名 " + family.getName() + " 导入失败："
+							+ ex.getMessage());
+				}
+			}
+			if (failureNum > 0) {
+				failureMsg.insert(0, "，失败 " + failureNum + " 条用户，导入信息如下：");
+			}
+			addMessage(redirectAttributes, "已成功导入 " + successNum + " 条用户"
+					+ failureMsg);
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入用户失败！失败信息：" + e.getMessage());
+		}
+		return "redirect:" + adminPath + "/resident/family/list?repage";
+	}
+
+	/**
+	 * 下载导入家属数据模板
+	 * 
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("resident:family:view")
+	@RequestMapping(value = "import/template")
+	public String importFileTemplate(HttpServletResponse response,
+			RedirectAttributes redirectAttributes) {
+		try {
+			String fileName = "家属数据导入模板.xlsx";
+			List<Family> list = Lists.newArrayList();
+			// 测试数据
+			list.add(new Family());
+			new ExportExcel("家属数据", Family.class, 2).setDataList(list)
+					.write(response, fileName).dispose();
+			return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
+		}
+		return "redirect:" + adminPath + "/resident/family/list?repage";
+	}
+
+	/**
+	 * 判断家属是否有重复
+	 * 
+	 * @param username
+	 * @return
+	 */
+	@ResponseBody
+	@RequiresPermissions("resident:family:view")
+	@RequestMapping(value = "checkName")
+	public String checkLoginName(String oldName, String name) {
+		if (name != null && name.equals(oldName)) {
+			return "true";
+		} else if (name != null) {
+			Family family = new Family();
+			family.setName(name);
+			familyService.setScope(family);
+			if (StringUtils.isNotEmpty(name)) {
+				List<Family> families = familyService.findList(family);
+				if (families.size() > 0) {
+					return "false";
+				} else {
+					return "true";
+				}
+			}
+			return "true";
+		}
+		return "true";
+	}
+	
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData(
+			@RequestParam(required = false) String officeId,
+			HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		List<Family> list = familyService.findByOfficeId(officeId);
+		for (int i = 0; i < list.size(); i++) {
+			Family e = list.get(i);
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id", "u_" + e.getId());
+			map.put("pId", officeId);
+			map.put("name", StringUtils.replace(e.getName(), " ", ""));
+			mapList.add(map);
+		}
+		return mapList;
+	}
+}

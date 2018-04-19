@@ -1,0 +1,28 @@
+ *{
+		margin: 0;
+		padding: 0;
+		font-family:"Î¢ÈíÑÅºÚ";
+	}
+	a{text-decoration: none;color:#FFF}
+	.clear{clear:both;}
+    
+	.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png);background-size:100vw 100vh}
+	.top{width:100vw;height:11vh; background:url(../images/twobackbom.png);background-size:100vw 11vh}
+	.top_cen{width:94vw;height:11vh;margin:0px auto;color:#FFF}
+	.title{
+		line-height: 11vh;
+		font-size: 2em;}
+	.middle{width:94vw;height:83vh;margin:0px auto;background:#FFF;border-radius:10px;margin-top:3vh;background-color:rgba(255, 255, 255, 0.6); }	
+	.conten{width:90vw;max-height:77vh;min-height:77vh;margin: 0px auto; overflow:hidden;overflow:auto;overflow-x: hidden;}
+	.article{font-size: 1.4em;
+    line-height: 1.5em;}
+	.commentDivs{height:6vh;width:90vw;background:#CCC}
+	.commentDivs p{font-size:1.6em;line-height:6vh;margin-left:1vw}
+	
+	.commentDiv{width:90vw;height:17vh;overflow:hidden;margin-top:2vh;}
+	.comImg{width:7.5vw;height:15.5vh; border-radius:5em}
+	.contents{float:right;width:81vw;height:15.5vh; overflow:hidden}
+	.comhr{border:1px dashed #666;margin-top:0.7vh}
+	.comp{font-size:1.4em;margin-top:0.4vh}
+	
+	

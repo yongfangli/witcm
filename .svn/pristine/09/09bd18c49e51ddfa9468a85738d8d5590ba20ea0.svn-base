@@ -1,0 +1,46 @@
+@charset "utf-8";
+.div_content{width: 1000px;margin: 30px auto 0 auto;overflow: hidden;}
+.div_content a{
+	float: left;
+	color: #333333;
+	font-family: "寰蒋闆呴粦" "Regular";
+font-size: 22px;
+text-decoration:none;
+}
+.div_content a:hover{
+color:#EC3B3B;
+}
+.div_content span{
+ margin-left: 12px;
+ float: right;
+ color: #353535;
+ display: inline-block;
+ height: 30px;
+ padding-top: 10px;
+ font-size: 14px;
+ font-family: "寰蒋闆呴粦" "Regular";
+}
+.div_content div{
+clear: both;
+color: #808080;
+/*! padding-top: 20px; */
+font-size: 16px;
+font-family: "寰蒋闆呴粦" "Regular";
+}
+hr{color:#CCCCCC;margin-top: 20px;}
+#page{text-align: center;margin-top:60px;}
+#page a{
+display: inline-block;
+font-size: 12px;
+text-decoration: none;
+color: #000;
+}
+.a_2{
+border: 1px solid #cccccc;
+border-radius: 2px;
+padding: 0px 10px;
+}
+#page .a_2:hover{
+color:#fff;
+background-color: #EC3B3B;
+}

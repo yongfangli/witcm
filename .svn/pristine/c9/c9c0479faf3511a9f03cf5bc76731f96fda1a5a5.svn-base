@@ -1,0 +1,124 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.business.entity;
+
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import org.hibernate.validator.constraints.Length;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+/**
+ * 订单Entity
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class Orders extends DataEntity<Orders> {
+	
+	private static final long serialVersionUID = 1L;
+	private Resident resident;		// 居民ID
+	private String businessId;
+	private Goods goods;		// 商品ID
+	private String code;		// 订单编号
+	private String numbers;		// 数量
+	private String units;		// 单位
+	private String status;		// 订单状态
+	private String comStatus;//评论状态
+	private Office belongOrg;		// 归属机构
+	private String belongArea;		// 归属单位
+	
+	public Orders() {
+		super();
+	}
+
+	public Orders(String id){
+		super(id);
+	}
+
+	public Resident getResident() {
+		return resident;
+	}
+
+	public void setResident(Resident resident) {
+		this.resident = resident;
+	}
+	
+	public String getBusinessId() {
+		return businessId;
+	}
+
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
+
+	public Goods getGoods() {
+		return goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
+	}
+	
+	@Length(min=0, max=30, message="订单编号长度必须介于 0 和 30 之间")
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+	
+	@Length(min=0, max=11, message="数量长度必须介于 0 和 11 之间")
+	public String getNumbers() {
+		return numbers;
+	}
+
+	public void setNumbers(String numbers) {
+		this.numbers = numbers;
+	}
+	
+	@Length(min=0, max=10, message="单位长度必须介于 0 和 10 之间")
+	public String getUnits() {
+		return units;
+	}
+
+	public void setUnits(String units) {
+		this.units = units;
+	}
+	
+	@Length(min=0, max=2, message="订单状态长度必须介于 0 和 2 之间")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public String getComStatus() {
+		return comStatus;
+	}
+
+	public void setComStatus(String comStatus) {
+		this.comStatus = comStatus;
+	}
+
+	public Office getBelongOrg() {
+		return belongOrg;
+	}
+
+	public void setBelongOrg(Office belongOrg) {
+		this.belongOrg = belongOrg;
+	}
+	
+	@Length(min=0, max=64, message="归属单位长度必须介于 0 和 64 之间")
+	public String getBelongArea() {
+		return belongArea;
+	}
+
+	public void setBelongArea(String belongArea) {
+		this.belongArea = belongArea;
+	}
+	
+}

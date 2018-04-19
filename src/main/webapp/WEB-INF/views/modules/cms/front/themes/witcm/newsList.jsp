@@ -1,0 +1,106 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<meta name="decorator" content="cms_default_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	<link href="${ctxStaticTheme}/css/paging.css" type="text/css" rel="stylesheet" />
+	<link href="${ctxStaticTheme}/css/newsList.css" type="text/css" rel="stylesheet" />
+	<script src="${ctxStaticTheme}/js/paging.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+  <body>
+	<c:forEach items="${page.list}" var="news" varStatus='status'>
+	<c:if test="${status.index==0 }">
+		<input type="hidden" id="categoryId" value="${news.category.id}"/>
+		</c:if>
+		<div id="news">
+			<div class="news_clock">
+				<span class="news_clock_date"><fmt:formatDate value="${news.updateDate}" pattern="yyyy-MM-dd"/></span>
+				<span class="news_clock_time"><fmt:formatDate value="${news.updateDate}" pattern="HH:mm:ss"/></span>
+				<span class="news_clock_person">发布人：${news.user.name}</span>
+			</div>
+			<div class="news_line">
+				<img src="${ctxStatic}/client/img/lin.png"/>
+			</div>
+			<div class="new_img">
+				<img src="${news.image}"/>
+			</div>
+			<div class="news_news">
+				<a target="_blank" href="${ctx}/news-view-${news.id}${fns:getUrlSuffix()}">${fns:abbr(news.title,80)}</a>
+				<span>
+				${news.articleData.content}
+					<!--  ${news.articleData.content}-->
+				</span>
+			</div>
+		</div>
+		</c:forEach>
+	
+		<div class="box" id="box"></div>
+		
+	<script type="text/javascript">
+	var categoryId=$("#categoryId").val();
+	var talpage=${page.last};
+	var nowpage=${page.pageNo};
+	if(typeof(categoryId)!='undefined'){
+     $('#box').paging({
+    	    initPageNo: ${page.pageNo}, // 初始页码
+    	    totalPages: ${page.last}, //总页数
+    	    totalCount:'共：'+ ${page.count}+'条数据', // 条目总数
+    	    slideSpeed: 600, // 缓动速度。单位毫秒 
+    	    callback: function(page){
+    	    	
+    	    }
+    	});
+   //如果只有一页
+     if(nowpage==talpage){
+    	 $("#firstPage").attr("disabled", true); 
+    	 $("#lastPage").attr("disabled", true); 
+		}
+    	$("#pageSelect li").click(function(){
+    		var pageNo=this.innerText;
+    		 var url='${ctx}'+"/list"+pageNo+"-"+categoryId+"-news"+'${fns:getUrlSuffix()}';
+    		 window.location.href=url;
+    	});
+    	$("#nextPage").click(function(){
+    		if(nowpage==talpage){
+    			return;
+    		}
+    		else{
+    			var pageNo=nowpage+1;
+    			 var url='${ctx}'+"/list"+pageNo+"-"+categoryId+"-news"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    		}
+    	})
+    	$("#prePage").click(function(){
+    		if(nowpage==1){
+    			return;
+    		}
+    		else{
+    			var pageNo=nowpage-1;
+    			 var url='${ctx}'+"/list"+pageNo+"-"+categoryId+"-news"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    		}
+    	})
+    	$("#firstPage").click(function(){
+    			var pageNo=1;
+    			 var url='${ctx}'+"/list"+pageNo+"-"+categoryId+"-news"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    	})
+    	$("#lastPage").click(function(){
+    			var pageNo=talpage;
+    			 var url='${ctx}'+"/list"+pageNo+"-"+categoryId+"-news"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    	})
+    	}
+    	else{
+		$(".contents").html("<h3 style='text-align: center;'>暂无数据</h3>");
+	}
+    	
+     </script>
+	</body>
+</html>

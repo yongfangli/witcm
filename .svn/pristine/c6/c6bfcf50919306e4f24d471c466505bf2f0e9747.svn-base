@@ -1,0 +1,25 @@
+@charset "utf-8";
+*{
+	margin: 0;
+	padding: 0;
+	font-family:"微软雅黑";
+}
+a{text-decoration: none;color:#FFF}
+.clear{clear:both;}
+   
+.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png);background-size:100vw 100vh}
+.top{width:94vw;height:15vh;margin:0px auto}
+.logo{vertical-align:middle; width:4vw}
+.top_title{color:#45ab83;font-size:2.4em; font-weight:bold;margin-left:0.6vw;vertical-align:middle;}
+.conLe{line-height:15vh;float:left}
+.conRi{line-height:15vh;float:right}
+.loginimg{vertical-align:middle; width:2vw}
+.border{font-size:1.7em;margin-left:1vw;vertical-align:middle;border-right:1px solid #fff}
+.times{font-size:2.4em;margin-left:1vw;vertical-align:middle;color:#fff}
+.content{font-size:1em;margin-left:1vw;vertical-align:middle;color:#FFF}
+
+.middle{width:50vw;height:70vh;margin:0px auto;}
+.inputDiv{width:50vw;height:8vh;background:#684E7D;border-radius:0.5em;}
+.input{width:42vw;height:6vh;margin-top:1vh;font-size:1.4em;margin-left:2vw;border:0px;background:#684E7D;color:#CCC}
+.loginImg{width:4vw;height:8vh;float:left}
+.login{width:50vw;height:8vh;background:#ec3b3b; border:1px;font-size:1.8em;color:#FFF;border-radius:0.5em;}

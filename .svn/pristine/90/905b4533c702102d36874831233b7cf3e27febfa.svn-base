@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>我的轮播图插件</title>
+</head>
+<style type="text/css">
+/*基础样式*/
+
+body {
+    background-color: #1B1B1B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    vertical-align: top;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+ul li {
+    list-style: none;
+}
+
+/*轮播图样式*/
+
+/*banner的长宽根据图片大小设置*/
+
+.banner {
+    position: relative;
+    top: 200px;
+    margin: 50px auto 0;
+    width: 1000px;
+    height: 460px;
+}
+
+.banner .move {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.move ul,
+.move ul li {
+    position: absolute;
+}
+
+.ctrl {
+    position: absolute;
+    width: 100%;
+    bottom: -30px;
+    text-align: center;
+}
+
+.ctrl .libs {
+    display: inline-block;
+    margin-left: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #333;
+    z-index: 50;
+    cursor: pointer;
+}
+
+.ctrl span.active {
+    background-color: #fff;
+}
+
+.ctrl .arrow {
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 60px;
+    top: 50%;
+    margin-top: -30px;
+    background-color: #333;
+    cursor: pointer;
+    font-family: "宋体";
+    opacity: .5;
+    line-height: 58px;
+    color: #fff;
+    font-size: 20px
+}
+
+.ctrl .next {
+    top: -250px;
+    right: 0px;
+}
+
+.ctrl .prev {
+    top: -250px;
+}
+
+.ctrl .arrow:hover {
+    opacity: 1;
+}
+
+
+
+/*如需自定义底部小圆点样式*/
+
+
+/*.lib1 {
+    在此处添加样式
+}
+
+.lib2 {
+    在此处添加样式
+
+}
+以此类推
+*/
+
+
+
+.desc {
+    text-align: center;
+}
+
+.desc pre {
+    color: #fff;
+    display: inline-block;
+    text-align: left;
+}
+</style>
+
+<body>
+    <div class="desc">
+        <pre>    
+        <h1>HTML结构</h1>
+        &lt;div class="banner"&gt;
+        &lt;div class="move" id="move"&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;img src="images/a1.png" alt=""&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;img src="images/a2.png" alt=""&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;img src="images/a3.png" alt=""&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;img src="images/a4.png" alt=""&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;img src="images/a5.png" alt=""&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+        &lt;div class="ctrl" id="ctrl"&gt;&lt;/div&gt;
+    &lt;/div&gt;</pre>
+        <pre>        
+        <h1>JS调用</h1>
+        $('.banner').myscroll({
+            picElem: $('#move'), //图片父级
+            ctrlElem: $('#ctrl'), //控制条父级(包括小圆点和左右箭头)
+            isLibs: true, //是否创建底部小圆点(样式均可自定义调整),默认向lib添加单独类名，详情见调用后dom结构
+            isArrows: true, //是否创建左右箭头(样式均可自定义调整)
+            autoPlay: true, //是否自动播放
+            playTime: 2000, //自动播放间隔时间
+            playSpeed: 700, //图片切换速度 
+            effect: 'left' //轮播的改变方式 top(向上) left(向左) fade(淡入淡出)
+        });</pre>
+    </div>
+    <div class="banner">
+        <div class="move" id="move">
+            <ul>
+                <li><img src="images/a1.png" alt=""></li>
+                <li><img src="images/a2.png" alt=""></li>
+                <li><img src="images/a3.png" alt=""></li>
+                <li><img src="images/a4.png" alt=""></li>
+                <li><img src="images/a5.png" alt=""></li>
+            </ul>
+        </div>
+        <div class="ctrl" id="ctrl"></div>
+    </div>
+    <div class="banner">
+        <div class="move" id="move1">
+            <ul>
+                <li><img src="images/a1.png" alt=""></li>
+                <li><img src="images/a2.png" alt=""></li>
+                <li><img src="images/a3.png" alt=""></li>
+                <li><img src="images/a4.png" alt=""></li>
+                <li><img src="images/a5.png" alt=""></li>
+            </ul>
+        </div>
+        <div class="ctrl" id="ctrl1"></div>
+    </div>
+    <div class="banner">
+        <div class="move" id="move2">
+            <ul>
+                <li><img src="images/a1.png" alt=""></li>
+                <li><img src="images/a2.png" alt=""></li>
+                <li><img src="images/a3.png" alt=""></li>
+                <li><img src="images/a4.png" alt=""></li>
+                <li><img src="images/a5.png" alt=""></li>
+            </ul>
+        </div>
+        <div class="ctrl" id="ctrl2"></div>
+    </div>
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/myscroll.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // 调用
+        $('.banner').myscroll({
+            picElem: $('#move'), //图片父级
+            ctrlElem: $('#ctrl'), //控制条父级(包括小圆点和左右箭头)
+            isLibs: true, //是否创建底部小圆点(样式均可自定义调整),默认向lib添加单独类名，详情见调用后dom结构
+            isArrows: true, //是否创建左右箭头(样式均可自定义调整)
+            autoPlay: true, //是否自动播放
+            playTime: 2000, //自动播放间隔时间
+            playSpeed: 700, //图片切换速度 
+            effect: 'left' //轮播的改变方式 top(向上) left(向左) fade(淡入淡出)
+        });
+        $('.banner').myscroll({
+            picElem: $('#move1'), //图片父级
+            ctrlElem: $('#ctrl1'), //控制条父级(包括小圆点和左右箭头)
+            isLibs: true, //是否创建底部小圆点(样式均可自定义调整),默认向lib添加单独类名，详情见调用后dom结构
+            isArrows: true, //是否创建左右箭头(样式均可自定义调整)
+            autoPlay: true, //是否自动播放
+            playTime: 2000, //自动播放间隔时间
+            playSpeed: 700, //图片切换速度 
+            effect: 'top' //轮播的改变方式 top(向上) left(向左) fade(淡入淡出)
+        });
+        $('.banner').myscroll({
+            picElem: $('#move2'), //图片父级
+            ctrlElem: $('#ctrl2'), //控制条父级(包括小圆点和左右箭头)
+            isLibs: true, //是否创建底部小圆点(样式均可自定义调整),默认向lib添加单独类名，详情见调用后dom结构
+            isArrows: true, //是否创建左右箭头(样式均可自定义调整)
+            autoPlay: true, //是否自动播放
+            playTime: 2000, //自动播放间隔时间
+            playSpeed: 700, //图片切换速度 
+            effect: 'fade' //轮播的改变方式 top(向上) left(向左) fade(淡入淡出)
+        });
+    })
+    </script>
+</body>
+
+</html>

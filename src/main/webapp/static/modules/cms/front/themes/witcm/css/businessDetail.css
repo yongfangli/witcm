@@ -1,0 +1,57 @@
+
+
+#dvContent {
+    width: 1200px;
+    margin: 0px auto;
+	margin-top:30px;
+	overflow:hidden
+}
+#page{text-align: center;margin-top:60px;}
+#page a{
+	display: inline-block;
+	font-size: 12px;
+	text-decoration: none;
+	color: #000;
+}
+.a_2{
+	border: 1px solid #cccccc;
+	border-radius: 2px;
+	padding: 0px 10px;
+}
+#page .a_2:hover{
+	color:#fff;
+	background-color: #EC3B3B;
+}
+.shapping{width:100%;height:164px;}
+.market_logo{float:left;width:120px;height:100%;text-align:center}
+.logo{border-radius:50px;width:80px;height:80px;}
+.collect{margin-top:15px;width:120px;height:35px;background:#ec3b3b;border-radius:5px;border:1px;color:#FFF}
+.browse{vertical-align: middle;width:30px;height:20px}
+.market_con{font-size:12px;color:#333;display:inline;}
+.mar_jiao{float:right;width:1050px;height:100%;}
+.chaoshiming{font-size:20px;color:#333}
+.mar_tem{margin-top:10px;font-size:16px;color:#666;}
+.add_mar{font-size:16px;color:#666;}
+.mar_con{font-size:16px;color:#666; line-height:25px;margin-top:10px;}
+.review{width:1200px;margin:0px auto;margin-top:40px}
+.communt{width:115px;height:30px;background:#999;color:#FFF;margin-left:10px;border-radius:5px 5px 0px 0px;border:1px}
+.tiesre{width:115px;height:30px;background:#999;color:#FFF;margin-left:5px;border-radius:5px 5px 0px 0px;border:1px}
+.review_div{width:100%;border:1px solid #ccc;border-radius:5px;height:860px;overflow:auto;}
+.commu_img{width:96%;margin:0px auto;line-height: 40px;}
+.goods{width:260px;height:360px;text-align:center;float:left;margin-top:30px;margin-left:30px;margin-bottom: 10px;border:1px solid #FFF}
+.goods:hover{border:1px solid #ccc;-moz-box-shadow: 2px 2px 10px #909090;
+-webkit-box-shadow: 2px 2px 10px #909090;
+box-shadow:2px 2px 10px #909090;}
+.goods_money{font-size:24px;color:#ec3b3b;margin-top:30px}
+.com_variety{font-size:14px;color:#333;margin-top:10px}
+.goods_book{font-size:14px;color:#333;margin-top:10px;width:120px;height:30px;background:#ec3b3b;border-radius:5px;border:1px;color:#FFF}
+.commu_img_logo{
+	float:left;
+	width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: 15px;
+}
+.right_con{
+	margin-left:66px;
+}

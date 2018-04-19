@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.orderrecord.dao.OrdersRecordDao">
+    
+	<sql id="ordersRecordColumns">
+		a.id AS "id",
+		a.orders_id AS "orders.id",
+		a.deal_status AS "dealStatus",
+		a.deal_user_id AS "dealUser.id",
+		a.deal_date AS "dealDate",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrgI.id",
+		a.belong_area_id AS "belongArea",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="ordersRecordJoins">
+	</sql>
+    
+	<select id="get" resultType="OrdersRecord">
+		SELECT 
+			<include refid="ordersRecordColumns"/>
+		FROM sc_orders_record a
+		<include refid="ordersRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OrdersRecord">
+		SELECT 
+			<include refid="ordersRecordColumns"/>
+		FROM sc_orders_record a
+		<include refid="ordersRecordJoins"/>
+		<where>
+			
+			<if test="orders != null and orders.id != null and orders.id != ''">
+				AND a.orders_id = #{orders.id}
+			</if>
+			<if test="dealStatus != null and dealStatus != ''">
+				AND a.deal_status = #{dealStatus}
+			</if>
+			<if test="dealUser != null and dealUser.id != null and dealUser.id != ''">
+				AND a.deal_user_id = #{dealUser.id}
+			</if>
+			<if test="dealDate != null and dealDate != ''">
+				AND a.deal_date &gt;= #{dealDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OrdersRecord">
+		SELECT 
+			<include refid="ordersRecordColumns"/>
+		FROM sc_orders_record a
+		<include refid="ordersRecordJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_orders_record(
+			id,
+			orders_id,
+			deal_status,
+			deal_user_id,
+			deal_date,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{orders.id},
+			#{dealStatus},
+			#{dealUser.id},
+			#{dealDate},
+			#{remarks},
+			#{belongOrgI.id},
+			#{belongArea},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_orders_record SET 	
+			orders_id = #{orders.id},
+			deal_status = #{dealStatus},
+			deal_user_id = #{dealUser.id},
+			deal_date = #{dealDate},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrgI.id},
+			belong_area_id = #{belongArea}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_orders_record
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

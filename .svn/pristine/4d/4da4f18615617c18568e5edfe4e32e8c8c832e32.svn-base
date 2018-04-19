@@ -1,0 +1,57 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/userInfo.css" type="text/css" rel="stylesheet" />
+	<script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="${ctxStaticItv}/css/common.css" />
+	<script type="text/javascript">
+	/* 长宽占位 rem算法, 根据root的rem来计算各元素相对rem, 默认html 320/20 = 16px */
+	 function placeholderPic(){
+	  var w = document.documentElement.offsetWidth;
+	  document.documentElement.style.fontSize=w/100+'px';
+	 }
+	 placeholderPic();
+	 window.onresize=function(){
+	  placeholderPic();
+	 };
+	 
+	 function page(n){
+		$("#pageNo").val(n);
+		$("#searchForm").submit();
+    	return false;
+    }
+	</script>
+</head>
+<body>
+<div class="bigdiv">
+    <!--左边列表-->
+    <div class="list_left">
+       <div class="title"><a href="${ctx}/itv/userMenu"><img class="return" src="${ctxStaticItv }/images/return.png" ></img>
+</a>个人积分</div>
+       <p><img src="${resident.imagesId }" class="headr" /></p>
+       <p class="welcome">欢迎你</p>
+       <p class="nickname">${resident.name }</p>
+       <p><input type="button" class="close" value="退出" onclick="window.location.href='${ctx}/itv/exits'"></p>
+        <div style="height:25vh"></div>
+       <p class="xinxin">Copyright @ 2017-2018</p>
+       <p class="xinxin">井冈山智慧社区 V1.0- Powered By</p>
+       <p class="xinxin">江西电信信息产业有限共识&技术支持</p>
+    </div>
+    <!--右边文章-->
+    <div class="left_user">
+        <div style="margin-left:5vw">
+          <div style="height:10vh"></div>
+          <p class="integral">总积分</p>
+          <input type="button" class="integral1" value="${empty resident.totalPoints ? 0 : resident.totalPoints}"/>
+           <p class="integral">可用积分</p>
+          <input type="button" class="integral2" value="${empty resident.usablePoints ? 0 : resident.usablePoints }"/>
+           <p class="integral">已用积分</p>
+          <input type="button" class="integral3" value="${empty resident.usedPoints ? 0 : resident.usedPoints}"/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

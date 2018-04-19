@@ -1,0 +1,430 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Article;
+import com.thinkgem.jeesite.modules.cms.entity.ArticleData;
+import com.thinkgem.jeesite.modules.cms.entity.Category;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.ArticleDataService;
+import com.thinkgem.jeesite.modules.cms.service.ArticleService;
+import com.thinkgem.jeesite.modules.cms.service.CategoryService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.entity.BusinessTypes;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Convenient;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Goods;
+import com.thinkgem.jeesite.modules.witcm.business.entity.GoodsComments;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessTypesService;
+import com.thinkgem.jeesite.modules.witcm.business.service.ConvenientService;
+import com.thinkgem.jeesite.modules.witcm.business.service.GoodsCommentsService;
+import com.thinkgem.jeesite.modules.witcm.business.service.GoodsService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Comments;
+import com.thinkgem.jeesite.modules.witcm.resident.service.CollectService;
+
+/**
+ * itv Controller
+ * 
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/itv")
+public class FrontITVController extends BaseController {
+	@Autowired
+	private CategoryService categoryService;
+	@Autowired
+	private ArticleService articleService;
+	@Autowired
+	private ArticleDataService articleDataService;
+	@Autowired
+	private BusinessTypesService businessTypesService;
+	@Autowired
+	private BusinessService businessService;
+	@Autowired
+	private GoodsService goodsService;
+	@Autowired
+	private GoodsCommentsService goodsCommentsService;
+	@Autowired
+	private ConvenientService convenientService;
+	/**
+	 * 登录页面
+	 */
+	@RequestMapping(value = "login")
+	public String loginPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/itv/login";
+	}
+
+	/**
+	 * 网站首页
+	 */
+	@RequestMapping
+	public String index(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "7") Integer pageSize,
+			Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		List<Category> categories = CmsUtils.getMainNavList(site.getId());
+		model.addAttribute("categoryId", categories.get(0).getId());
+		Page<Category> cPage = new Page<Category>(pageNo, pageSize);
+		Category category = new Category();
+		category.setParent(new Category(categories.get(0).getId()));
+		category.setSite(site);
+		cPage = categoryService.findPage(cPage, category);
+		List<Category> cates = new ArrayList<Category>();
+		for (Category c : cPage.getList()) {
+			if (c.getModule().equals(Constants.PICTURE)) {
+				model.addAttribute("picture", c);
+			} else {
+				cates.add(c);
+			}
+		}
+		cPage.setList(cates);
+		model.addAttribute("site", site);
+		model.addAttribute("page", cPage);
+		model.addAttribute("categoryId", categories.get(0).getId());
+		return "modules/cms/front/themes/itv/index";
+	}
+
+	/**
+	 * 
+	 * @param pageNo
+	 * @param pageSize
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/indexToggle")
+	public String indexToggle(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "4") Integer pageSize,
+			String categoryId, Model model) {
+		Category category = categoryService.get(categoryId);
+		// 首页toggle页面判断是否是专题类，如果是转到文章列表页面
+		if (CmsUtils.isSpecial(category)) {
+			pageSize = 7;
+			Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+			Article article = new Article();
+			article.setCategory(category);
+			cPage = articleService.findPage(cPage, article);
+			model.addAttribute("page", cPage);
+			model.addAttribute("category", category);
+			return "modules/cms/front/themes/itv/articleList";
+		} else if (Constants.VIDEO_ENMU.equals(category.getShowModes())) {
+			Category scategory = new Category();
+			scategory.setParent(new Category(categoryId));
+			List<Category> categories = categoryService.findList(scategory);
+			model.addAttribute("categoryList", categories);
+			model.addAttribute("category", category);
+			return "modules/cms/front/themes/itv/tourIndex";
+		} else {
+			Site site = CmsUtils.getSite(Site.defaultSiteId());
+			Page<Category> cPage = new Page<Category>(pageNo, pageSize);
+			Category scategory = new Category();
+			scategory.setParent(new Category(categoryId));
+			scategory.setSite(site);
+			cPage = categoryService.findPage(cPage, scategory);
+			model.addAttribute("site", site);
+			model.addAttribute("page", cPage);
+			model.addAttribute("categoryId", categoryId);
+			return "modules/cms/front/themes/itv/indexToggle";
+		}
+	}
+
+	@RequestMapping("/categoryList")
+	public String categoryList(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "7") Integer pageSize,
+			String categoryId, Model model) {
+		Category category = categoryService.get(categoryId);
+		if (Constants.VIDEO_ENMU.equals(category.getShowModes())) {
+			Site site = CmsUtils.getSite(Site.defaultSiteId());
+			Category scategory = new Category();
+			category.setParent(new Category(categoryId));
+			category.setSite(site);
+			List<Category> categories = categoryService.findList(scategory);
+			model.addAttribute("categoryList", categories);
+			model.addAttribute("category", category);
+			return "modules/cms/front/themes/itv/tourIndex";
+		} else if (CmsUtils.isSpecial(category)) {
+			pageSize = 7;
+			Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+			Article article = new Article();
+			article.setCategory(category);
+			cPage = articleService.findPage(cPage, article);
+			model.addAttribute("page", cPage);
+			model.addAttribute("category", category);
+			return "modules/cms/front/themes/itv/articleList";
+		} else {
+			Site site = CmsUtils.getSite(Site.defaultSiteId());
+			Category scategory = new Category();
+			scategory.setParent(new Category(categoryId));
+			scategory.setSite(site);
+			List<Category> categories = categoryService.findList(scategory);
+			if (categories.size() > 0) {
+				Category cate = categories.get(0);
+				if (CmsUtils.isPicture(cate)) {
+					if (CmsUtils.isPicture(cate)
+							&& cate.getShowModes().equals("3")) {
+						pageSize = 4;
+						Page<Article> cPage = new Page<Article>(pageNo,
+								pageSize);
+						Article article = new Article();
+						article.setCategory(cate);
+						cPage = articleService.findPage(cPage, article);
+						model.addAttribute("category", category);
+						model.addAttribute("categoryList", categories);
+						model.addAttribute("page", cPage);
+						model.addAttribute("curId", cate.getId());
+						model.addAttribute("dec", cate.getDescription());
+						model.addAttribute("flag", "0");
+						return "modules/cms/front/themes/itv/tourList";
+					} else {
+						pageSize = 8;
+						Page<Article> cPage = new Page<Article>(pageNo,
+								pageSize);
+						Article article = new Article();
+						article.setCategory(cate);
+						cPage = articleService.findPage(cPage, article);
+						model.addAttribute("category", category);
+						model.addAttribute("categoryList", categories);
+						model.addAttribute("page", cPage);
+						model.addAttribute("curId", cate.getId());
+						return "modules/cms/front/themes/itv/piclist";
+					}
+				} else if (CmsUtils.isSpecial(cate)) {
+					return "modules/cms/front/themes/itv/speList";
+				} else if (CmsUtils.isArticleListCategory(cate)
+						|| CmsUtils.isNews(cate)) {
+					pageSize = 9;
+					Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+					Article article = new Article();
+					article.setCategory(cate);
+					cPage = articleService.findPage(cPage, article);
+					model.addAttribute("category", category);
+					model.addAttribute("categoryList", categories);
+					model.addAttribute("page", cPage);
+					model.addAttribute("curId", cate.getId());
+					return "modules/cms/front/themes/itv/list";
+				}
+				pageSize = 9;
+				Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+				Article article = new Article();
+				article.setCategory(cate);
+				cPage = articleService.findPage(cPage, article);
+				model.addAttribute("category", category);
+				model.addAttribute("categoryList", categories);
+				model.addAttribute("page", cPage);
+				model.addAttribute("curId", cate.getId());
+				return "modules/cms/front/themes/itv/list";
+			}
+		}
+		return "";
+	}
+
+	@RequestMapping("/categoryToggle")
+	public String categoryToggle(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "7") Integer pageSize,
+			String categoryId,
+			@RequestParam(required = false, defaultValue = "0") String flag,
+			Model model) {
+		Category category = categoryService.get(categoryId);
+		model.addAttribute("flag", flag);
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		Category scategory = new Category();
+		scategory.setParent(category.getParent());
+		scategory.setSite(site);
+		List<Category> categories = categoryService.findList(scategory);
+		if (CmsUtils.isPicture(category)) {
+			if (CmsUtils.isPicture(category)
+					&& category.getShowModes().equals("3")) {
+				pageSize = 4;
+				Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+				Article article = new Article();
+				article.setCategory(category);
+				cPage = articleService.findPage(cPage, article);
+
+				model.addAttribute("category",
+						categoryService.get(category.getParent()));
+
+				model.addAttribute("categoryList", categories);
+				model.addAttribute("page", cPage);
+				model.addAttribute("curId", category.getId());
+				model.addAttribute("dec", category.getDescription());
+				return "modules/cms/front/themes/itv/tourList";
+			} else {
+				pageSize = 8;
+				Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+				Article article = new Article();
+				article.setCategory(category);
+				cPage = articleService.findPage(cPage, article);
+				model.addAttribute("category",
+						categoryService.get(category.getParent()));
+				model.addAttribute("categoryList", categories);
+				model.addAttribute("page", cPage);
+				model.addAttribute("curId", category.getId());
+				return "modules/cms/front/themes/itv/piclist";
+			}
+		}
+		pageSize = 9;
+		Page<Article> cPage = new Page<Article>(pageNo, pageSize);
+		Article article = new Article();
+		article.setCategory(category);
+		cPage = articleService.findPage(cPage, article);
+		model.addAttribute("category",
+				categoryService.get(category.getParent()));
+		model.addAttribute("categoryList", categories);
+		model.addAttribute("page", cPage);
+		model.addAttribute("curId", categoryId);
+		return "modules/cms/front/themes/itv/list";
+	}
+
+	/**
+	 * 红色旅游-首页
+	 */
+	@RequestMapping(value = "tour")
+	public String tourIndex(Model model) {
+
+		return "modules/cms/front/themes/itv/tourIndex";
+	}
+
+	/**
+	 * 二级列表－页面
+	 */
+	@RequestMapping(value = "list")
+	public String list(Model model) {
+
+		return "modules/cms/front/themes/itv/list";
+	}
+
+	/**
+	 * 二级列表详情－页面
+	 */
+	@RequestMapping(value = "listDetail")
+	public String listDetail(Model model) {
+
+		return "modules/cms/front/themes/itv/list_detail";
+	}
+
+	/**
+	 * 详情－页面
+	 */
+	@RequestMapping(value = "detail-{id}")
+	public String detail(Model model, String urlFlag, @PathVariable String id) {
+		Article article = new Article();
+		article = articleService.get(id);
+		article.setArticleData(articleDataService.get(id));
+		Category parent = categoryService.get(article.getCategory().getId())
+				.getParent();
+		article.getCategory().setParent(parent);
+		model.addAttribute("article", article);
+		model.addAttribute("urlFlag", urlFlag);
+		return "modules/cms/front/themes/itv/detail";
+	}
+
+	@RequestMapping(value = "business")
+	public String businessIndex(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "3") Integer pageSize,
+			Model model) {
+		// 商家类型列表
+		List<BusinessTypes> types = businessTypesService
+				.findList(new BusinessTypes());
+		if (types.size() > 0) {
+			BusinessTypes typest = types.get(0);
+			Page<Business> bPage = new Page<Business>(pageNo, pageSize);
+			Business business = new Business();
+			business.setTypes(typest);
+			bPage = businessService.findPage(bPage, business);
+			model.addAttribute("page", bPage);
+			model.addAttribute("type", typest);
+		}
+		model.addAttribute("typeList", types);
+		return "modules/cms/front/themes/itv/business";
+	}
+
+	@RequestMapping(value = "businessToggle")
+	public String businessToggle(
+			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "3") Integer pageSize,
+			String businessTypeId, Model model) {
+		BusinessTypes typest = businessTypesService.get(businessTypeId);
+		// 商家类型列表
+		List<BusinessTypes> types = businessTypesService
+				.findList(new BusinessTypes());
+		model.addAttribute("typeList", types);
+		Page<Business> bPage = new Page<Business>(pageNo, pageSize);
+		Business business = new Business();
+		business.setTypes(typest);
+		bPage = businessService.findPage(bPage, business);
+		model.addAttribute("page", bPage);
+		model.addAttribute("type", typest);
+
+		return "modules/cms/front/themes/itv/business";
+	}
+
+	@RequestMapping(value = "businessDetail")
+	public String businessDetail(
+			@RequestParam(required = false, defaultValue = "1") Integer gpageNo,
+			@RequestParam(required = false, defaultValue = "3") Integer gpageSize,
+			@RequestParam(required = false, defaultValue = "1") Integer cpageNo,
+			@RequestParam(required = false, defaultValue = "3") Integer cpageSize,
+			String businessId,@RequestParam(required = false, defaultValue = "0")String flag, Model model) {
+		// 商家类型列表
+		
+		List<BusinessTypes> types = businessTypesService
+				.findList(new BusinessTypes());
+		Business business=businessService.get(businessId);
+		
+		Page<Goods> gPage=new Page<Goods>(gpageNo,gpageSize);
+		Goods goods=new Goods();
+		goods.setBusiness(business);
+		gPage=goodsService.findPage(gPage, goods);
+		
+		Page<GoodsComments> cPage=new Page<GoodsComments>(cpageNo,cpageSize);
+		GoodsComments comments=new GoodsComments();
+		comments.setBusiness(business);
+		cPage=goodsCommentsService.findPage(cPage, comments);
+		
+		model.addAttribute("business", business);
+		model.addAttribute("gpage", gPage);
+		model.addAttribute("cpage", cPage);
+		model.addAttribute("typeList", types);
+		model.addAttribute("flag", flag);
+		return "modules/cms/front/themes/itv/businessDetail";
+	}
+	@RequestMapping(value = "nearByService")
+	public String businessDetail(Model model,@RequestParam(required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(required = false, defaultValue = "4") Integer pageSize,HttpServletRequest request){
+		String url=request.getRequestURI();
+		String[] mapping=url.split("/");
+		String s=mapping[mapping.length-1];
+		Category categoryr=new Category();
+		categoryr.setHref(s);
+		List<Category> category=categoryService.findList(categoryr);
+		if(category.size()>0){
+			model.addAttribute("category",category.get(0));
+		}
+		Page<Convenient> cPage=new Page<Convenient>(pageNo,pageSize);
+		cPage=convenientService.findPage(cPage, new Convenient());
+		model.addAttribute("page",cPage);
+		return "modules/cms/front/themes/itv/nearByService";
+	}
+}

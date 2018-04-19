@@ -1,0 +1,298 @@
+@charset "utf-8";
+
+* {
+	box-sizing: border-box;
+}
+body,div,p,h1 {
+	margin: 0;
+	padding: 0;
+}
+
+a:HOVER{
+	cursor: pointer;	
+}
+
+img {
+	border: 0;
+	vertical-align: middle;
+}
+
+li {
+	list-style-type: none;
+	overflow: hidden;
+}
+
+ul {
+	margin-left: -17px;
+}
+
+.js-silder {
+	position: relative;
+}
+
+.silder-scroll {
+	width: 100%;
+	overflow: hidden;
+}
+
+.silder-main {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+}
+
+.silder-main-img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+.silder-main-img img {
+	width: 100%;
+}
+
+.js-silder-ctrl {
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	margin-top: -30px
+}
+
+.silder-ctrl-prev,.silder-ctrl-next {
+	position: absolute;
+	top: 0;
+	width: 8%;
+	height: 100%;
+	vertical-align: middle;
+	cursor: pointer;
+	color: #fff;
+	font-family: "宋体";
+	font-size: 52px;
+	font-weight: 600;
+	text-shadow: #666 2px 2px 5px;
+}
+
+.silder-ctrl-prev {
+	left: 0;
+	text-align: left;
+	margin-left: 150px;
+}
+
+.silder-ctrl-next {
+	right: 0;
+	text-align: right;
+	margin-right: 150px;
+}
+
+.silder-ctrl-prev>span,.silder-ctrl-next>span {
+	position: absolute;
+	top: 50%;
+	margin-top: -130px;
+}
+
+.silder-ctrl-prev>span {
+	left: 0;
+}
+
+.silder-ctrl-next>span {
+	right: 0;
+}
+
+.silder-ctrl-con {
+	display: inline-block;
+	width: 10px;
+	padding: 10px 0;
+	margin: 0 10px;
+	cursor: pointer;
+	border-radius: 20px
+}
+
+.silder-ctrl-con>span {
+	display: block;
+	line-height: 0;
+	text-indent: -9999px;
+	overflow: hidden;
+	padding: 5px 0;
+	cursor: pointer;
+	background-color: #e4e4e4;
+	border-radius: 20px;
+}
+
+.silder-ctrl-con.active>span {
+	background-color: #ec3b3b;
+	border-radius: 20px;
+}
+
+@media ( max-width : 768px) {
+	.silder-ctrl-prev,.silder-ctrl-next {
+		width: 10%;
+		font-size: 26px;
+		margin-top: -25px;
+	}
+	.silder-ctrl-con {
+		width: 14px;
+		height: 14px;
+		padding: 0;
+		margin: 0 5px;
+	}
+	.silder-ctrl-con>span {
+		display: block;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		padding: 0;
+	}
+}
+
+.li {
+	list-style: none;
+	float: left;
+	width: 150px;
+	height: 50px;
+	font-weight: 900;
+	text-align: center;
+	color: #fff;
+	display: list-item;
+	margin-top: -17px;
+}
+
+.lianjieli {
+	color: #6c6c6c;
+	list-style: none;
+	float: left;
+	width: 100px;
+	height: 50px;
+	text-align: center;
+	display: list-item;
+	margin-top: -17px;
+	font-size: 14px;
+}
+
+.top {
+	width: 1350px;
+	height: 80px;
+	margin: 0px auto
+}
+
+.top_left {
+	width: 27%;
+	margin-top: 10px;
+	float: left
+}
+
+.top_left_img {
+	vertical-align: middle;
+}
+
+.img_font {
+	font-size: 32px;
+	color: #01455c;
+	vertical-align: middle;
+}
+
+.top_right {
+	width: 73%;
+	float: right;
+	margin-top: 17px
+}
+
+.top_right_login {
+	float: left;
+	margin-top: 7px;
+	width: 84%;
+}
+
+.picimg {
+	height: 30px;
+	background: red;
+	border-radius: 0px 5px 5px 0px;
+	vertical-align: middle;
+	margin-left: -9px;
+	margin-top: -1px;
+}
+
+.top_login {
+	margin-left: 60%;
+	width: 70px;
+	height: 30px;
+	color:#6C6C6C;
+	background: #fff;
+	border-radius: 7px;
+	font-weight: bold;
+	font-size: 16p;
+	border: 1px solid #ccc;
+	outline: none;
+}
+.top_login:HOVER{
+	color:#fff;
+	background: #ec3b3b;
+	cursor: pointer;
+}
+
+.top_reg {
+	background: #fff;
+	margin-left: 20px;
+	width: 70px;
+	height: 30px;
+	color:#6C6C6C;
+	border-radius: 7px;
+	font-weight: bold;
+	border: 1px solid #ccc;
+	outline: none;
+}
+.top_reg:HOVER{
+	color:#fff;
+	background: #ec3b3b;
+	cursor: pointer;
+}
+
+.top_weixin {
+	border-right: 1px solid #000;
+	width: 80px;
+	float: left;
+	height: 44px
+}
+
+.top_right_img {
+	width: 150px;
+	float: right;
+}
+
+.mar {
+	width: 100%;
+	height: 260px;
+}
+
+.lun_mar {
+	width: 100%;
+	height: 260px
+}
+
+.navi_div {
+	width: 100%;
+	height: 50px;
+	background: #01455c
+}
+
+.navi_middle {
+	width: 1280px;
+	border: 1px solid #01455c;
+	margin: 0px auto;
+	height: 47px;
+}
+.navi_middle a{
+	color: #fff;
+	text-decoration:none;
+}
+.empty{
+    line-height: 70px;
+}
+.navi_middle li:hover {
+	background: #ec3b3b;
+	color: #fff
+}
+
+.friend_link{margin-top: 50px;width:1280px;height:25px;margin:0px auto;}
+
+.company_bottom{wdith:100%;height:80px;background:#20292b;color:#FFF;text-align:center;font-size:12px;}

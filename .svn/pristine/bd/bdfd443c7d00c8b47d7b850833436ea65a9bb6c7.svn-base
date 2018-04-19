@@ -1,0 +1,112 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页-登录</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/login.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+		//登录切换
+	   function loginTpChange(val,objDiv,otherDiv){
+		   var tp = $("#loginType").val();
+		   if(val!=null && val!="" && val!=tp){
+			   $("#"+objDiv).css("background", "#fff"); 
+			   $("#"+otherDiv).css("background", "#ccc");  
+			   $("#loginType").val(val);
+		   }
+	   }
+	//登录
+	function login(){
+		var tp = $("#loginType").val();
+		var userName = $("#userName").val();
+		var password = $("#password").val();
+		if(userName==null || userName==""){
+			alert('请输入手机号');
+			return false;
+		}
+		if(password==null || password==""){
+			alert('请输入密码');
+			return false;
+		}
+		if(tp==1){//个人中心
+			window.location.href='${ctx}/res/resInfo${fns:getUrlSuffix()}';
+		}else if(tp==2){//商家中心
+			$.ajax({
+				type:"post",
+				async:false,
+				url:"${ctx}/bus/loginAjax.do?userName="+userName+"&password="+password,
+				cache:false,
+				success: function(data){
+					if(data && data.result){
+						window.location.href='${ctx}/bus/busInfo${fns:getUrlSuffix()}';
+					}else{
+						alert(data.msg);
+					}
+				}
+			});
+			
+		}
+	}
+	</script>
+</head>
+<body>
+    <!--中间内容-->
+		<div class="middle_back">
+           <div style="height:60px"></div>
+           <div class="mid_con">
+           		<div class="mid_left">
+                    <div class="mid_logo">
+                        <p style="font-size:60px">智慧生活&emsp;服务到家</p>
+                        <div style="height:10px"></div>
+                        <p style="font-size:30px">井冈山智慧社区为您服务</p>
+                    </div>
+                    <div class="code">
+                        <div class="code_left">
+                           <div><img src="${ctxStaticTheme}/images/weixinapp.png"></div>
+                           <div style="height:20px"></div>
+                           <div class="code_font">打开 微信 扫描二维码<br/>下载智慧社区App</div>
+                         </div>
+                        <div style="margin-left:380px;">
+                        	<div><img src="${ctxStaticTheme}/images/weixinapp.png"></div>
+                            <div style="height:20px"></div>
+                            <div class="code_font">打开 微信 扫描二维码<br/>关注智慧社区公众号</div>
+                        </div>
+                    </div>
+                </div>
+                <!--登录窗口-->
+                <div class="login_div">
+                     <div style="width:100%;height:50px;">
+                         <div id="perDiv" class="personal" onclick="loginTpChange('1','perDiv','tenDiv')">个人用户</div>
+                         <div id="tenDiv" class="tenant" onclick="loginTpChange('2','tenDiv','perDiv')">商家用户</div>
+                     </div>
+                  <div class="login_title">账户密码登录</div>
+                 	 <form id="loginForm">
+                 	 	<input id="loginType" type="hidden" value="1">
+						 <div class="input_div">
+	                         <div class="input_name">
+	                         	<img src="${ctxStaticTheme}/images/login_button.png">
+	                           <input type="text" id="userName" class="name" maxlength="30" placeholder="手机号">
+	                         </div>
+	                         <div class="input_pass">
+	                         	<img src="${ctxStaticTheme}/images/pass.png" width="35" height="35">
+	                       	   <input type="password" id="password" class="password" maxlength="30" placeholder="密码">
+	                         </div>
+	                       <div class="operate">
+	                          <span>没有账号？<a href="${ctx}/bus/register${fns:getUrlSuffix()}">注册</a></span>  
+	                          <span class="forgetPass"><a href="javascript:void(0);">忘记秘密？</a></span>	
+	                       </div>
+	                       <div class="login_button">
+	                            <div style="height:6px" class="login_submit" onclick="login();">登 录</div>
+	                       </div>
+	                     </div>	
+                     </form>
+             </div>
+           </div>
+        </div>
+</body>
+</html>

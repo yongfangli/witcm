@@ -1,0 +1,82 @@
+* {
+  list-style: none;
+}
+.c-fl {
+  float: left;
+}
+.c-box {
+  height: 40px;
+  line-height: 40px;
+  position: absolute;
+  left: 35%;
+  //top: 50%;
+  //transform: translate(-50%, -50%);
+  text-align: center;
+}
+.c-business {
+  height: 40px;
+  line-height: 40px;
+      margin-top: 800px;
+  //position: relative;
+  //left: 30%;
+  //top: 50%;
+  //transform: translate(-50%, -50%);
+  text-align: center;
+}
+#c-pageSelect{
+	margin:0px;
+	padding:0px;
+}
+.c-box button {
+  padding: 0 10px;
+  margin: 0 10px;
+  height: 40px;
+  float: left;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  background-color: #ffffff;
+}
+.c-box .c-first-page,
+.c-box .c-last-page {
+  margin: 0;
+}
+.c-box .c-pageWrap {
+  height: 40px;
+  float: left;
+  overflow: hidden;
+}
+.c-box .c-pageWrap ul {
+  width: 100000px;
+  height: 40px;
+  float: left;
+}
+.c-box .c-pageWrap ul li {
+  width: 60px;
+  height: 40px;
+  border: 1px solid #ebebeb;
+  line-height: 40px;
+  box-sizing: border-box;
+  cursor: pointer;
+  float: left;
+}
+.c-box .c-pageWrap ul .c-sel-page {
+  background-color: red;
+}
+.c-box .c-jump-text {
+  width: 60px;
+  height: 40px;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 0 5px;
+  float: left;
+}
+.c-box .c-jump-button {
+  margin: 0;
+  float: left;
+}
+.c-box .c-total-pages,
+.c-box .c-total-count {
+  margin-left: 10px;
+  float: left;
+  font-size: 14px;
+}

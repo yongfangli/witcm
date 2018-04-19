@@ -1,0 +1,177 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.entity;
+
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import org.hibernate.validator.constraints.Length;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+/**
+ * 家属Entity
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class Family extends DataEntity<Family> {
+	
+	private static final long serialVersionUID = 1L;
+	private Resident resident;		// 居民ID
+	private String name;		// 姓名
+	private String gender;		// 性别
+	private String birthday;		// 出生年月
+	private String identityNo;		// 身份证号码
+	private String telphone;		// 手机号码
+	private String qqNo;		// QQ号
+	private String houserMaster;		// 是否户主
+	private String deformity;		// 是否残疾
+	private String helpPoor;		// 是否扶贫对象
+	private String correct;		// 是否矫正人员
+	private String usersDesc;		// 个人简介
+	private String pension;		// 是否养老对象
+	private Office belongOrg;		// 归属机构
+	private String belongAreaId;		// 归属单位
+	
+	public Family() {
+		super();
+	}
+
+	public Family(String id){
+		super(id);
+	}
+
+	public Resident getResident() {
+		return resident;
+	}
+
+	public void setResident(Resident resident) {
+		this.resident = resident;
+	}
+	
+	@Length(min=0, max=64, message="姓名长度必须介于 0 和 64 之间")
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Length(min=0, max=64, message="性别长度必须介于 0 和 64 之间")
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	@Length(min=0, max=64, message="出生年月长度必须介于 0 和 64 之间")
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+	
+	@Length(min=0, max=64, message="身份证号码长度必须介于 0 和 64 之间")
+	public String getIdentityNo() {
+		return identityNo;
+	}
+
+	public void setIdentityNo(String identityNo) {
+		this.identityNo = identityNo;
+	}
+	
+	@Length(min=0, max=64, message="手机号码长度必须介于 0 和 64 之间")
+	public String getTelphone() {
+		return telphone;
+	}
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+	
+	@Length(min=0, max=64, message="QQ号长度必须介于 0 和 64 之间")
+	public String getQqNo() {
+		return qqNo;
+	}
+
+	public void setQqNo(String qqNo) {
+		this.qqNo = qqNo;
+	}
+	
+	@Length(min=0, max=64, message="是否户主长度必须介于 0 和 64 之间")
+	public String getHouserMaster() {
+		return houserMaster;
+	}
+
+	public void setHouserMaster(String houserMaster) {
+		this.houserMaster = houserMaster;
+	}
+	
+	@Length(min=0, max=64, message="是否残疾长度必须介于 0 和 64 之间")
+	public String getDeformity() {
+		return deformity;
+	}
+
+	public void setDeformity(String deformity) {
+		this.deformity = deformity;
+	}
+	
+	@Length(min=0, max=64, message="是否扶贫对象长度必须介于 0 和 64 之间")
+	public String getHelpPoor() {
+		return helpPoor;
+	}
+
+	public void setHelpPoor(String helpPoor) {
+		this.helpPoor = helpPoor;
+	}
+	
+	@Length(min=0, max=64, message="是否矫正人员长度必须介于 0 和 64 之间")
+	public String getCorrect() {
+		return correct;
+	}
+
+	public void setCorrect(String correct) {
+		this.correct = correct;
+	}
+	
+	@Length(min=0, max=64, message="个人简介长度必须介于 0 和 64 之间")
+	public String getUsersDesc() {
+		return usersDesc;
+	}
+
+	public void setUsersDesc(String usersDesc) {
+		this.usersDesc = usersDesc;
+	}
+	
+	@Length(min=0, max=64, message="是否养老对象长度必须介于 0 和 64 之间")
+	public String getPension() {
+		return pension;
+	}
+
+	public void setPension(String pension) {
+		this.pension = pension;
+	}
+	
+	public Office getBelongOrg() {
+		return belongOrg;
+	}
+
+	public void setBelongOrg(Office belongOrg) {
+		this.belongOrg = belongOrg;
+	}
+	
+	@Length(min=0, max=64, message="归属单位长度必须介于 0 和 64 之间")
+	public String getBelongAreaId() {
+		return belongAreaId;
+	}
+
+	public void setBelongAreaId(String belongAreaId) {
+		this.belongAreaId = belongAreaId;
+	}
+	
+}

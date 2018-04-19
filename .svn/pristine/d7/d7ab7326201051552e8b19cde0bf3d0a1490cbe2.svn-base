@@ -1,0 +1,156 @@
+@charset "utf-8";
+/*reset*/
+html {
+	font-size: 312.5%;
+}
+body {
+	font-family: Microsoft Yahei,'roboto', helvetica, arial, sans-serif;
+	line-height: 1.5;
+	font-size: .28rem;
+	color: #333333;
+}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td {
+	margin: 0;
+	padding: 0;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+img {
+	vertical-align: middle;
+	border: 0
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+ul, ol, li {
+	list-style: none;
+}
+em, i {
+	font-style: normal
+}
+img {
+	border: none;
+}
+input, img {
+	vertical-align: middle
+}
+input, select, textarea {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-appearance: none;
+	border: 0;
+	border-radius: 0;
+}
+textarea:focus {
+	outline: 0
+}
+a {
+	color: #6E7D8B;
+	text-decoration: none;
+	outline: 0
+}
+a:active, a:hover, a.current {
+	outline: 0
+}
+html {
+	font-size: 312.5%;
+}
+img {
+	border: none;
+	display: block
+}
+input {
+	border: none;
+	font-size: .28rem;
+}
+input:focus {
+	outline: none;
+}
+
+
+/*regsiter*/
+
+ @-webkit-keyframes rotate {
+ from {
+-webkit-transform:rotate(0deg);
+}
+ to {
+-webkit-transform:rotate(360deg);
+}
+}
+
+@media screen and (min-width:350px) {
+html {
+	font-size: 342%;
+	
+}
+}
+
+@media screen and (min-width:410px) {
+html {
+	font-size: 400%;
+}
+}
+
+@media screen and (min-width:480px) {
+html {
+	font-size: 469%;
+}
+}
+
+@media screen and (min-width:640px) {
+html {
+	font-size: 625%;
+}
+}
+
+
+.wrap_box {
+	max-width:640px;
+	margin: 0 auto;
+	height:auto;
+	position:relative;
+	overflow:hidden;
+}
+.logo{ display:block;
+       width:100%;}
+.logo img{ display:block;
+           width:14%;
+		   padding: 0.2rem;}
+.title{line-height:16vh;font-size:1.8em; font-weight:bold;margin-right:5vw;color:#02455C}		 
+.logo{width:20vw;height:13vh;float:left;margin-top:1.5vh;margin-left:10vw}  
+
+/***********页尾开始***************/
+.footer_box{ width:100%;
+			 height:1.4rem;
+			 background:#efefef;
+			 overflow:hidden; position: fixed; bottom:0;width:100%}
+.footer_box a{ display:block;
+               width:33%;
+			   height:1.1rem;
+			   color:#000;
+			   float:left;
+			   font-size:.29rem;
+			   text-align:center;}
+.footer_box a:active{ background:#013c0c;}			   
+.footer_box a img{ display:block;
+                   width:40%;
+				   margin:0 auto .05rem;}
+/***********页尾结束***************/
+
+.types{height:24vh;width:100%;background:#CCC}
+.mark{width:30%;height:80%;margin-left:2.5%;float:left;text-align:center;margin-top:2.5vh;color:#FFF;border-radius:5px}
+.mark img{width:60%;margin:0px auto;margin-top:1vh}
+.head{width:94%;height:6vh; border-bottom:1px solid #CCC;margin:0px auto}
+.head p{line-height:6vh;color:#ec3b3b; font-size:1.2em}
+.commercial{width:94%;height:22vh;margin:0px auto;margin-top:3vh; overflow:hidden}
+
+.markimg{width:30%;float:left;height:100%}
+.save{background:#ec3b3b;color:#fff;border-radius:5px; font-size:0.8em;width:20vw;height:4vh}
+.right_info{width:67%;float:right;}
+.readDiv{color:#000;font-size: 0.7em;float:right}
+.read1{width:5vw;float:left;margin-top:0.5vh}
+.read2{float:left;margin-left:1vw}
+.read3{width:5vw;float:left;margin-left:3vw;margin-top:0.5vh}
+.read4{float:left;margin-left:1vw}

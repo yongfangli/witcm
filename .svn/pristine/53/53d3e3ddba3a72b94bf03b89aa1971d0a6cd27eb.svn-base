@@ -1,0 +1,96 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/list.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	/* 长宽占位 rem算法, 根据root的rem来计算各元素相对rem, 默认html 320/20 = 16px */
+	 function placeholderPic(){
+	 	var w = document.documentElement.offsetWidth;
+	 	document.documentElement.style.fontSize=w/100+'px';
+	 }
+	 placeholderPic();
+	 window.onresize=function(){
+	 	placeholderPic();
+	 };
+	</script>
+	
+</head>
+<body>
+    <div class="bigdiv">
+    <!--左边列表-->
+    <div class="list_left">
+        <div class="title"><a href="${ctx}/itv">&lt;</a> &emsp;街道办事</div>
+        <p class="left_p left_pAct" onclick="window.location.href='${ctx}/itv/list'">
+           <span>街道动态</span>
+        </p>
+        <p class="left_p" onclick="window.location.href='${ctx}/itv/listDetail'">
+           <span>文明建设</span>
+        </p>
+        <p class="left_p">
+           <span>政策法规</span>
+        </p>
+        <p class="left_p">
+           <span>党员管理</span>
+        </p>
+        <p class="left_p">
+           <span>人口计生</span>
+        </p>
+        <p class="left_p">
+           <span>文化活动</span>
+        </p>
+        <p class="left_p">
+           <span>劳动保障</span>
+        </p>
+        <p class="left_p">
+           <span>社会事务</span>
+        </p>
+        <p class="left_p">
+           <span>兵役服务</span>
+        </p>
+        <p class="left_p">
+           <span>社区办事点</span>
+        </p>
+    </div>
+    <!--右边文章-->
+    <div style="width:79vw;height:100vh;float:left;">
+      <div class="left_content">
+       <div class="right_list">           
+         <p onclick="window.location.href='${ctx}/itv/detail'">机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+       <div class="right_list">           
+         <p>机遇与挑战并存 因地制宜发展智慧社区</p>
+       </div>
+      </div>
+      <div class="last_page">▲&emsp;1/6&emsp;▼</div>
+    </div>
+</div>
+</body>
+</html>

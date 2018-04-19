@@ -1,0 +1,16 @@
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+<script src="${ctxStatic}/client/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<%-- <script src="${ctxStatic}/client/js/jquery1.42.min.js" type="text/javascript"></script> --%>
+<script src="${ctxStatic}/client/js/wySilder.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/client/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script src="${ctxStatic}/client/js/message.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/message.css"/>
+<style>
+a.hover{
+cursor : pointer;
+text-decoration:none;
+}
+</style>
+

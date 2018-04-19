@@ -1,0 +1,148 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>首页</title>
+ <link type="text/css" rel="stylesheet" href="${ctxStaticItv}/css/Pension.css" />
+ <%@include file="/WEB-INF/views/modules/cms/front/include/head_itv.jsp" %>
+</head>
+
+<body>
+   <div class="bigdiv">
+   	     <div class="top">
+          <div class="conLe"> 
+            <img src="${ctxStaticTheme}/images/logo.png" class="logo"/>
+            <span class="top_title">井冈山智慧社区</span>
+          </div>
+          <div class="conRi"> 
+          	<a href="${ctx}/itv/userMenu"> 
+            	<img src="${ctxStaticItv}/images/login.png" class="loginimg"/>
+            </a>
+            <span class="border"></span>
+            <span id="city" class="content">吉安</span>
+           <%--  <img src="${ctxStaticItv}/images/sunlignt.png" class="loginimg" style="margin-left:0.6vw;"/>  --%>
+            <span class="border"></span>
+            <span id="weather" class="content">晴</span>
+            <span id="temp" class="content"></span>
+            
+            <span id="date" class="content">2018.01.08</span>
+            <span id="week" class="content">星期四</span>
+            <span class="border"></span>
+            <span id="time" class="times">09:00</span>
+          </div>
+     </div>
+     <div class="clear"></div>
+      
+     <div class="middle">
+       <c:if test="${!page.firstPage}">
+        <div class="but_left"><a href="${ctx}/itv/indexToggle?categoryId=${categoryId}&pageNo=${page.prev}"><</a></div>
+     </c:if>
+       <c:if test="${page.firstPage}">
+        <div style="width: 2vw;height: 1.5vh;float: left;"></div>
+     </c:if>
+     <c:forEach items="${page.list}" var="category"  varStatus="status">
+     <c:if test="${fn:length(page.list)==3}">
+     
+     <c:if test="${category.module=='link'}" >
+      <div style="margin-left:8vw" class="comDiv" onclick="window.location.href='${ctx}/${category.href}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     	 </div> 
+     </c:if>
+     <c:if test="${category.module!='link'}" >
+      <div style="margin-left:8vw" class="comDiv" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     </div> 
+     </c:if>
+     </c:if>
+     <c:if test="${fn:length(page.list)==4}">
+     
+     <c:if test="${category.module=='link'}" >
+      <div  class="comDiv" onclick="window.location.href='${ctx}/${category.href}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     	 </div> 
+     </c:if>
+     <c:if test="${category.module!='link'}" >
+      <div class="comDiv" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     </div> 
+     </c:if>
+     </c:if>
+     <c:if test="${fn:length(page.list)==2}">
+     
+     <c:if test="${category.module=='link'}" >
+      <div style="margin-left:18vw" class="comDiv" onclick="window.location.href='${ctx}/${category.href}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     	 </div> 
+     </c:if>
+     <c:if test="${category.module!='link'}" >
+      <div style="margin-left:18vw" class="comDiv" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     </div> 
+     </c:if>
+     </c:if>
+     <c:if test="${fn:length(page.list)==1}">
+     
+     <c:if test="${category.module=='link'}" >
+      <div style="margin-left:35vw" class="comDiv" onclick="window.location.href='${ctx}/${category.href}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     	 </div> 
+     </c:if>
+     <c:if test="${category.module!='link'}" >
+      <div style="margin-left:35vw" class="comDiv" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'">
+             <img src="${category.image}"/>
+             <p>${category.name}</p>
+     </div> 
+     
+     </c:if>
+     </c:if>
+     	 </c:forEach>
+     	   <c:if test="${!page.lastPage}">
+        <div class="but_left"><a href="${ctx}/itv/indexToggle?categoryId=${categoryId}&pageNo=${page.next}">></a></div>
+     </c:if>
+     </div>
+    
+     <div class="bottom">
+           	  <div class="bomCon">
+             <!--开始循环-->
+              <c:forEach items="${fnc:getMainNavList(site.id)}" var="category" varStatus="status">
+           <c:if test="${status.index==0&&categoryId==category.id}">
+            
+             <div class="bomHref bomHrefAct" onclick="window.location.href='${ctx}/itv'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+             <c:if test="${status.index==0&&categoryId!=category.id}">
+             <div class="bomHref" onclick="window.location.href='${ctx}/itv'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+            <c:if test="${status.index!=0&&categoryId==category.id}">
+            
+             <div class="bomHref bomHrefAct" onclick="window.location.href='${ctx}/itv/indexToggle?categoryId=${category.id}'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+             <c:if test="${status.index!=0&&categoryId!=category.id}" >
+             
+             <div class="bomHref" onclick="window.location.href='${ctx}/itv/indexToggle?categoryId=${category.id}'">
+                 <p>${category.name}</p>
+             </div>
+             </c:if> 
+             </c:forEach>
+          
+             <!--循环结束-->
+          </div>
+     </div> 
+     
+   </div>
+</body>
+</html>

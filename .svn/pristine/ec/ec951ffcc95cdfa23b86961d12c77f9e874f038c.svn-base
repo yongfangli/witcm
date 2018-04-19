@@ -1,0 +1,83 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.web;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import com.thinkgem.jeesite.modules.witcm.resident.service.ResidentService;
+
+/**
+ * 居民Controller
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Controller
+@RequestMapping(value = "${adminPath}/resident/resident")
+public class ResidentController extends BaseController {
+
+	@Autowired
+	private ResidentService residentService;
+	
+	@ModelAttribute
+	public Resident get(@RequestParam(required=false) String id) {
+		Resident entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = residentService.get(id);
+		}
+		if (entity == null){
+			entity = new Resident();
+		}
+		return entity;
+	}
+	
+	@RequiresPermissions("resident:resident:view")
+	@RequestMapping(value = {"list", ""})
+	public String list(Resident resident, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Resident> page = residentService.findPage(new Page<Resident>(request, response), resident); 
+		model.addAttribute("page", page);
+		return "witcm/resident/residentList";
+	}
+
+	@RequiresPermissions("resident:resident:view")
+	@RequestMapping(value = "form")
+	public String form(Resident resident, Model model) {
+		model.addAttribute("resident", resident);
+		return "witcm/resident/residentForm";
+	}
+
+	@RequiresPermissions("resident:resident:edit")
+	@RequestMapping(value = "save")
+	public String save(Resident resident, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, resident)){
+			return form(resident, model);
+		}
+		residentService.save(resident);
+		addMessage(redirectAttributes, "保存居民成功");
+		return "redirect:"+Global.getAdminPath()+"/resident/resident/?repage";
+	}
+	
+	@RequiresPermissions("resident:resident:edit")
+	@RequestMapping(value = "delete")
+	public String delete(Resident resident, RedirectAttributes redirectAttributes) {
+		residentService.delete(resident);
+		addMessage(redirectAttributes, "删除居民成功");
+		return "redirect:"+Global.getAdminPath()+"/resident/resident/?repage";
+	}
+
+}

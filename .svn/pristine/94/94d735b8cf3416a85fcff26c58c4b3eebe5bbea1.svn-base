@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.si.codeimage.dao.CodeImageDao">
+    
+	<sql id="codeImageColumns">
+		a.id AS "id",
+		a.image AS "image",
+		a.title AS "title"
+	</sql>
+	
+	<sql id="codeImageJoins">
+	</sql>
+    
+	<select id="get" resultType="CodeImage">
+		SELECT 
+			<include refid="codeImageColumns"/>
+		FROM sc_code_image a
+		<include refid="codeImageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CodeImage">
+		SELECT 
+			<include refid="codeImageColumns"/>
+		FROM sc_code_image a
+		<include refid="codeImageJoins"/>
+		<where>
+			
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CodeImage">
+		SELECT 
+			<include refid="codeImageColumns"/>
+		FROM sc_code_image a
+		<include refid="codeImageJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_code_image(
+			id,
+			image,
+			title
+		) VALUES (
+			#{id},
+			#{image},
+			#{title}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_code_image SET 	
+			image = #{image},
+			title = #{title}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_code_image
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

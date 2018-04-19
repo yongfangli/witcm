@@ -1,0 +1,169 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页-注册</title>
+	<link href="/witcm/static/bootstrap/2.3.1/awesome/font-awesome.min.css" type="text/css" rel="stylesheet">
+	<link href="${ctxStaticMobile}/css/register.css" type="text/css" rel="stylesheet" />
+	<meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+	 <link href="${ctxStatic}/jquery-validation/1.11.0/jquery.validate.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script> 
+<script src="${ctxStatic}/jquery-validation/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
+	<style>
+	div.jbox .jbox-border {
+      background: none repeat scroll 0 0 #FF5722;
+    }
+	</style>
+	<script type="text/javascript">
+	 $(function(){
+		 var msg = "${message}";
+	   	if(msg!=null && msg!=""){
+		   showTip(msg);
+	   	}
+		 
+		 $("#inputForm").validate({
+				 rules : {
+					telphone:{
+						
+					},
+					telphone : {
+			            required : true,
+			            minlength : 11,
+			            isMobile : true,
+			            remote: {
+					    	 url:"${ctx}/res/checkTelPhone",
+					    	 type:"post"	
+					    }
+			        },
+			        identityNo:{
+			        	required :true,
+                     isidcard:true			     
+			        },
+			        phone:{
+			        	ishome:true
+			        },
+			        loginPswd: {
+			        	// <c:if test="${empty resident.id}">
+			            required: true,
+			          //</c:if>
+			            minlength: 6,
+			        },
+			        reloginPswd: {
+			        	// <c:if test="${empty resident.id}">
+			            required: true,
+			            //</c:if>
+			            minlength: 6,
+			            equalTo: "#loginPswd"
+			        }
+				},
+				messages : {
+					telphone : {
+			            required : "请输入手机号",
+			            minlength: "请填写正确手机号码",
+			            isMobile : "请填写正确手机号码",
+			            remote: "该手机号已存在"
+			        },
+			        identityNo:{
+			        	required :"身份证号不能为空",
+                        isidcard: "请输入正确的身份证号"		     
+			        },
+			        reloginPswd: {
+			            required: "请再次输入密码",
+			            minlength:"密码长度不能小于6",
+			            equalTo: "两次密码不一致"
+			        },
+			        loginPswd: {
+			            required: "请输入密码",
+			            minlength:"密码长度不能小于6"
+			        }
+				},
+				submitHandler: function(form){
+					loading('正在提交，请稍等...');
+					form.submit();
+				},
+				errorContainer: "#messageBox",
+				errorPlacement: function(error, element) {
+					$("#messageBox").text("输入有误，请先更正。");
+					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+						error.appendTo(element.parent().parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
+			});
+	 });
+	</script>
+</head>
+<body>
+    <div class="nav_box">
+     <a class="back_but" href="javascript:history.back(-1)"><</a>
+     <p class="nav_title">注册</p>
+    </div>
+    <div id="dvMain">
+        <div id="dvContent">
+        <form:form id="inputForm" modelAttribute="resident" action="${ctxMobile}/registerSave" method="post" class="form-horizontal">
+            <div id="dvInner">
+                <table>
+                    <tr>
+                        <td class="title">所在小区：<span>*</span></td>
+                        <td class="selectOffice">
+                             <sys:treeselectFront id="office" name="belongOrg.id" value="${resident.belongOrg.id}" labelName="belongOrg.name" labelValue="${resident.belongOrg.name}"
+								title="社区" url="/res/orgTreeData?type=2" extId="${belongOrg.id}" cssClass="required" notAllowSelectParent="true"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title">楼栋号：<span>*</span></td>
+                        <td><form:input path="buildingNo" htmlEscape="false" maxlength="100" class="input-xlarge required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">姓名：<span>*</span></td>
+                        <td><form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">身份证号：<span>*</span></td>
+                        <td><form:input path="identityNo" htmlEscape="false" maxlength="50" class="input-xlarge required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">手机号码：<span>*</span></td>
+                        <td><form:input path="telphone" htmlEscape="false" maxlength="50" class="input-xlarge required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">家庭号码：</td>
+                        <td><form:input path="phone" htmlEscape="false" maxlength="50" class="input-xlarge"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">登录密码：<span>*</span></td>
+                        <td><form:password path="loginPswd" htmlEscape="false" maxlength="50" class="input-xlarge required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">确认密码：<span>*</span></td>
+                        <td><form:password path="reloginPswd" htmlEscape="false" maxlength="50" class="input-xlarge required"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title">验证码：<span>*</span></td>
+                        <td><sys:validateCode name="validateCode" inputCssStyle="width:90px;"/></td>
+                    </tr>
+                    <tr>
+                        <td class="title"></td>
+                        <td>
+                           	<span style="float: right;margin-top: 10px;font-size: 15px;color: #555;"> 已有帐号？<a href='${ctx}/bus/login${fns:getUrlSuffix()}'>登录</a></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="dv_btn">
+                <button class="submit" type="submit">注&nbsp;&nbsp;册</button>
+                <button class="reset" type="reset">重置</button>
+            </div>
+            </form:form>
+        </div>
+    </div>
+</body>
+</html>

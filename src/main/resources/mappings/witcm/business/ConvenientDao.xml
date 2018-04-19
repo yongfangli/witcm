@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.business.dao.ConvenientDao">
+    
+	<sql id="convenientColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.address AS "address",
+		a.phone AS "phone",
+		a.sort AS "sort"
+	</sql>
+	
+	<sql id="convenientJoins">
+	</sql>
+    
+	<select id="get" resultType="Convenient">
+		SELECT 
+			<include refid="convenientColumns"/>
+		FROM sc_convenient a
+		<include refid="convenientJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Convenient">
+		SELECT 
+			<include refid="convenientColumns"/>
+		FROM sc_convenient a
+		<include refid="convenientJoins"/>
+		<where>
+			1=1
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			ORDER BY a.sort
+		</where>
+		<choose>
+		
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy} 
+			</when>
+			
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="maxSort" resultType="Integer">
+	    select max(sort) from sc_convenient
+	</select>
+	
+	<select id="findAllList" resultType="Convenient">
+		SELECT 
+			<include refid="convenientColumns"/>
+		FROM sc_convenient a
+		<include refid="convenientJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_convenient(
+			id,
+			name,
+			address,
+			phone,
+			sort
+		) VALUES (
+			#{id},
+			#{name},
+			#{address},
+			#{phone},
+			#{sort}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_convenient SET 	
+			name = #{name},
+			address = #{address},
+			phone = #{phone},
+			sort = #{sort}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_convenient
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

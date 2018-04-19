@@ -1,0 +1,69 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/userMenu.css" type="text/css" rel="stylesheet" />
+	
+	 <%@include file="/WEB-INF/views/modules/cms/front/include/head_itv.jsp" %>
+</head>
+<body>
+    <div class="bigdiv">
+   	 <!--头部-->
+     <div class="top">
+          <div class="conLe"> 
+            <img src="${ctxStaticTheme}/images/logo.png" class="logo"/>
+            <span class="top_title" onclick="window.location.href='${ctx}/itv'">井冈山智慧社区</span>
+          </div>
+          <div class="conRi">
+          	<a href="${ctx}/itv/userMenu"> 
+            	<img src="${ctxStaticItv}/images/login.png" class="loginimg"/>
+            </a>
+            <span class="border"></span>
+            <span id="city" class="content">吉安</span>
+           <%--  <img src="${ctxStaticItv}/images/sunlignt.png" class="loginimg" style="margin-left:0.6vw;"/>  --%>
+            <span class="border"></span>
+            <span id="weather" class="content">晴</span>
+            <span id="temp" class="content"></span>
+            
+            <span id="date" class="content">2018.01.08</span>
+            <span id="week" class="content">星期四</span>
+            <span class="border"></span>
+            <span id="time" class="times">09:00</span>
+          </div>
+     </div>
+     <div class="clear"></div>
+     <!--中间--> 
+     <div class="middle">
+      	
+      	<div class="typeList" style="background:#448EEF" onclick="window.location.href='${ctx}/itv/userInfo'">
+          <img src="${ctxStaticItv}/images/userinfo2.png" />
+          <p>个人信息</p>
+        </div>
+        <div class="typeList" style="background:#FF6A94" onclick="window.location.href='${ctx}/itv/userFamily'">
+          <img src="${ctxStaticItv}/images/dangan.png"/>
+          <p>家庭档案</p>
+        </div>
+        <div class="typeList" style="background:#4A991C" onclick="window.location.href='${ctx}/itv/userHealth'">
+          <img src="${ctxStaticItv}/images/dangan2.png"/>
+          <p>健康档案</p>
+        </div>
+        <div class="typeList" style="background:#FF6606" onclick="window.location.href='${ctx}/itv/userOrder'">
+          <img src="${ctxStaticItv}/images/yuding.png"/>
+          <p>预订商家</p>
+        </div>
+        <div class="typeList" style="background:#FFA302" onclick="window.location.href='${ctx}/itv/userPoints'">
+          <img src="${ctxStaticItv}/images/jifen.png"/>
+          <p>个人积分</p>
+        </div>
+        <div class="typeList" style="background:#728BFF" onclick="window.location.href='${ctx}/itv/userCollect'">
+          <img src="${ctxStaticItv}/images/shoucang.png"/>
+          <p>个人收藏</p>
+        </div>
+         
+     </div>
+     
+   </div>
+</body>
+</html>

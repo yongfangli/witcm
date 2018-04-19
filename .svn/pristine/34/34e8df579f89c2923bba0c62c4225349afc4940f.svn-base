@@ -1,0 +1,126 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.SiteService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+
+/**
+ * 用户中心Controller
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/bus")
+public class FrontBusController extends BaseController{
+	
+	private SiteService siteService;
+	
+	/**
+	 * 登录页面
+	 */
+	@RequestMapping(value = "login${urlSuffix}")
+	public String loginPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/login";
+	}
+	
+	/**
+	 * 注册页面
+	 */
+	@RequestMapping(value = "register${urlSuffix}")
+	public String registerPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/register";
+	}
+	
+	/**
+	 * 个人信息
+	 */
+	@RequestMapping(value = "busInfo${urlSuffix}")
+	public String busInfo(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busInfo";
+	}
+	
+	/**
+	 * 家庭档案-list
+	 */
+	@RequestMapping(value = "busFamily${urlSuffix}")
+	public String busFamily(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busFamilyList";
+	}
+	
+	/**
+	 * 家庭档案修改-form
+	 */
+	@RequestMapping(value = "busFamilyForm${urlSuffix}")
+	public String busFamilyForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/register";
+	}
+	
+	/**
+	 * 健康档案-list
+	 */
+	@RequestMapping(value = "busHealth${urlSuffix}")
+	public String busHealth(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busHealthList";
+	}
+	
+	/**
+	 * 个人积分－form
+	 */
+	@RequestMapping(value = "busPoint${urlSuffix}")
+	public String busPoint(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busPoint";
+	}
+	
+	/**
+	 * 个人收藏－list
+	 */
+	@RequestMapping(value = "busCollect${urlSuffix}")
+	public String busCollect(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busCollectList";
+	}
+	
+	/**
+	 * 预订商家－list
+	 */
+	@RequestMapping(value = "busOrder${urlSuffix}")
+	public String busOrder(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busOrderList";
+	}
+	
+	/**
+	 * 密码修改－form
+	 */
+	@RequestMapping(value = "busPswd${urlSuffix}")
+	public String busPswdForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busPswdForm";
+	}
+	
+	
+}

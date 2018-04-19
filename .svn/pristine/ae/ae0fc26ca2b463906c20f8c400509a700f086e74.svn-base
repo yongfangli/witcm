@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.business.dao.OrdersDao">
+    
+	<sql id="ordersColumns">
+		a.id AS "id",
+		a.resident_id AS "resident.id",
+		a.business_id AS "businessId",
+		a.goods_id AS "goods.id",
+		a.code AS "code",
+		a.numbers AS "numbers",
+		a.units AS "units",
+		a.status AS "status",
+		a.com_status AS "comStatus",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongArea",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		g.full_name AS "goods.fullName",
+		o.name AS "belongOrg.name",
+		r.name AS "resident.name",
+		r.telphone AS "resident.telphone",
+		r.building_no AS "resident.buildingNo"
+	</sql>
+	
+	<sql id="ordersJoins">
+		LEFT JOIN sys_office o ON o.id = a.belong_org_id
+		LEFT JOIN sc_goods g ON g.id = a.goods_id
+		LEFT JOIN sc_resident r ON r.id = a.resident_id
+	</sql>
+    
+	<select id="get" resultType="Orders">
+		SELECT 
+			<include refid="ordersColumns"/>
+		FROM sc_orders a
+		<include refid="ordersJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Orders">
+		SELECT 
+			<include refid="ordersColumns"/>
+		FROM sc_orders a
+		<include refid="ordersJoins"/>
+		<where>
+			
+			<if test="resident != null and resident.id != null and resident.id != ''">
+				AND a.resident_id = #{resident.id}
+			</if>
+			<if test="businessId != null and businessId != ''">
+				AND a.business_id = #{businessId}
+			</if>
+			<if test="goods != null and goods.id != null and goods.id != ''">
+				AND a.goods_id = #{goods.id}
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code LIKE 
+					<if test="dbName == 'oracle'">'%'||#{code}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{code}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{code},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Orders">
+		SELECT 
+			<include refid="ordersColumns"/>
+		FROM sc_orders a
+		<include refid="ordersJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_orders(
+			id,
+			resident_id,
+			business_id,
+			goods_id,
+			code,
+			numbers,
+			units,
+			status,
+			com_status,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{resident.id},
+			#{businessId},
+			#{goods.id},
+			#{code},
+			#{numbers},
+			#{units},
+			#{status},
+			#{comStatus},
+			#{belongOrg.id},
+			#{belongArea},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_orders SET 	
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_orders
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateFront">
+		UPDATE sc_orders SET 	
+			status = #{status},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	<update id="updateComStatusFront">
+		UPDATE sc_orders SET 	
+			com_status = #{comStatus},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+</mapper>

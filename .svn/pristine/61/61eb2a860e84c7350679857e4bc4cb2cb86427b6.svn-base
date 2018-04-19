@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.resident.dao.HealthRecordDao">
+    
+	<sql id="healthRecordColumns">
+		a.id AS "id",
+		a.resident_id AS "residentId",
+		a.family_user_id AS "familyUser.id",
+		a.bloods AS "bloods",
+		a._bloods As "tbloods",
+		a.cholesterol AS "cholesterol",
+		a.triglyceride AS "triglyceride",
+		a.cholest AS "cholest",
+		a.fast_bloods AS "fastBloods",
+		a.one_bloods AS "oneBloods",
+		a.two_bloods AS "twoBloods",
+		a.doctor_advice AS "doctorAdvice",
+		a.test_date AS "testDate",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongArea",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		f.name AS "familyUser.name",
+		o.name AS "belongOrg.name"
+	</sql>
+	
+	<sql id="healthRecordJoins">
+	LEFT JOIN sc_family_users f ON f.id=a.family_user_id
+	LEFT JOIN sys_office o ON o.id=a.belong_org_id
+	</sql>
+    
+	<select id="get" resultType="HealthRecord">
+		SELECT 
+			<include refid="healthRecordColumns"/>
+		FROM sc_health_record a
+		<include refid="healthRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="HealthRecord">
+		SELECT 
+			<include refid="healthRecordColumns"/>
+		FROM sc_health_record a
+		<include refid="healthRecordJoins"/>
+		<where>
+			<if test="familyUser != null and familyUser.id != null and familyUser.id != ''">
+				AND a.family_user_id = #{familyUser.id}
+			</if>
+			<if test="familyUser != null and familyUser.name != null and familyUser.name != ''">
+				AND f.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{familyUser.name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{familyUser.name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{familyUser.name},'%')</if>
+			</if>
+			<if test="belongOrg != null and belongOrg.id  != '' and belongOrg.id  != null">
+				AND (a.belong_org_id = #{belongOrg.id} or 
+				a.belong_org_id in (select id from sys_office so where find_in_set(#{belongOrg.id},so.parent_ids)>0))
+			</if>
+			<if test="residentId != null and residentId != ''">
+				AND a.resident_id = #{residentId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="HealthRecord">
+		SELECT 
+			<include refid="healthRecordColumns"/>
+		FROM sc_health_record a
+		<include refid="healthRecordJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_health_record(
+			id,
+			resident_id,
+			family_user_id,
+			bloods,
+			_bloods,
+			cholesterol,
+			triglyceride,
+			cholest,
+			fast_bloods,
+			one_bloods,
+			two_bloods,
+			doctor_advice,
+			test_date,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{residentId},
+			#{familyUser.id},
+			#{bloods},
+			#{tbloods},
+			#{cholesterol},
+			#{triglyceride},
+			#{cholest},
+			#{fastBloods},
+			#{oneBloods},
+			#{twoBloods},
+			#{doctorAdvice},
+			#{testDate},
+			#{remarks},
+			#{belongOrg.id},
+			#{belongArea},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_health_record SET 
+			resident_id = #{residentId},	
+			family_user_id = #{familyUser.id},
+			bloods = #{bloods},
+			_bloods=#{tbloods},
+			cholesterol = #{cholesterol},
+			triglyceride = #{triglyceride},
+			cholest = #{cholest},
+			fast_bloods = #{fastBloods},
+			one_bloods = #{oneBloods},
+			two_bloods = #{twoBloods},
+			doctor_advice = #{doctorAdvice},
+			test_date = #{testDate},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrg.id},
+			belong_area_id = #{belongArea}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_health_record
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

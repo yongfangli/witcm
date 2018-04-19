@@ -1,0 +1,61 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人中心－个人积分</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/point.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+		$(function(){
+		   $("#resPoint").addClass("dvCheck");
+	   });
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="resMenu.jsp" />
+        
+        <div id="dvContentRight">
+            <div id="dvInner">
+                <table>
+                    <tr>
+                        <td class="title">总积分</td>
+                        <td>
+                            <input type="text" disabled="disabled" id="txtCount" value="200" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title">已用积分</td>
+                        <td>
+                            <input type="text" disabled="disabled" id="txtRest"  value="150" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="title">可用积分</td>
+                        <td>
+                            <input type="text" disabled="disabled" id="txtOut"  value="50" />
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td colspan="2" class="tb_btn">
+                            <button class="conis">积分兑换</button>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

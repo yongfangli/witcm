@@ -1,0 +1,84 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<%@ taglib prefix="sitemesh" uri="http://www.opensymphony.com/sitemesh/decorator" %>
+<!DOCTYPE html>
+<html>
+<head>
+	<title><sitemesh:title default="欢迎光临"/> - ${site.title} - Powered By 电信江西分公司</title>
+	<%@include file="/WEB-INF/views/modules/cms/front/include/head_center.jsp" %>
+	<!-- Baidu tongji analytics --><script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="//hm.baidu.com/hm.js?82116c626a8d504a5c0675073362ef6f";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script>
+	<sitemesh:head/>
+	<script type="text/javascript">
+		
+	</script>
+</head>
+<body>
+	 <!--头部-->
+	   <div class="top">
+			<div class="top_left">
+			<img src="${ctxStaticTheme}/images/logo.png" class="top_left_img">
+				<b class="img_font">井冈山智慧社区</b>
+			</div>
+			
+			<div class="top_right">
+			   <div class="top_right_login">
+					<!-- <input type="button" value="登录" class="top_login"/>
+					<input type="button" value="注册" class="top_reg"/> -->
+				</div>	
+				
+				<div class="top_right_img">
+				  <div class="top_weixin">
+					<img src="${ctxStaticTheme}/images/weixin.png">
+				  </div>	
+				  <div style="float:right">
+					<img src="${ctxStaticTheme}/images/app.png" style="float:right">
+				  </div>	
+				</div>
+				
+			</div>
+	   </div>
+		<!--导航条-->
+		<div class="navi_div">
+			<div class="navi_middle">
+				<ul>
+				  <li class="li"><div style="height:16px"></div><a href="${ctx}/index-1${fns:getUrlSuffix()}">首页</a></li>
+				  <li class="li"><div style="height:16px"></div><a href="${ctx}/newsList${fns:getUrlSuffix()}">社区新闻</a></li>
+				  <li class="li"><div style="height:16px"></div><a href="${ctx}/newsList${fns:getUrlSuffix()}">社区动态</a></li>
+				  <li class="li"><div style="height:16px"></div><a href="${ctx}/fmList${fns:getUrlSuffix()}">社区风貌</a></li>
+				  <li class="li"><div style="height:16px"></div><a>办事指南</a></li>
+				  <li class="li"><div style="height:16px"></div><a>法律咨询</a></li>
+				  <li class="li"><div style="height:16px"></div><a>时速要闻</a></li>
+				  <li class="li"><div style="height:16px"></div><a>社区互动</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div>
+			<sitemesh:body/>
+		</div>
+    
+     <!--友情链接-->
+       <div style="height:25px"></div>
+       <div class="friend_link">
+           <ul>
+              <li class="lianjieli">友情链接：</li>
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+              <li class="lianjieli"><a>政府官网</a></li> 
+           </ul>
+       </div>
+     <!--底部-->  
+     <div class="company_bottom">
+           <div style="height:20px"></div>
+           ${site.copyright}
+     </div>
+</body>
+</html>

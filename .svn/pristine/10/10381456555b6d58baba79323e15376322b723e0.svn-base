@@ -1,0 +1,77 @@
+<%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><meta name="author" content="http://jeesite.com/"/>
+<meta name="renderer" content="webkit"><meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
+<meta http-equiv="Expires" content="0"><meta http-equiv="Cache-Control" content="no-cache"><meta http-equiv="Cache-Control" content="no-store">
+<script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/bootstrap/2.3.1/css_${not empty cookie.theme.value&&cookie.theme.value!='null' ? cookie.theme.value : 'cerulean'}/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/bootstrap/2.3.1/awesome/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<!--[if lte IE 7]><link href="${ctxStatic}/bootstrap/2.3.1/awesome/font-awesome-ie7.min.css" type="text/css" rel="stylesheet" /><![endif]-->
+<!--[if lte IE 6]><link href="${ctxStatic}/bootstrap/bsie/css/bootstrap-ie6.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/bootstrap/bsie/js/bootstrap-ie.min.js" type="text/javascript"></script><![endif]-->
+<link rel="shortcut icon" href="${ctxStatic}/images/favicon.ico" type="image/x-icon" />
+<link href="${ctxStatic}/jquery-select2/3.4/select2.min.css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-select2/3.4/select2.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/jquery-validation/1.11.0/jquery.validate.min.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-validation/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+<script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>
+<script type="text/javascript">
+var ctx = '${ctx}', ctxStatic='${ctxStatic}';
+$(document).ready(function(){
+	var txt=$(".my-content").text();
+	if(txt.length>10){
+		$(".my-content").empty().text(txt.trim().substring(0,20)+".....");
+	}
+});
+jQuery.validator.addMethod("isMobile", function(value, element) {
+    var length = value.length;
+    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+    return this.optional(element) || (length == 11 && mobile.test(value));
+}, "请正确填写您的手机号码");
+
+jQuery.validator.addMethod("isMobileAndHome", function(value, element) {
+	var mobile = /(^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$)|(^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$)/;
+    return this.optional(element) || (mobile.test(value));
+}, "请正确填写您的联系方式");
+
+jQuery.validator.addMethod("ishome", function(value, element) {
+    var home=/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+    return this.optional(element) || (home.test(value));
+}, "请正确填写您的家庭电话");	
+
+jQuery.validator.addMethod("isfloat", function(value, element) {
+    var home=/^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$/;
+    return this.optional(element) || home.test(value);
+}, "格式错误");	
+
+jQuery.validator.addMethod("isbuild", function(value, element) {
+    var build=/^\d{2}-\d{2}-[0-9]{1,}$/;
+    return this.optional(element) || (build.test(value));
+}, "请正确填写您的楼栋号");	 
+jQuery.validator.addMethod("isidcard", function(value, element) {
+	 var idcard=/(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/;
+	 return this.optional(element) ||(idcard.test(value));
+	}, "请输入正确的身份证号");
+jQuery.validator.addMethod("isqq", function(value, element) {
+		 var qq=/^[0-9]{1,}$/;
+		 return this.optional(element) ||(qq.test(value));
+		}, "qq号格式不对");
+jQuery.validator.addMethod("isborth", function(value, element) {
+	var reg=/^((?:19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|1[1-9]|2[1-9]|3[0-1])$/;
+	 return this.optional(element) ||(reg.test(value));
+	}, "出生年月格式不对");
+jQuery.validator.addMethod("isnumber", function(value, element) {
+	var reg=/(^[1-9](\d+)?(\.\d{1,2})?$)|(^(0){1}$)|(^\d\.\d{1,2}?$)/;
+	 return this.optional(element) ||(reg.test(value));
+	}, "请输入最多两位小数的数字");
+jQuery.validator.addMethod("isInt", function(value, element) {
+	var reg = /^\+?[1-9][0-9]*$/
+	 return this.optional(element) ||(reg.test(value));
+	}, "请输入正整数");
+
+</script>
+

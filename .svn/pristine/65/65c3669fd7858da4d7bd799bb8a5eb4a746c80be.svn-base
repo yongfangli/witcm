@@ -1,0 +1,91 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人中心－家庭档案</title>
+	<meta name="decorator" content="cms_business_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/center.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	$(function(){
+		$("#busHealth").addClass("dvCheck");
+	});
+	function page(n,s){
+		$("#pageNo").val(n);
+		$("#pageSize").val(s);
+		$("#searchForm").submit();
+    	return false;
+    }
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="menu.jsp" />
+        
+        <div id="dvContentRight" style="padding-top: 20px;">
+			<form:form id="searchForm" modelAttribute="healthRecord" action="${ctx}/bus/busHealth${fns:getUrlSuffix()}" method="post" class="breadcrumb form-search">
+				<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+				<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+			</form:form>
+        	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th width="10%">家属姓名</th>
+						<th width="10%">血压(mmHg)</th>
+						<th width="10%">总胆固醇(mmol/L)</th>
+						<th width="10%">甘油三酯(mmol/L)</th>
+						<th width="10%">胆固醇酯(mmol/L)</th>
+						<th width="10%">空腹血糖(mmol/L)</th>
+						<th width="12%">餐后1小时(mmol/L)</th>
+						<th width="12%">餐后2小时(mmol/L)</th>
+						<th width="8%">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${page.list}" var="healthRecord">
+					<tr>
+						<td>
+							${healthRecord.familyUser.name}
+						</td>
+						<td>
+							${healthRecord.bloods}
+						</td>
+						<td>
+							${healthRecord.cholesterol}
+						</td>
+						<td>
+							${healthRecord.triglyceride}
+						</td>
+						<td>
+							${healthRecord.cholest}
+						</td>
+						<td>
+							${healthRecord.fastBloods}
+						</td>
+						<td>
+							${healthRecord.oneBloods}
+						</td>
+						<td>
+							${healthRecord.twoBloods}
+						</td>
+						<td>
+		    				<a href="${ctx}/bus/busFamilyForm${fns:getUrlSuffix()}">详情</a>
+						</td>
+					</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<div class="pagination">${page}</div>
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

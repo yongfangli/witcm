@@ -1,0 +1,65 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>新闻详情</title>
+	<link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/CommunityNews03.css"/>
+     <%@ include file="/WEB-INF/views/client/include/head.jsp"%>
+     <style>
+     .content{
+     padding-left:10px;
+     height:400px;
+     
+     }
+     </style>
+</head>
+	<body>
+		<div id="out">
+			<h3>${article.title}</h3>
+			<hr color="#DADADA"/>
+			<div class="author">
+				<span>发布人：${article.user.name}</span>
+				<span>发布时间：<fmt:formatDate value="${article.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+				<%-- <span>
+					<img src="${ctxStatic}/client/img/fenxiang.jpg"/>
+					我要分享
+					<img src="${ctxStatic}/client/img/jiantou.jpg"/>
+				</span> --%>
+			</div>
+			<div class="div_center">
+				<div class="div_center_1">
+					<img src="${article.image}"/>
+				</div>
+				<div class="content">
+		              ${article.articleData.content}
+		         </div>
+			</div>
+			<div class="bottom">
+				<div class="bottom_left">
+				<c:if test="${null!=pre }">
+					<a href="${ctxClient}/articleDetail${fns:getUrlSuffix()}/${pre.id}/?pageName=communityNewsDetail"> <上一篇 </a>
+					${pre.title}
+					</c:if>
+					<c:if test="${null==pre }">
+					
+					<a href="javascript:void(0);">上一篇</a>
+					没有了
+					</c:if>
+				</div>
+				<div class="bottom_right">
+				<c:if test="${null!=next}">
+				    ${next.title}
+					<a href="${ctxClient}/articleDetail${fns:getUrlSuffix()}/${next.id}/?pageName=communityNewsDetail"> <下一篇 </a>
+					
+					</c:if>
+					<c:if test="${null==next}">
+					没有了
+					<a href="javascript:void(0);">下一篇</a>
+					</c:if>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

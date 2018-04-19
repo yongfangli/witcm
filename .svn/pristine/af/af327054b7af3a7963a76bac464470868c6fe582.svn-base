@@ -1,0 +1,58 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人中心－密码修改</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/center.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	$(function(){
+		   $("#resPswd").addClass("dvCheck");
+	});
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="resMenu.jsp" />
+        
+        <div id="dvContentRight" style="padding-top: 20px;">
+        
+        <form:form id="inputForm" action="${ctx}/guestbook" method="post" class="form-horizontal">
+	        
+        	<div class="control-group">
+				<label class="control-label">旧密码:</label>
+				<div class="controls">
+					<input type="text" name="name" maxlength="11" class="required" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">新密码:</label>
+				<div class="controls">
+					<input type="text" name="email" maxlength="50" class="required email" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">确认密码:</label>
+				<div class="controls">
+					<input type="text" name="phone" maxlength="50" class="required phone" style="width:300px;"/>
+				</div>
+			</div>
+			<div class="form-actions">
+				<input class="btn" type="button" value="提 交"/>&nbsp;
+			</div>
+        
+        </form:form>
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

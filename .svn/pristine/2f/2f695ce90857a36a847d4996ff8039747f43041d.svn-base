@@ -1,0 +1,195 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>智慧社区首页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/index.css" rel="stylesheet" type="text/css">  
+    <script src='${ctxStaticMobile}/js/hhSwipe.js' type="text/javascript"></script> 
+</head>
+<body>
+<div class="wrap_box">
+<!--头部部分开始-->
+<div style="height:16vh;text-align:center">
+	<img src="${ctxStaticMobile}/images/index/logo1.png" class="logo"/>
+    <p class="title">智慧社区微门户</p>
+</div>
+<div style="clear:both"></div>
+<!--头部部分结束-->     
+<!--banner图开始-->     
+<div class="addWrap">
+       <div class="swipe" id="mySwipe">
+             <div class="swipe-wrap">
+                  <div><a href="yu.html"><img class="img-responsive" src="${ctxStaticMobile}/images/index/lunbo.png"/></a></div>
+                  <div><a href="liushi.html"><img class="img-responsive" src="${ctxStaticMobile}/images/index/lunbo.png" /></a></div>
+                  <div><a href="shu.html"><img class="img-responsive" src="${ctxStaticMobile}/images/index/lunbo.png"/></a></div>
+             </div>
+            </div>
+	      <!--按转换按钮开始-->
+            <ul id="position">
+                   <li class="cur"></li>
+                   <li></li>
+                   <li></li>
+            </ul>
+          <!--按转换按钮结束-->  
+</div>
+<script type="text/javascript">
+	var bullets = document.getElementById('position').getElementsByTagName('li');
+	var banner = Swipe(document.getElementById('mySwipe'), {
+		auto: 4000,
+		continuous: true,
+		disableScroll:false,
+		callback: function(pos) {
+			var i = bullets.length;
+			while (i--) {
+				bullets[i].className = ' ';
+			}
+			bullets[pos].className = 'cur';
+		}
+     })
+</script>
+<!--banner结束-->
+<div class="gonggao">
+	<div class="gonggaoimg">
+      <div class="img">
+        <img src="${ctxStaticMobile}/images/index/gonggao.png" style="height:100%;">
+      </div>
+      <p class="scoll_p">&emsp;优质大米竞销抛售，快来社区商超枪迷吧！</p>
+    </div>
+</div>
+<div style="height:0.5rem;"></div>
+<div class="footer_box" style="background:#FFF;height:1.6rem">
+     <a href=""><img src="${ctxStaticMobile}/images/index/index1.png" style="margin-top:.10rem"/>政务公开</a>
+     <a href=""><img src="${ctxStaticMobile}/images/index/index2.png" style="margin-top:.10rem"/>养老服务</a>
+     <a href=""><img src="${ctxStaticMobile}/images/index/index3.png"/ style="margin-top:.10rem">社会治理</a>
+</div>
+<div class="footer_box" style="background:#FFF;height:1.6rem">
+     <a href=""><img src="${ctxStaticMobile}/images/index/index4.png" style="margin-top:.10rem"/>儿童教育</a>
+     <a href=""><img src="${ctxStaticMobile}/images/index/index5.png" style="margin-top:.10rem"/>社区互动</a>
+     <a href=""><img src="${ctxStaticMobile}/images/index/index6.png" style="margin-top:.10rem"/>红色旅游</a>
+</div>
+<div style="height:0.2rem;background:#CCC"></div>
+<div style="width:92vw;height:6vh;border-bottom:1px solid #CCC;margin:0px auto">
+  <p style="line-height:6vh; font-size:1.2em;color:#F00">社区动态</p>
+</div>
+<!---内容开始-->
+<ul class="cgal_list">
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+   <li class="show_box"><img src="${ctxStaticMobile}/images/new_img.png"/>
+       <div class="cgal_list_text">
+            <p>机遇与挑战并存 因地制宜发展智慧社区 发展智慧社区</p>
+            <div style="color:#999">
+               发布人：会师路社区编辑部<br/>发布时间：2017-12-12 15：00:00
+            </div>
+       </div>
+   </li>
+</ul>
+<div style="height:0.2rem;background:#CCC;margin-top:2vh"></div>
+<div style="width:96vw;height:14vh;"></div>
+<div class="footer_box" style=" position: fixed; bottom:0;width:100%">
+     <a href=""><img src="${ctxStaticMobile}/images/bottom/pagehome2.png"/>首页</a>
+     <a href=""><img src="${ctxStaticMobile}/images/bottom/service1.png"/>发现</a>
+     <a href=""><img src="${ctxStaticMobile}/images/bottom/me1.png"/>我的</a>
+</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

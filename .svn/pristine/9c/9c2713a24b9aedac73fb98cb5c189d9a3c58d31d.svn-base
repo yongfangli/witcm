@@ -1,0 +1,126 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/index.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	/* 长宽占位 rem算法, 根据root的rem来计算各元素相对rem, 默认html 320/20 = 16px */
+	 function placeholderPic(){
+	 	var w = document.documentElement.offsetWidth;
+	 	document.documentElement.style.fontSize=w/100+'px';
+	 }
+	 placeholderPic();
+	 window.onresize=function(){
+	 	placeholderPic();
+	 };
+	</script>
+	
+</head>
+<body>
+    <div class="bigdiv">
+   	 <!--头部-->
+     <div class="top">
+          <div class="conLe"> 
+            <img src="${ctxStaticTheme}/images/logo.png" class="logo"/>
+            <span class="top_title">井冈山智慧社区</span>
+          </div>
+          <div class="conRi"> 
+            <img src="${ctxStaticItv}/images/login.png" class="loginimg"/>
+            <span class="border"></span>
+            <span class="content">吉安</span>
+            <img src="${ctxStaticItv}/images/sunlignt.png" class="loginimg" style="margin-left:0.6vw;"/> 
+            <span class="content">晴</span>
+            <span class="content">16°C</span>
+            
+            <span class="content">2018.01.08</span>
+            <span class="content">星期四</span>
+            <span class="border"></span>
+            <span class="times">09:00</span>
+          </div>
+     </div>
+     <div class="clear"></div>
+     <!--中间--> 
+     <div class="middle">
+        <div class="but_left"><</div>
+        <div class="mid_con">
+            <div class="contentList">
+               <div class="con_top"  style="background:#008BCC" onclick="window.location.href='${ctx}/itv/list'">
+                 <div class="con_top1">
+                 <img src="${ctxStaticItv}/images/goindex.png" class="content_img" />
+                 <br/><br/>
+              	 <p>走进红星</p>
+                  </div>
+               </div>
+               <div class="con_bom" style="background:#E25A68">
+                 <img src="${ctxStaticItv}/images/hui.png" class="content_img" />
+                 <br/><br/>
+              	 <p>会师路社区</p> 
+               </div>
+            </div>
+            <div class="city" style="background:#FEC200">
+         	  <img src="${ctxStaticItv}/images/city.png" class="cityimg"/>
+              <br/><br/>
+              <p>城区一览</p>
+            </div>
+            <div class="contentList">
+               <div class="con_top" style="background:#4A991C">
+                 <img src="${ctxStaticItv}/images/jie.png" class="content_img" />
+                 <br/><br/>
+              	 <p>街道办事</p>
+               </div>
+               <div class="con_bom" style="background:#4A991C">
+                 <img src="${ctxStaticItv}/images/hui.png" class="content_img" />
+                 <br/><br/>
+              	 <p>龙江路社区</p> 
+               </div>
+            </div>
+            <div class="contentList">
+               <div class="con_top" style="background:#3D9972">
+                 <img src="${ctxStaticItv}/images/she.png" class="content_img" />
+                 <br/><br/>
+              	 <p>社区办事</p>
+               </div>
+               <div class="con_bom" style="background:#FF6606">
+                 <img src="${ctxStaticItv}/images/hui.png" class="content_img" />
+                 <br/><br/>
+              	 <p>映山红社区</p> 
+               </div>
+            </div>
+        </div>
+        <div class="but_left">></div>
+     </div>
+     <!--底部-->
+     <div class="bottom">
+     	  <div class="bomCon">
+             <!--开始循环-->
+             <div class="bomHref bomHrefAct" onclick="window.location.href='${ctx}/itv'">
+                  <p>政务公开</p>
+             </div> 
+             <div class="bomHref">
+                  <p>养老服务</p>
+             </div> 
+             <div class="bomHref">
+                  <p>社会治理</p>
+             </div> 
+             <div class="bomHref">
+                  <p>便民服务</p>
+             </div> 
+             <div class="bomHref">
+                  <p>社区互动</p>
+             </div> 
+             <div class="bomHref" onclick="window.location.href='${ctx}/itv/tour'">
+                  <p>红色旅游</p>
+             </div> 
+             <div class="bomHref">
+                  <p>儿童教育</p>
+             </div> 
+             <!--循环结束-->
+          </div>
+     </div> 
+     
+   </div>
+</body>
+</html>

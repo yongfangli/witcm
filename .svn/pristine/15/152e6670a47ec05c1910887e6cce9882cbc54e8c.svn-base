@@ -1,0 +1,47 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Collect;
+import com.thinkgem.jeesite.modules.witcm.resident.dao.CollectDao;
+
+/**
+ * 收藏Service
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Service
+@Transactional(readOnly = true)
+public class CollectService extends CrudService<CollectDao, Collect> {
+
+	public Collect get(String id) {
+		return super.get(id);
+	}
+	
+	public List<Collect> findList(Collect collect) {
+		return super.findList(collect);
+	}
+	
+	public Page<Collect> findPage(Page<Collect> page, Collect collect) {
+		return super.findPage(page, collect);
+	}
+	
+	@Transactional(readOnly = false)
+	public void save(Collect collect) {
+		super.save(collect);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(Collect collect) {
+		super.delete(collect);
+	}
+	
+}

@@ -1,0 +1,72 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<link href="${ctxStaticItv}/css/userInfo.css" type="text/css" rel="stylesheet" />
+	<link rel="stylesheet" href="${ctxStaticItv}/css/common.css" />
+	<script type="text/javascript">
+	/* 长宽占位 rem算法, 根据root的rem来计算各元素相对rem, 默认html 320/20 = 16px */
+	 function placeholderPic(){
+	  var w = document.documentElement.offsetWidth;
+	  document.documentElement.style.fontSize=w/100+'px';
+	 }
+	 placeholderPic();
+	 window.onresize=function(){
+	  placeholderPic();
+	 };
+	</script>
+</head>
+<body>
+    <div class="bigdiv">
+    <!--左边列表-->
+    <div class="list_left">
+       <div class="title"><a href="${ctx}/itv/userMenu"><img class="return" src="${ctxStaticItv }/images/return.png" ></img></a> 个人信息</div>
+       <p><img src="${resident.imagesId }" class="headr" /></p>
+       <p class="welcome">欢迎你</p>
+       <p class="nickname">${resident.name }</p>
+       <p><input type="button" class="close" value="退出" onclick="window.location.href='${ctx}/itv/exits'"></p>
+        <div style="height:25vh"></div>
+       <p class="xinxin">Copyright @ 2017-2018</p>
+       <p class="xinxin">井冈山智慧社区 V1.0- Powered By</p>
+       <p class="xinxin">江西电信信息产业有限共识&技术支持</p>
+    </div>
+    <!--右边文章-->
+    <div class="left_user">
+        <table style="width:70vw;height:80vh;margin:0px auto;margin-top:10vh">
+            <tr>
+               <td class="titleName">姓名:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.name }"></td>
+               <td class="titleName">性别:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${fns:getDictLabel(resident.gender, 'gender', '')}"></td>
+            </tr>
+            <tr>
+               <td class="titleName">手机号码:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.telphone }"></td>
+               <td class="titleName">家庭号码:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.phone }"></td>
+            </tr>
+            <tr>
+               <td class="titleName">QQ号:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.qqNo }"></td>
+               <td class="titleName">身份证号:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.identityNo }"></td>
+            </tr>
+            <tr>
+               <td class="titleName">所在小区:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.belongOrg.name }"></td>
+               <td class="titleName">楼栋号:</td>
+               <td><input type="text" class="content" readonly="readonly" value="${resident.buildingNo }"></td>
+            </tr>
+            <tr style="height:35vh">
+               <td class="titleName">个人简介:</td>
+               <td colspan="3">
+                 <textarea class="textarea" readonly="readonly">${resident.personDesc }</textarea>
+               </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

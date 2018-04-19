@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.resident.dao.ConsultDao">
+    
+	<sql id="consultColumns">
+		a.id AS "id",
+		a.user_id AS "resident.id",
+		a.user_name AS "userName",
+		a.user_types AS "userTypes",
+		a.titles AS "titles",
+		a.delete_flag AS "deleteFlag",
+		a.contents AS "contents",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongAreaId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		r.name AS "resident.name",
+		o.name AS "belongOrg.name"
+	</sql>
+	
+	<sql id="consultJoins">
+	LEFT JOIN sys_office o ON o.id=a.belong_org_id
+	LEFT JOIN sc_resident r ON r.id=a.user_id
+	</sql>
+    
+	<select id="get" resultType="Consult">
+		SELECT 
+			<include refid="consultColumns"/>
+		FROM sc_consult a
+		<include refid="consultJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Consult">
+		SELECT 
+			<include refid="consultColumns"/>
+		FROM sc_consult a
+		<include refid="consultJoins"/>
+		<where>
+			
+			<if test="resident != null and resident.id != null and resident.id != ''">
+				AND a.user_id = #{resident.id}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name = #{userName}
+			</if>
+			<if test="userTypes != null and userTypes != ''">
+				AND a.user_types = #{userTypes}
+			</if>
+			<if test="titles != null and titles != ''">
+				AND a.titles LIKE 
+				    <if test="dbName == 'oracle'">'%'||#{titles}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{titles}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{titles},'%')</if> 
+			</if>
+			<if test="belongOrg != null and belongOrg.id  != '' and belongOrg.id  != null">
+				AND (a.belong_org_id = #{belongOrg.id} or 
+				a.belong_org_id in (select id from sys_office so where find_in_set(#{belongOrg.id},so.parent_ids)>0))
+			</if>
+			<if test="contents != null and contents != ''">
+				AND a.contents LIKE
+				    <if test="dbName == 'oracle'">'%'||#{contents}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{contents}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{contents},'%')</if>  
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Consult">
+		SELECT 
+			<include refid="consultColumns"/>
+		FROM sc_consult a
+		<include refid="consultJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_consult(
+			id,
+			user_id,
+			user_name,
+			user_types,
+			titles,
+			delete_flag,
+			contents,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{resident.id},
+			#{userName},
+			#{userTypes},
+			#{titles},
+			#{deleteFlag},
+			#{contents},
+			#{belongOrg.id},
+			#{belongAreaId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_consult SET 	
+			user_id = #{resident.id},
+			user_name = #{userName},
+			user_types = #{userTypes},
+			titles = #{titles},
+			contents = #{contents},
+			belong_org_id = #{belongOrg.id},
+			belong_area_id = #{belongAreaId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_consult
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,99 @@
+@charset "utf-8";
+/**********************右边主容器**********************/
+
+#dvContentRight #dvInner {
+    width: 100%;
+    margin-top: 60px;
+}
+
+#dvContentRight #dvInner table {
+    width: 920px;
+    margin: 0px auto;
+}
+
+#dvContentRight #dvInner table td {
+    height: 50px;
+}
+
+/*标题列*/
+#dvContentRight #dvInner table td.title {
+    height: 35px;
+    padding: 10px;
+    font-size: 14px;
+    color: #4e4e4e;
+    font-family: 宋体;
+    font-weight: bold;
+    text-align: right;
+}
+
+#dvContentRight #dvInner table td input
+{
+    height:35px;
+    border-radius: 8px;
+    text-align:center;
+    border:0px;
+}
+
+#dvContentRight #dvInner table td #txtCount
+{
+    background:#45ab83;
+}
+
+#dvContentRight #dvInner table td #txtRest
+{
+    width:520px;
+    background:#f16f71;
+}
+
+#dvContentRight #dvInner table td #txtOut
+{
+    width:180px;
+    background:#fed472;
+}
+
+#dvContentRight #dvInner table td.tb_btn {
+    text-align: center;
+    padding-top: 100px;
+}
+
+#dvContentRight #dvInner table button.conis {
+    width: 260px;
+    height: 40px;
+    background: #ec3b3b;
+    border-radius: 10px;
+    color: #feffff;
+	border:1px;
+}
+
+.Bar1,.Bar3,.Bar2 {
+    position: relative;
+    width: 600px;
+    border: 1px solid #ccc;
+    padding: 1px;
+    border-radius: 8px;
+    height: 30px;
+}
+.Bar1 div,.Bar2 div,.Bar3 div {
+    display: block;
+    position: relative;
+    color: #333333;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 8px;
+    height: 30px;
+}
+.Bar1 div span,.Bar2 div span,.Bar3 div span{
+    position: absolute;
+    width: 600px;
+    text-align: center;
+    line-height: 28px;
+}
+.Bar1 div{
+    background: #45ab83;
+}
+.Bar2 div{
+    background: #f16f71;
+}
+.Bar3 div{
+    background: #fed472;
+}

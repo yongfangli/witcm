@@ -1,0 +1,31 @@
+.more{       display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:#009966;
+    color: #dae0de;
+    height: 35px;
+    position: absolute;
+    left: 0;
+    right: 0;
+        bottom: 0;
+    text-align: center;
+      }
+       .opacity{
+        -webkit-animation: opacity 0.3s linear;
+        animation: opacity 0.3s linear;
+    }
+    @-webkit-keyframes opacity {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }
+    }
+    @keyframes opacity {
+        0% {
+            opacity:0;
+        }
+        100% {
+            opacity:1;
+        }

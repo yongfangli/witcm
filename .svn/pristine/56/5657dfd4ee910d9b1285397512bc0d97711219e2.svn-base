@@ -1,0 +1,285 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>首页</title>
+	<meta name="decorator" content="cms_default_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	<link rel="stylesheet" type="text/css" href="${ctxStaticTheme}/css/business.css"/>
+	<script src="${ctxStaticTheme}/js/paging.min.js" type="text/javascript"></script>
+	 <style>
+	 .contents{
+	   display:inline-block;
+	 }
+	 </style>
+</head>
+<body>
+
+		<div style="height:25px;padding-left: 393px; padding-top: 10px;
+    padding-bottom: 40px;
+    background: azure;">
+		当前位置：周边商家
+		</div>
+		<div id="b-top">
+			<div class="div_first">
+				<span class="span_first">商家类别：</span>
+				<span class="all">全部</span>
+				<span>急开锁店</span>
+				<span>银行网点</span>
+				<span>外卖餐馆</span>
+				<span>社区商超</span>
+				<span>社区卫生所</span>
+				<span>家电维修店</span>
+				<span>社区卫生所</span>
+			</div>
+			<div class="div_first">
+				<span class="span_first">区域划分：</span>
+				<span class="all">全部</span>
+				<span>东湖区</span>
+				<span>西湖区</span>
+				<span>红谷滩新区</span>
+				<span>青山湖区</span>
+				<span>青云谱区</span>
+				<span>新建县</span>
+				<span>湾里区</span>
+			</div>
+			<div class="div_first div_last">
+				<span class="span_first">排序：</span>
+				<span class="all">全部</span>
+				<span>好评↑</span>
+				<span>收藏量↑</span>
+				<span>距离↓</span>
+			</div>
+			
+			<div class="content">
+				<div class="div_img">
+					<img src="img/02.png"/>
+				</div>
+				<div class="content_info">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="700px"><span>开锁王 </span><span class="wujiaoxingR">&#9733; &#9733; &#9733; &#9733; &#9733;</span></td>
+							<td width="200px">
+								<img src="img/liulan.jpg"/>168
+								<img src="img/weixin.jpg" />68
+							</td>
+							<td rowspan="3">
+								<a href="#">详情</a>
+								<a href="#" style="margin-top: 10px;">收藏</a>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding-top:10px;">
+								电话：0791-88888888
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">地址：南昌市红谷滩新区红谷中大道1888号</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+			</div>
+			<div class="content">
+				<div class="div_img">
+					<img src="img/02.png"/>
+				</div>
+				<div class="content_info">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="700px"><span>华润万家 </span><span class="wujiaoxingR">&#9733; &#9733; &#9733; </span><span class="wujiaoxingG">&#9733; &#9733;</span></td>
+							<td width="200px">
+								<img src="img/liulan.jpg"/>168
+								<img src="img/weixin.jpg" />68
+							</td>
+							<td rowspan="3">
+								<a href="#">详情</a>
+								<a href="#" style="margin-top: 10px;">收藏</a>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding-top:10px;">
+								电话：0791-88888888
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">地址：南昌市红谷滩新区红谷中大道1888号</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+			</div>
+			<div class="content">
+				<div class="div_img">
+					<img src="img/02.png"/>
+				</div>
+				<div class="content_info">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="700px"><span>开锁王 </span><span class="wujiaoxingR">&#9733; &#9733; &#9733; &#9733; </span><span class="wujiaoxingG"> &#9733;</span></td>
+							<td width="200px">
+								<img src="img/liulan.jpg"/>168
+								<img src="img/weixin.jpg" />68
+							</td>
+							<td rowspan="3">
+								<a href="#">详情</a>
+								<a href="#" style="margin-top: 10px;">收藏</a>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding-top:10px;">
+								电话：0791-88888888
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">地址：南昌市红谷滩新区红谷中大道1888号</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+			</div>
+			<div class="content">
+				<div class="div_img">
+					<img src="img/02.png"/>
+				</div>
+				<div class="content_info">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="700px"><span>华润万家 </span><span class="wujiaoxingR">&#9733; &#9733; &#9733; &#9733; &#9733;</span></td>
+							<td width="200px">
+								<img src="img/liulan.jpg"/>168
+								<img src="img/weixin.jpg" />68
+							</td>
+							<td rowspan="3">
+								<a href="#">详情</a>
+								<a href="#" style="margin-top: 10px;">收藏</a>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding-top:10px;">
+								电话：0791-88888888
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">地址：南昌市红谷滩新区红谷中大道1888号</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+			</div>
+			<div class="content">
+				<div class="div_img">
+					<img src="img/02.png"/>
+				</div>
+				<div class="content_info">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="700px"><span>KFC </span><span class="wujiaoxingR">&#9733; &#9733; &#9733; &#9733; &#9733;</span></td>
+							<td width="200px">
+								<img src="img/liulan.jpg"/>168
+								<img src="img/weixin.jpg" />68
+							</td>
+							<td rowspan="3">
+								<a href="#">详情</a>
+								<a href="#" style="margin-top: 10px;">收藏</a>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding-top:10px;">
+								电话：0791-88888888
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">地址：南昌市红谷滩新区红谷中大道1888号</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+			</div>
+			<div class="content">
+				<div class="div_img">
+					<img src="img/02.png"/>
+				</div>
+				<div class="content_info">
+					<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+							<td width="700px"><span>维修店 </span><span class="wujiaoxingR">&#9733; &#9733; &#9733; &#9733; &#9733;</span></td>
+							<td width="200px">
+								<img src="img/liulan.jpg"/>168
+								<img src="img/weixin.jpg" />68
+							</td>
+							<td rowspan="3">
+								<a href="#">详情</a>
+								<a href="#" style="margin-top: 10px;">收藏</a>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="padding-top:10px;">
+								电话：0791-88888888
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">地址：南昌市红谷滩新区红谷中大道1888号</td>
+						</tr>
+					</table>
+				</div>
+				<hr />
+			</div>
+			<div class="box" id="box"></div>
+	
+	<script type="text/javascript">
+	
+	var talpage=${page.last};
+	var nowpage=${page.pageNo};
+     $('#box').paging({
+    	    initPageNo: ${page.pageNo}, // 初始页码
+    	    totalPages: ${page.last}, //总页数
+    	    totalCount:'共：'+ ${page.count}+'条数据', // 条目总数
+    	    slideSpeed: 600, // 缓动速度。单位毫秒 
+    	    callback: function(page){
+    	    	
+    	    }
+    	});
+    	$("#pageSelect li").click(function(){
+    		var pageNo=this.innerText;
+    		 var url='${ctx}'+"/convenient-list"+pageNo+"-8"+'${fns:getUrlSuffix()}';
+    		 window.location.href=url;
+    	});
+    	$("#nextPage").click(function(){
+    		if(nowpage==talpage){
+    			return;
+    		}
+    		else{
+    			var pageNo=nowpage+1;
+    			 var url='${ctx}'+"/convenient-list"+pageNo+"-8"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    		}
+    	})
+    	$("#prePage").click(function(){
+    		if(nowpage==1){
+    			return;
+    		}
+    		else{
+    			var pageNo=nowpage-1;
+    			 var url='${ctx}'+"/convenient-list"+pageNo+"-8"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    		}
+    	})
+    	$("#firstPage").click(function(){
+    			var pageNo=1;
+    			 var url='${ctx}'+"/convenient-list"+pageNo+"-8"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    	})
+    	$("#lastPage").click(function(){
+    			var pageNo=talpage;
+    			 var url='${ctx}'+"/convenient-list"+pageNo+"-8"+'${fns:getUrlSuffix()}';
+        		 window.location.href=url;
+    	})
+    	
+     </script> 
+		</div>
+		
+	</body>
+</html>

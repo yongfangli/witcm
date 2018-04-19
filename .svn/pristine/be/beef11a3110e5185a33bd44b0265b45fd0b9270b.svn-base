@@ -1,0 +1,45 @@
+package com.thinkgem.jeesite.client.auth;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+import com.mysql.fabric.xmlrpc.Client;
+
+public class ClientContext {
+	private ServletRequest request;
+	private ServletResponse response;
+	private FilterChain chain;
+
+	public ClientContext(ServletRequest request, ServletResponse response, FilterChain chain) {
+		super();
+		this.request = request;
+		this.response = response;
+		this.chain = chain;
+	}
+
+	public ServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(ServletRequest request) {
+		this.request = request;
+	}
+
+	public ServletResponse getResponse() {
+		return response;
+	}
+
+	public void setResponse(ServletResponse response) {
+		this.response = response;
+	}
+
+	public FilterChain getChain() {
+		return chain;
+	}
+
+	public void setChain(FilterChain chain) {
+		this.chain = chain;
+	}
+
+}

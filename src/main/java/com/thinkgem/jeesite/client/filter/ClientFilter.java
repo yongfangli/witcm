@@ -1,0 +1,61 @@
+package com.thinkgem.jeesite.client.filter;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.thinkgem.jeesite.client.auth.ClientContext;
+import com.thinkgem.jeesite.client.auth.ClientValidator;
+import com.thinkgem.jeesite.client.auth.IClientValidator;
+/**
+ * 前台访问过滤器
+ * @author liyongfang
+ *
+ */
+public class ClientFilter implements Filter {
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		logger.info("h5 intercept start");
+		//
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		String url = String.valueOf(httpRequest.getRequestURL());
+		//判断是否登陆页面
+	/*	if (url.indexOf("login") <= 0) {
+			ClientValidator clientValidator = new ClientValidator();
+			clientValidator.setClientContext(new ClientContext(request, response, chain));
+			try {
+				//权限校验
+				clientValidator.validate();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}*/
+		chain.doFilter(request, response);
+	}
+
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+		// TODO Auto-generated method stub
+
+	}
+
+}

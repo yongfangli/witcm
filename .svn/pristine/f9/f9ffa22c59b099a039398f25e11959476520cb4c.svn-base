@@ -1,0 +1,158 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>${category.name}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/comm2.css" rel="stylesheet" type="text/css"> 
+     <link href="${ctxStaticMobile}/css/common.css" rel="stylesheet" type="text/css">
+    <script src="${ctxStatic}/client/js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/client/js/message.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/message.css"/>
+     <style>
+     .more1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #009966;
+    color: #dae0de;
+    height: 35px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+}
+     </style>
+     <script>
+	 $(function(){
+            $("#sub1").click(function(){
+            	var url='${ctx}'+'/comment-${article.id}'+".json";
+            	var content=$.trim($("#content1").val());
+            	if(content!=''&&content!=null){
+            		if(content.length>=500){
+                		$.message({
+        			        message:'评论内容不能超过500个字',
+        			        type:'error',
+        			        time:'1000'
+        			    });
+                	}else{
+            		$.post(url,{content:content},function(data){
+            			if(data.msg=='nologin'){
+            				$.message({
+            			        message:'请先登录',
+            			        type:'warning',
+            			        time:'1000'
+            			    });
+            				}
+            			else if(data.msg=='true'){
+            				$.message({
+            			        message:'评论成功',
+            			        type:'success',
+            			        time:'1000'
+            			    });
+            				function a(){
+            					window.location.href='${ctxMobile}'+'/articleView?id='+'${article.id}';
+            				};
+            				setTimeout(a,1000);
+            			}else{
+            				$.message({
+            			        message:'评论失败',
+            			        type:'error',
+            			        time:'1000'
+            			    });
+            			}
+            		});
+            	} }
+            	else{
+            		$.message({
+    			        message:'评论失败',
+    			        type:'warning',
+    			        time:'1000'
+    			    });
+            	}
+            	
+            })
+            
+	 
+	 })
+            </script>
+</head>
+<body>
+<div class="wrap_box">
+   <div class="nav_box">
+     <a class="back_but" href="${ctxMobile}/categoryIndex?id=${category.parent.id}"><</a>
+     <p class="nav_title">${category.name}</p>
+   </div>
+   <div class="interval"></div>
+   <div class="news_title_box">
+       <h1 class="news_title">${article.title}</h1>
+       <div style="height:2vh"></div>
+   </div>
+   <p class="issuer">
+   		<span class="issuers">${article.user.name }｜ <fmt:formatDate value="${article.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/> ｜ ${category.name}</span>
+  	 	<span class="times">
+        	<img src="${ctxStaticMobile}/images/yulan1.png" class="read3"> <span class="number">${article.hits }</span>
+            <img src="${ctxStaticMobile}/images/yulan2.png" class="read4"> <span class="number">${article.comments }</span>	
+        </span>
+   </p>
+   <div style="clear:both"></div>
+   <div class="content">
+   	 <img src="${article.image }" class="imgs">
+     <p> ${article.articleData.content}
+     </p>
+   </div>
+    <div class="interval" style="margin-top:1vh"></div>
+    <p class="comment">最新评论</p>
+   <c:forEach items="${page.list}" var="c" varStatus="sta">
+   <div class="username">
+   		<img src="${c.resident.imagesId }" class="userlogo">
+        <div class="right_con">
+       	  <div style="height:2vh"></div>
+          <p class="comm">${c.resident.name } ｜  <fmt:formatDate value="${c.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/> ｜ ${c.resident.belongOrg.name }</p>
+           <p style="
+height: 10vh;
+overflow: hidden;margin-top:1vh">${c.content }</p>
+        </div>
+        <div style="clear:both"></div>
+   </div>
+   </c:forEach>
+   <c:if test="${!page.lastPage}">
+     <div class="more1"><a style="color: #dae0de;text-decoration: none;" href="${ctxMobile}/articleView?id=${article.id}&pageNo=${page.next}">下一页</a></div>
+   </c:if>
+   <div style="height:14vh"></div>
+ 
+  	<div class="footer_box">
+       <input id="content1" type="text" placeholder="说点什么呗~" class="reaelse2">
+       <input id="sub1" type="button" value="发表" class="reaelse">
+	</div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

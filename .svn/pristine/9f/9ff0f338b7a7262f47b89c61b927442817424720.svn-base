@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.resident.dao.ResidentDao">
+    
+	<sql id="residentColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.gender AS "gender",
+		a.identity_no AS "identityNo",
+		a.phone AS "phone",
+		a.telphone AS "telphone",
+		a.login_pswd AS "loginPswd",
+		a.qq_no AS "qqNo",
+		a.building_no AS "buildingNo",
+		a.person_desc AS "personDesc",
+		a.images_id AS "imagesId",
+		a.total_points AS "totalPoints",
+		a.usable_points AS "usablePoints",
+		a.used_points AS "usedPoints",
+		a.aduit_status AS "aduitStatus",
+		a.aduit_date AS "aduitDate",
+		a.aduit_user_id AS "aduitUserId",
+		a.login_date AS "loginDate",
+		a.login_flag AS "loginFlag",
+		a.delete_flag AS "deleteFlag",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongArea",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		o.name AS "belongOrg.name"
+	</sql>
+	
+	<sql id="residentJoins">
+	LEFT JOIN sys_office o ON a.belong_org_id=o.id
+	</sql>
+    
+	<select id="get" resultType="Resident">
+		SELECT 
+			<include refid="residentColumns"/>
+		FROM sc_resident a
+		<include refid="residentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Resident">
+		SELECT 
+			<include refid="residentColumns"/>
+		FROM sc_resident a
+		<include refid="residentJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="telphone != null and telphone != ''">
+				AND a.telphone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{telphone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{telphone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{telphone},'%')</if>
+			</if>
+			<if test="belongOrg != null and belongOrg.id != null and belongOrg.id != ''">
+				AND (a.belong_org_id = #{belongOrg.id} or 
+				a.belong_org_id in (select id from sys_office so where find_in_set(#{belongOrg.id},so.parent_ids)>0))
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findAllList" resultType="Resident">
+		SELECT 
+			<include refid="residentColumns"/>
+		FROM sc_resident a
+		<include refid="residentJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_resident(
+			id,
+			name,
+			gender,
+			identity_no,
+			phone,
+			telphone,
+			login_pswd,
+			qq_no,
+			building_no,
+			person_desc,
+			images_id,
+			total_points,
+			usable_points,
+			used_points,
+			aduit_status,
+			aduit_date,
+			aduit_user_id,
+			login_date,
+			login_flag,
+			delete_flag,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{name},
+			#{gender},
+			#{identityNo},
+			#{phone},
+			#{telphone},
+			#{loginPswd},
+			#{qqNo},
+			#{buildingNo},
+			#{personDesc},
+			#{imagesId},
+			#{totalPoints},
+			#{usablePoints},
+			#{usedPoints},
+			#{aduitStatus},
+			#{aduitDate},
+			#{aduitUserId},
+			#{loginDate},
+			#{loginFlag},
+			#{deleteFlag},
+			#{remarks},
+			#{belongOrg.id},
+			#{belongArea},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_resident SET 	
+			name = #{name},
+			gender = #{gender},
+			identity_no = #{identityNo},
+			phone = #{phone},
+			telphone = #{telphone},
+			login_pswd = #{loginPswd},
+			qq_no = #{qqNo},
+			building_no = #{buildingNo},
+			person_desc = #{personDesc},
+			images_id = #{imagesId},
+			aduit_status = #{aduitStatus},
+			aduit_date = #{aduitDate},
+			aduit_user_id = #{aduitUserId},
+			login_date = #{loginDate},
+			login_flag = #{loginFlag},
+			delete_flag = #{deleteFlag},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrg.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_resident
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,154 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>个人中心－预订商家</title>
+	<meta name="decorator" content="cms_center_${site.theme}"/>
+	<meta name="description" content="jinggangshan ${site.description}" />
+	<meta name="keywords" content="jinggangshan ${site.keywords}" />
+	
+	<link href="${ctxStaticTheme}/css/center.css" type="text/css" rel="stylesheet" />
+	
+	<script type="text/javascript">
+	$(function(){
+		$("#resOrder").addClass("dvCheck");
+	});
+	function page(n,s){
+		$("#pageNo").val(n);
+		$("#pageSize").val(s);
+		$("#searchForm").submit();
+    	return false;
+    }
+	
+	//取消
+	function orderCancel(oid){
+		var orderHtml = "<div style='margin:10px;'>原因：<textarea rows='3' cols='20' id='oremarks' name='oremarks'></textarea></div>";
+		var orderSubmit = function(v,h,f){
+		   if(v==1){
+			   return true;
+		   }else if(v==0){
+			   var oremarks = f.oremarks;
+			   if(oremarks==null || oremarks==""){
+				   showTip("请填写原因");
+				   return false;
+			   }
+			   $.ajax({
+					type:"post",
+					async:false,
+					url:"${ctx}/res/resOrderUpd.do?status=4&oid="+oid+"&remarks="+oremarks,
+					cache:false,
+					success: function(data){
+						if(data && data.result){
+							showTip("取消成功");
+							$("#searchForm").submit();
+							return true;
+						}else{
+							showTip(data.msg);
+							return false;
+						}
+					}
+				});
+		   }
+	   };
+		$.jBox(orderHtml, {title:"取消订单",submit:orderSubmit, buttons:{"确认":0,"关闭":1}});
+	}
+	
+	//评论
+	function orderCom(oid){
+		var orderHtml = "<div style='margin:10px;'>星级：<select id='ostars' name='ostars' style='width:80px;'><option value='5'>5</option><option value='4'>4</option>"+
+						"<option value='3'>3</option><option value='2'>2</option><option value='1'>1</option></select></div>"; 
+		orderHtml += "<div style='margin:10px;'>内容：<textarea rows='3' cols='20' id='oremarks' name='oremarks' maxlength='300'></textarea></div>";
+		var orderSubmit = function(v,h,f){
+		   if(v==1){
+			   return true;
+		   }else if(v==0){
+			   var oremarks = $.trim(f.oremarks);
+			   var ostars = f.ostars;
+			   if(oremarks==null || oremarks==""){
+				   showTip("请填写内容");
+				   return false;
+			   }
+			   $.ajax({
+					type:"post",
+					async:false,
+					url:"${ctx}/res/resOrderUpdComSt.do?stars="+ostars+"&oid="+oid+"&remarks="+oremarks,
+					cache:false,
+					success: function(data){
+						if(data && data.result){
+							showTip("取消成功");
+							$("#searchForm").submit();
+							return true;
+						}else{
+							showTip(data.msg);
+							return false;
+						}
+					}
+				});
+		   }
+	   };
+		$.jBox(orderHtml, {title:"评论商家",submit:orderSubmit, buttons:{"确认":0,"关闭":1}});
+	}
+	</script>
+</head>
+<body>
+    <div id="dvMain">
+    <div id="dvContent">
+        
+        <!-- menu -->
+        <jsp:include page="resMenu.jsp" />
+        
+        <div id="dvContentRight" style="padding-top: 20px;">
+			<form:form id="searchForm" modelAttribute="orders" action="${ctx}/res/resOrder" method="post" class="breadcrumb form-search">
+				<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+				<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+			</form:form>
+        	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+				<thead>
+					<tr>
+						<th>订单编号</th>
+						<th>商品名称</th>
+						<th>数量</th>
+						<th>下单时间</th>
+						<th>订单状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<c:forEach items="${page.list}" var="orders">
+					<tr>
+						<td>
+							<a href="${ctx}/res/resOrderForm?id=${orders.id}">${orders.code}</a>
+						</td>
+						<td>
+							${orders.goods.fullName}
+						</td>
+						<td>
+							${orders.numbers}
+						</td>
+						<td>
+							<fmt:formatDate value="${orders.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+						</td>
+						<td>
+							${fns:getDictLabel(orders.status, 'goods_status', '')}
+						</td>
+						<td>
+							<c:if test="${orders.status!=3 && orders.status!=4}">
+		    					<a href="javascript:void(0)" onclick="orderCancel('${orders.id}')">取消</a>
+							</c:if>
+							<c:if test="${orders.status==3 && orders.comStatus==0}">
+								<a href="javascript:void(0)" onclick="orderCom('${orders.id}')">评论</a>
+							</c:if>
+		    				<a href="${ctx}/res/resOrderForm?id=${orders.id}">详情</a>
+						</td>
+					</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<div class="pagination">${page}</div>
+        
+        </div>
+    </div>
+</div>
+</body>
+</html>

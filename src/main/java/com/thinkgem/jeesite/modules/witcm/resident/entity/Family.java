@@ -1,0 +1,257 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.entity;
+
+import java.util.Date;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+
+/**
+ * 家属Entity
+ * 
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class Family extends DataEntity<Family> {
+
+	private static final long serialVersionUID = 1L;
+	private Resident resident; // 居民ID
+	private String name; // 姓名
+	private String gender; // 性别
+	private Date birthday; // 出生年月
+	private String identityNo; // 身份证号码
+	private String telphone; // 手机号码
+	private String qqNo; // QQ号
+	private String houserMaster; // 是否户主
+	private String deformity; // 是否残疾
+	private String helpPoor; // 是否扶贫对象
+	private String correct; // 是否矫正人员
+	private String usersDesc; // 个人简介
+	private String pension; // 是否养老对象
+	private Office belongOrg; // 归属机构
+	private String belongAreaId; // 归属单位
+	private String likeName;//模糊搜索字段
+	private String residentFlag;
+
+	
+	
+	public void setResidentId(String residentId){
+		if(this.resident == null){
+			this.resident = new Resident();
+		}
+		this.resident.setId(residentId);
+	}
+
+
+	public String getResidentFlag() {
+		return residentFlag;
+	}
+
+
+	public void setResidentFlag(String residentFlag) {
+		this.residentFlag = residentFlag;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Family() {
+		super();
+	}
+
+	public Family(String id) {
+		super(id);
+	}
+	
+	@NotNull(message = "所属居民不能为空")
+	@ExcelField(title = "所属居民", align = 2, sort = 4)
+	public Resident getResident() {
+		return resident;
+	}
+
+	public void setResident(Resident resident) {
+		this.resident = resident;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "姓名长度必须介于 0 和 64 之间")
+	@ExcelField(title = "家属名称", align = 2, sort = 5)
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getLikeName() {
+		return likeName;
+	}
+
+	public void setLikeName(String likeName) {
+		this.likeName = likeName;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "性别长度必须介于 0 和 64 之间")
+	@ExcelField(title = "性别", align = 2, dictType = "gender", sort = 10)
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@ExcelField(title = "出生年月", align = 2, sort = 15)
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "身份证号码长度必须介于 0 和 64 之间")
+	@Pattern(regexp = "(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}[0-9Xx]$)", message = "身份证格式不正确")
+	@ExcelField(title = "身份证号", align = 2, sort = 20)
+	public String getIdentityNo() {
+		return identityNo;
+	}
+
+	public void setIdentityNo(String identityNo) {
+		this.identityNo = identityNo;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "手机号码长度必须介于 0 和 64 之间")
+	@Pattern(regexp = "^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$", message = "手机号格式不正确")
+	@ExcelField(title = "手机号", align = 2, sort = 25)
+	public String getTelphone() {
+		return telphone;
+	}
+
+	public void setTelphone(String telphone) {
+		this.telphone = telphone;
+	}
+
+	@Length(min = 0, max = 64, message = "QQ号长度必须介于 0 和 64 之间")
+	@Pattern(regexp = "^[0-9]{1,}$", message = "qq格式不正确")
+	public String getQqNo() {
+		return qqNo;
+	}
+
+	public void setQqNo(String qqNo) {
+		this.qqNo = qqNo;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "是否户主长度必须介于 0 和 64 之间")
+	@ExcelField(title = "是否户主", align = 2, sort = 30, dictType = "yes_no")
+	public String getHouserMaster() {
+		return houserMaster;
+	}
+
+	public void setHouserMaster(String houserMaster) {
+		this.houserMaster = houserMaster;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "是否残疾长度必须介于 0 和 64 之间")
+	@ExcelField(title = "是否残疾", align = 2, sort = 35, dictType = "yes_no")
+	public String getDeformity() {
+		return deformity;
+	}
+
+	public void setDeformity(String deformity) {
+		this.deformity = deformity;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "是否扶贫对象长度必须介于 0 和 64 之间")
+	@ExcelField(title = "是否扶贫", align = 2, sort = 40, dictType = "yes_no")
+	public String getHelpPoor() {
+		return helpPoor;
+	}
+
+	public void setHelpPoor(String helpPoor) {
+		this.helpPoor = helpPoor;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "是否矫正人员长度必须介于 0 和 64 之间")
+	@ExcelField(title = "是否矫正人员", align = 2, sort = 45, dictType = "yes_no")
+	public String getCorrect() {
+		return correct;
+	}
+
+	public void setCorrect(String correct) {
+		this.correct = correct;
+	}
+
+	@Length(min = 0, max = 64, message = "个人简介长度必须介于 0 和 64 之间")
+	public String getUsersDesc() {
+		return usersDesc;
+	}
+
+	public void setUsersDesc(String usersDesc) {
+		this.usersDesc = usersDesc;
+	}
+
+	@NotEmpty
+	@Length(min = 0, max = 64, message = "是否养老对象长度必须介于 0 和 64 之间")
+	@ExcelField(title = "是否养老对象", align = 2, sort = 50, dictType = "yes_no")
+	public String getPension() {
+		return pension;
+	}
+
+	public void setPension(String pension) {
+		this.pension = pension;
+	}
+
+	public Office getBelongOrg() {
+		return belongOrg;
+	}
+
+	public void setBelongOrg(Office belongOrg) {
+		this.belongOrg = belongOrg;
+	}
+
+	@Length(min = 0, max = 64, message = "归属单位长度必须介于 0 和 64 之间")
+	public String getBelongAreaId() {
+		return belongAreaId;
+	}
+
+	public void setBelongAreaId(String belongAreaId) {
+		this.belongAreaId = belongAreaId;
+	}
+	
+	public void setResidentOrgId(String id){
+		if(this.resident==null){
+			setResident( new Resident());
+		}
+		if(this.resident.getBelongOrg()==null){
+			Office office = new Office();
+			office.setId(id);
+			this.resident.setBelongOrg(office);
+		}else{
+			this.resident.getBelongOrg().setId(id);
+		}
+	}
+
+}

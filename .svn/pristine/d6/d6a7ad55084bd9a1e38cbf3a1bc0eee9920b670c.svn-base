@@ -1,0 +1,27 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<div id="dvContentLeft">
+	<ul>
+		<li>
+			<div id="busInfo"><a href="${ctx}/bus/busInfo${fns:getUrlSuffix()}">个人信息</a></div>
+		</li>
+		<li>
+			<div id="busPoint"><a href="${ctx}/bus/busPoint${fns:getUrlSuffix()}">个人积分</a></div>
+		</li>
+		<li>
+			<div id="busFamily"><a href="${ctx}/bus/busFamily${fns:getUrlSuffix()}">家庭档案</a></div>
+		</li>
+		<li>
+			<div id="busHealth"><a href="${ctx}/bus/busHealth${fns:getUrlSuffix()}">健康档案</a></div>
+		</li>
+		<li>
+			<div id="busCollect"><a href="${ctx}/bus/busCollect${fns:getUrlSuffix()}">个人收藏</a></div>
+		</li>
+		<li>
+			<div id="busOrder"><a href="${ctx}/bus/busOrder${fns:getUrlSuffix()}">预定商家</a></div>
+		</li>
+		<li>
+			<div id="busPswd"><a href="${ctx}/bus/busPswd${fns:getUrlSuffix()}">修改密码</a></div>
+		</li>
+	</ul>
+</div>

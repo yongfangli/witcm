@@ -1,0 +1,47 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.witcm.resident.entity.ConsultReply;
+import com.thinkgem.jeesite.modules.witcm.resident.dao.ConsultReplyDao;
+
+/**
+ * 咨询回复Service
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+@Service
+@Transactional(readOnly = true)
+public class ConsultReplyService extends CrudService<ConsultReplyDao, ConsultReply> {
+
+	public ConsultReply get(String id) {
+		return super.get(id);
+	}
+	
+	public List<ConsultReply> findList(ConsultReply consultReply) {
+		return super.findList(consultReply);
+	}
+	
+	public Page<ConsultReply> findPage(Page<ConsultReply> page, ConsultReply consultReply) {
+		return super.findPage(page, consultReply);
+	}
+	
+	@Transactional(readOnly = false)
+	public void save(ConsultReply consultReply) {
+		super.save(consultReply);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(ConsultReply consultReply) {
+		super.delete(consultReply);
+	}
+	
+}

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.business.dao.BusinessDao">
+    
+	<sql id="businessColumns">
+		a.id AS "id",
+		a.types AS "types.id",
+		a.full_name AS "fullName",
+		a.short_name AS "shortName",
+		a.telphone AS "telphone",
+		a.login_pswd AS "loginPswd",
+		a.phone AS "phone",
+		a.link_man AS "linkMan",
+		a.address AS "address",
+		if(ISNULL(a.logo_id) || LENGTH(trim(a.logo_id))&lt;1,"/witcm/static/modules/cms/front/themes/witcm/images/notimg.png",a.logo_id) AS "logoId",
+		a.describes AS "describes",
+		a.login_date AS "loginDate",
+		a.login_flag AS "loginFlag",
+		a.delete_flag AS "deleteFlag",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.remarks AS "remarks",
+		a.belong_org_id AS "belongOrg.id",
+		a.belong_area_id AS "belongArea",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		c.name AS "belongOrg.name",
+		p.name AS "types.name"
+	</sql>
+	
+	<sql id="businessJoins">
+		LEFT JOIN sys_office c ON c.id = a.belong_org_id
+		LEFT JOIN sc_business_types p ON p.id = a.types
+	</sql>
+    
+	<select id="get" resultType="Business">
+		SELECT 
+			<include refid="businessColumns"/>
+		FROM sc_business a
+		<include refid="businessJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="getStar" parameterMap="businessMap" statementType="CALLABLE">
+          call getBusinessStars(?,?)
+      </select>
+      <parameterMap type="java.util.Map" id="businessMap">
+        <parameter property="businessId" mode="IN" jdbcType="VARCHAR"/>
+         <parameter property="starsv" mode="OUT" jdbcType="INTEGER"/>
+    </parameterMap>
+	<select id="findList" resultType="Business">
+		SELECT 
+			<include refid="businessColumns"/>
+		FROM sc_business a
+		<include refid="businessJoins"/>
+		<where>
+			<if test="belongOrg != null and belongOrg.id != null and belongOrg.id != ''">
+				AND a.belong_org_id = #{belongOrg.id}
+			</if>
+			<if test="types != null and types.id != null and types.id != ''">
+				AND a.types = #{types.id}
+			</if>
+			<if test="types != null and types.parent != null and types.parent.id != null and types.parent.id != ''">
+				AND a.types in (select b.id from sc_business_types b where b.parent_id=#{types.parent.id}) or a.types in (#{types.parent.id})
+			</if>
+			<if test="fullName != null and fullName != ''">
+				AND a.full_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{fullName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{fullName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{fullName},'%')</if>
+			</if>
+			<if test="shortName != null and shortName != ''">
+				AND a.short_name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{shortName}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{shortName}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{shortName},'%')</if>
+			</if>
+			<if test="telphone != null and telphone != ''">
+				AND a.telphone LIKE 
+					<if test="dbName == 'oracle'">'%'||#{telphone}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{telphone}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{telphone},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Business">
+		SELECT 
+			<include refid="businessColumns"/>
+		FROM sc_business a
+		<include refid="businessJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_business(
+			id,
+			types,
+			full_name,
+			short_name,
+			telphone,
+			login_pswd,
+			phone,
+			link_man,
+			address,
+			logo_id,
+			describes,
+			login_date,
+			login_flag,
+			delete_flag,
+			longitude,
+			latitude,
+			remarks,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{types.id},
+			#{fullName},
+			#{shortName},
+			#{telphone},
+			#{loginPswd},
+			#{phone},
+			#{linkMan},
+			#{address},
+			#{logoId},
+			#{describes},
+			#{loginDate},
+			#{loginFlag},
+			#{deleteFlag},
+			#{longitude},
+			#{latitude},
+			#{remarks},
+			#{belongOrg.id},
+			#{belongArea},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_business SET 	
+			types = #{types.id},
+			full_name = #{fullName},
+			short_name = #{shortName},
+			telphone = #{telphone},
+			login_pswd = #{loginPswd},
+			phone = #{phone},
+			link_man = #{linkMan},
+			address = #{address},
+			logo_id = #{logoId},
+			describes = #{describes},
+			login_date = #{loginDate},
+			login_flag = #{loginFlag},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			remarks = #{remarks},
+			belong_org_id = #{belongOrg.id},
+			belong_area_id = #{belongArea}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_business
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

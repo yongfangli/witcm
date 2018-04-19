@@ -1,0 +1,79 @@
+/**
+ * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.witcm.resident.entity;
+
+import com.thinkgem.jeesite.modules.witcm.resident.entity.Resident;
+import org.hibernate.validator.constraints.Length;
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+/**
+ * 收藏Entity
+ * @author liyongfang
+ * @version 2017-12-04
+ */
+public class Collect extends DataEntity<Collect> {
+	
+	private static final long serialVersionUID = 1L;
+	private Resident resident;		// 居民ID
+	private String collectItemId;		// 收藏项目
+	private Date collectDate;		// 收藏时间
+	private String belongOrgId;		// 归属机构
+	private String belongAreaId;		// 归属单位
+	
+	public Collect() {
+		super();
+	}
+
+	public Collect(String id){
+		super(id);
+	}
+
+	public Resident getResident() {
+		return resident;
+	}
+
+	public void setResident(Resident resident) {
+		this.resident = resident;
+	}
+	
+	@Length(min=0, max=64, message="收藏项目长度必须介于 0 和 64 之间")
+	public String getCollectItemId() {
+		return collectItemId;
+	}
+
+	public void setCollectItemId(String collectItemId) {
+		this.collectItemId = collectItemId;
+	}
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	public Date getCollectDate() {
+		return collectDate;
+	}
+
+	public void setCollectDate(Date collectDate) {
+		this.collectDate = collectDate;
+	}
+	
+	@Length(min=0, max=64, message="归属机构长度必须介于 0 和 64 之间")
+	public String getBelongOrgId() {
+		return belongOrgId;
+	}
+
+	public void setBelongOrgId(String belongOrgId) {
+		this.belongOrgId = belongOrgId;
+	}
+	
+	@Length(min=0, max=64, message="归属单位长度必须介于 0 和 64 之间")
+	public String getBelongAreaId() {
+		return belongAreaId;
+	}
+
+	public void setBelongAreaId(String belongAreaId) {
+		this.belongAreaId = belongAreaId;
+	}
+	
+}

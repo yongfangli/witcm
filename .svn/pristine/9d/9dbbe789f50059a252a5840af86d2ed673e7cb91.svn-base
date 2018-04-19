@@ -1,0 +1,284 @@
+package com.thinkgem.jeesite.modules.cms.web.front;
+
+
+
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.thinkgem.jeesite.common.constants.Constants;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.security.MD5Util;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.cms.entity.Site;
+import com.thinkgem.jeesite.modules.cms.service.SiteService;
+import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Business;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Goods;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Orders;
+import com.thinkgem.jeesite.modules.witcm.business.entity.Promotion;
+import com.thinkgem.jeesite.modules.witcm.business.service.BusinessService;
+import com.thinkgem.jeesite.modules.witcm.business.service.GoodsService;
+import com.thinkgem.jeesite.modules.witcm.business.service.OrdersService;
+import com.thinkgem.jeesite.modules.witcm.business.service.PromotionService;
+
+/**
+ * 商户中心Controller
+ * @author luoyang
+ * @version 2017-12-10
+ */
+@Controller
+@RequestMapping(value = "${frontPath}/bus")
+public class FrontBusController extends BaseController{
+	@Autowired
+	private SiteService siteService;
+	@Autowired
+	private OrdersService ordersService;
+	@Autowired
+	private GoodsService goodsService;
+	@Autowired
+	private BusinessService businessService;
+	@Autowired
+	private PromotionService promotionService;
+	
+	/**
+	 * 登录页面
+	 */
+	@RequestMapping(value = "login${urlSuffix}")
+	public String loginPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/login";
+	}
+	
+	/**
+	 * 登录
+	 */
+	@ResponseBody
+	@RequestMapping(value = "loginAjax.do")
+	public Map<String,Object> login(String userName,String password) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		if(StringUtils.isEmpty(userName)){
+			map.put("result", false);
+			map.put("msg", "请输入手机号");
+			return map;
+		}
+		if(StringUtils.isEmpty(password)){
+			map.put("result", false);
+			map.put("msg", "请输入密码");
+			return map;
+		}
+		Business business = businessService.findByTelAndPswd(userName, password);
+		if(business==null){
+			map.put("result", false);
+			map.put("msg", "手机号或密码错误，请重新输入");
+			return map;
+		}
+		business.setLoginPswd("");
+		UserUtils.getSession().setAttribute(Constants.BUS_USER_KEY, business);
+		map.put("result", true);
+		return map;
+	}
+	
+	/**
+	 * 退出
+	 */
+	@RequestMapping(value = "exits${urlSuffix}")
+	public String exits(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		UserUtils.getSession().removeAttribute(Constants.BUS_USER_KEY);
+		UserUtils.getSession().removeAttribute(Constants.RES_USER_KEY);
+		return "modules/cms/front/themes/"+site.getTheme()+"/login";
+	}
+	
+	/**
+	 * 注册页面
+	 */
+	@RequestMapping(value = "register${urlSuffix}")
+	public String registerPage(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		return "modules/cms/front/themes/"+site.getTheme()+"/register";
+	}
+	
+	/**
+	 * 商户信息
+	 */
+	@RequestMapping(value = "busInfo${urlSuffix}")
+	public String busInfo(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		return "modules/cms/front/themes/"+site.getTheme()+"/busInfo";
+	}
+	
+	/**
+	 * 星级查询
+	 */
+	@RequestMapping(value = "busStars${urlSuffix}")
+	public String busStars(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		
+		return "modules/cms/front/themes/"+site.getTheme()+"/busStars";
+	}
+	
+	/**
+	 * 商品管理 list
+	 */
+	@RequestMapping(value = "busGoods${urlSuffix}")
+	public String busGoodsList(Goods goods, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		Page<Goods> page = goodsService.findPage(new Page<Goods>(request, response), goods); 
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busGoodsList";
+	}
+	
+	/**
+	 * 商品管理 form
+	 */
+	@RequestMapping(value = "busGoodsForm${urlSuffix}")
+	public String busGoodsForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		return "modules/cms/front/themes/"+site.getTheme()+"/busGoodsForm";
+	}
+	
+	/**
+	 * 订单管理 list
+	 */
+	@RequestMapping(value = "busOrder${urlSuffix}")
+	public String busOrderList(Orders orders, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		Page<Orders> page = ordersService.findPage(new Page<Orders>(request, response), orders); 
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busOrderList";
+	}
+	
+	/**
+	 * 促销管理 list
+	 */
+	@RequestMapping(value = "busPromotion${urlSuffix}")
+	public String busPromotion(Promotion promotion, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		if(promotion==null){
+			promotion = new Promotion();
+		}
+		promotion.setBusiness(business);
+		Page<Promotion> page = promotionService.findPage(new Page<Promotion>(request, response), promotion);
+		model.addAttribute("page", page);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busPromotionList";
+	}
+	
+	/**
+	 * 促销管理 form
+	 */
+	@RequestMapping(value = "busPromotionForm${urlSuffix}")
+	public String busPromotionForm(@RequestParam(required=false) String id,Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site); 
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		Promotion entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = promotionService.get(id);
+		}
+		if (entity == null){
+			entity = new Promotion();
+		}
+		model.addAttribute("promotion", entity);
+		return "modules/cms/front/themes/"+site.getTheme()+"/busPromotionForm";
+	}
+	
+	
+	/**
+	 * 密码修改－form
+	 */
+	@RequestMapping(value = "busPswd${urlSuffix}")
+	public String busPswdForm(Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			return "modules/cms/front/themes/"+site.getTheme()+"/login";
+		}
+		return "modules/cms/front/themes/"+site.getTheme()+"/busPswdForm";
+	}
+	
+	/**
+	 * 密码修改－update
+	 */
+	@ResponseBody
+	@RequestMapping(value = "busPswdUpd.do")
+	public Map<String,Object> busPswdUpd(String oldpswd,String newpswd) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		//判断是否登录
+		Business business = (Business) UserUtils.getSession().getAttribute(Constants.BUS_USER_KEY);
+		if(business==null || StringUtils.isEmpty(business.getId())){
+			map.put("result", false);
+			map.put("msg", "响应超时或用户已失效，请重新登录");
+			return map;
+		}
+		business = businessService.get(business.getId());
+		if(!MD5Util.getMD5(newpswd).equals(business.getLoginPswd())){
+			map.put("result", false);
+			map.put("msg", "旧密码不正确，请重新输入");
+			return map;
+		}
+		
+		businessService.updatePswd(MD5Util.getMD5(newpswd), business.getId());
+		
+		map.put("result", true);
+		return map;
+	}
+	
+}

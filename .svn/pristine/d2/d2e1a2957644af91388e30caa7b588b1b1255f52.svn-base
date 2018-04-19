@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.witcm.collect.dao.CollectDao">
+    
+	<sql id="collectColumns">
+		a.id AS "id",
+		a.resident_id AS "resident.id",
+		a.collect_item_id AS "collectItemId",
+		a.collect_date AS "collectDate",
+		a.belong_org_id AS "belongOrgId",
+		a.belong_area_id AS "belongAreaId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="collectJoins">
+	</sql>
+    
+	<select id="get" resultType="Collect">
+		SELECT 
+			<include refid="collectColumns"/>
+		FROM sc_collect a
+		<include refid="collectJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Collect">
+		SELECT 
+			<include refid="collectColumns"/>
+		FROM sc_collect a
+		<include refid="collectJoins"/>
+		<where>
+			
+			<if test="collectItemId != null and collectItemId != ''">
+				AND a.collect_item_id = #{collectItemId}
+			</if>
+			<if test="collectDate != null and collectDate != ''">
+				AND a.collect_date &gt;= #{collectDate}
+			</if>
+			<if test="belongOrgId != null and belongOrgId != ''">
+				AND a.belong_org_id = #{belongOrgId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Collect">
+		SELECT 
+			<include refid="collectColumns"/>
+		FROM sc_collect a
+		<include refid="collectJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO sc_collect(
+			id,
+			resident_id,
+			collect_item_id,
+			collect_date,
+			belong_org_id,
+			belong_area_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{id},
+			#{resident.id},
+			#{collectItemId},
+			#{collectDate},
+			#{belongOrgId},
+			#{belongAreaId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE sc_collect SET 	
+			resident_id = #{resident.id},
+			collect_item_id = #{collectItemId},
+			collect_date = #{collectDate},
+			belong_org_id = #{belongOrgId},
+			belong_area_id = #{belongAreaId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM sc_collect
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
