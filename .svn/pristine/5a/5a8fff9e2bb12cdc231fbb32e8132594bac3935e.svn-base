@@ -1,0 +1,96 @@
+@charset "utf-8";
+*{
+		margin: 0;
+		padding: 0;
+		font-family:"微软雅黑";
+	}
+	a{text-decoration: none;color:#FFF}
+	.clear{clear:both;}
+    
+	.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png);background-size:100vw 100vh}
+	.list_left{
+		width:20vw;
+		height:100vh;
+		float:left;
+		border-right:2px solid #999;
+		color:#FFF;
+		background-color: #fff;
+		background-color:rgba(255, 255, 255, 0.2);
+		filter:Alpha(opacity = 20);
+		position: static;
+
+	}
+	.title{
+		font-size:2em;
+		width:20vw;
+		height:9vh;
+		margin-left:2vw;
+		margin-top:4vh;
+		position: relative;
+	}
+	.left_p{
+		width:20vw;
+		text-align:center;
+		color:#FFF;
+		font-size:1.3em;
+		height:6vh;
+		position: relative;
+	}
+	.left_p span{line-height:6vh}
+	.left_p:hover{background:#ec3b3b;}
+	.left_pAct{background:#ec3b3b;}
+	.grade-ignore{
+    color: #f2eff5;
+	}
+	.left_content{
+		width:90%;
+		padding-left:5%;
+		padding-right:5%;
+		border-radius:10px;
+		background: #fff;
+		background-color:rgba(255, 255, 255, 0.6);
+		filter:Alpha(opacity = 60);
+		position: static;
+	}
+    .last_page{
+		width:100%;
+		text-align:center;
+		font-size:1.4em;
+	}
+	.left_user{float:left;}
+	.user_cont{
+		width:100%;
+		margin:0px auto;
+		position: relative;
+	}
+
+	.markDiv{
+		width:100%;
+		border-top:1px dashed #ddd;
+
+	}
+	.markDiv2{width:70vw;height:23.6vh;margin-top:1.5vh}
+	.mark_left_img{
+		width:32%;
+		border:4px solid #FFF;
+		border-radius:10px;float:left;
+		overflow: hidden;
+	}
+	.mark_img{
+		width:100%;
+	}
+	.right_mark{
+		width:66%;
+		height:100%;
+		border-radius:10px;
+		float:right;
+	}
+	.markName{width:45vw;font-size:1.8em;display: flex;
+    justify-content: space-between;}
+	.grade{color:#F00}
+	.markPhone{width:45vw;font-size:1.4em;margin-top:2vh}
+	.address{width:45vw;font-size:1.4em}
+	.markSave{width:45vw;font-size:1em;margin-top:3vh}
+	.save{width:7vw;height:4vh;border-radius:10px;border:1px;background:#ec3b3b;color:#FFF; font-size:1em}
+	.read{width:1.5vw;height:2vh}
+	.save:hover{box-shadow:0px 0px  5px 5px #ec3b3b}

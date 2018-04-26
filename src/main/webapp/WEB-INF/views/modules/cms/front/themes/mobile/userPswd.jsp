@@ -20,7 +20,7 @@
 		<p style="height: 20px;"></p>
 		<p><a class="back" href="${ctxMobile}/userMenu"><span> <  个人积分</span></a></p>
 		<p><img src="${mobileuser.imagesId }"></p>
-		<p style="text-align: center; color: #FFFFFF; margin-top: 20px;">欢迎你，<span style="border-bottom: 1px solid #FFFFFF;">${mobileuser.name }</span></p>
+		<p style="text-align: center; color: #FFFFFF; margin-top: 20px;">欢迎你，<span onclick="window.location.href='${ctxMobile}/userInfo'" style="border-bottom: 1px solid #FFFFFF;">${mobileuser.name }</span></p>
 	</div>
 	
 	

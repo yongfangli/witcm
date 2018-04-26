@@ -20,12 +20,12 @@
       margin-left: -130px !important;
     }
     .form{
-    width:90%;
-    margin:0 auto;
-        background: #efe0db;
-        padding: 10px 0px;
-            color: #e44444;
-                background: #d5e4c5;
+    width: 90%;
+    margin: 0 auto;
+    background: #efe0db;
+    padding: 10px 0px;
+    color: #000000;
+    background: #F8F8F8;
     }
     .sub{
     justify-content:center;
@@ -40,13 +40,11 @@
    input {
     outline: none;
     border: none;
-    border: 1px solid beige;
     border-radius: 2px;
    }
    textarea{
    outline: none;
     border: none;
-    border: 1px solid beige;
         border-radius: 2px;
    }
     .cln{
@@ -78,6 +76,14 @@
     z-index:0;
      opacity:0;
     }
+    .btn{
+    padding:4px;
+    background:red;
+    color:#fff;
+    }
+    .other{
+    justify-content:center;
+    }
     .next{
     animation:mynmove 2;
     }
@@ -88,7 +94,15 @@
     </style>
     <script type="text/javascript">
     $(function(){
-    	$("#one :input").change(function(){
+    		    $('input').on('focus',function(event){      
+    		        //自动反弹 输入法高度自适应
+    		         var target = this;
+    		         setTimeout(function(){
+    		             target.scrollIntoViewIfNeeded();
+    		         },100);
+    		     });
+    		    
+    	$("#next").click(function(){
     		$.ajax({
     			url:'${ctxMobile}/checkResidentInfo.json',
     		    method:"post",
@@ -104,7 +118,7 @@
     		    	 }else{
     		    		 $("#two").removeClass("two").addClass("one");
     		    		 $("#one").removeClass("one").addClass("two");
-    		    		 $("#repassword").change(function(){
+    		    		 $("#confirm").click(function(){
     		    			 if($("#password").val()==""||$("#password").val()=="undefined"){
     		    				 $.message({
     		 					        message:"请填写密码",
@@ -112,7 +126,7 @@
     		 					        time:'1500'
     		 					    });
     		    			 }else
-    		    			 if($("#password").val()!=$(this).val()){
+    		    			 if($("#password").val()!=$("#repassword").val()){
     		    				 $.message({
  		 					        message:"两次密码不匹配",
  		 					        type:'error',
@@ -175,10 +189,11 @@
 <div class="form one"  id="one">
 <div>第一步：填写你要修改的用户信息资料，用于审核</div>
 <form id="form" >
-<div class="cln"><label>用户名：</label><input type="text" name="name" id="name" /></div>
-<div class="cln"><label>楼栋号：</label><input type="text" id="buildingNo" name="buildingNo" /></div>
+<div class="cln"><label>姓名：</label><input type="text" name="name" id="name" /></div>
 <div class="cln"><label>身份证号码：</label><input type="text" id="identityNo" name="identityNo" /></div>
 <div class="cln"><label>手机号：</label><input type="text" id="telphone" name="telphone"/></div>
+<div class="cln other"><input class="btn" type="button" id="next" value="下一步"/></div>
+
 </form>
 </div>
 <div class="form two" id="two">
@@ -186,6 +201,7 @@
 <form id="form1" >
 <div class="cln"><label>密码：</label><input type="password" name="password" id="password" /></div>
 <div class="cln"><label>确认密码：</label><input type="password" id="repassword"  /></div>
+<div class="cln other"><input class="btn" type="button" id="confirm" value="确认"/></div>
 </form>
 </div>
 

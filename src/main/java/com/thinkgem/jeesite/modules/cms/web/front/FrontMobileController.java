@@ -161,12 +161,11 @@ public class FrontMobileController extends BaseController {
 			return map;
 		}
 		resident.setLoginPswd("");
+		UserUtils.getSession().setTimeout(-1000l);//设置session不过期
 		UserUtils.getSession()
 				.setAttribute(Constants.MOBILE_USER_KEY, resident);
-
 		// 更新积分 0.5分
 		residentService.updatePoints(resident.getId(), 0.5);
-
 		map.put("result", true);
 		return map;
 	}
@@ -375,7 +374,7 @@ public class FrontMobileController extends BaseController {
 			family = new Family();
 		}
 		family.setResident(resident);
-		Page<Family> p = new Page<Family>(request, response);
+		Page<Family> p = new Page<Family>(1, -1);
 		p.setPageSize(12);
 		Page<Family> page = familyService.findPage(p, family);
 		model.addAttribute("page", page);
@@ -779,7 +778,7 @@ public class FrontMobileController extends BaseController {
 			bPage.setOrderBy("star desc");
 			bPage = businessService.findPage(bPage, new Business());
 			model.addAttribute("bpage", bPage);
-			return "modules/cms/front/themes/mobile/goLogin";
+			return "modules/cms/front/themes/mobile/login";
 		}
 		Goods goods = goodsService.get(id);
 		if (null == goods) {
@@ -860,15 +859,27 @@ public class FrontMobileController extends BaseController {
 
 	@ResponseBody
 	@RequestMapping(value = "convenientList.json", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Convenient> convenientListJson(
+	public List<Article> convenientListJson(
 			@RequestParam(required = false, defaultValue = "1") Integer pageNo,
 			@RequestParam(required = false, defaultValue = "8") Integer pageSize) {
-		Page<Convenient> cPage = new Page<Convenient>(pageNo, pageSize);
-		convenientService.findPage(cPage, new Convenient());
-		if (pageNo > cPage.getPageNo()) {
-			return new ArrayList<Convenient>();
+		Category category=new Category();
+		category.setName("便民热线");
+		List<Category> categories=categoryService.findList(category);
+		if(categories.size()>0){
+			Page<Article> aPage=new Page<Article>(pageNo,pageSize);
+			Article article=new Article();
+			article.setCategory(new Category(categories.get(0).getId()));
+			aPage=articleService.findPage(aPage, article);
+			if (pageNo > aPage.getPageNo()) {
+				return new ArrayList<Article>();
+			}
+			for (Article article2 : aPage.getList()) {
+			   article2.setArticleData(articleDataService.get(article2.getId()));
+			}
+			return aPage.getList();
 		}
-		return cPage.getList();
+		return new ArrayList();
+		
 	}
 
 	@RequestMapping(value = "promotionList")
@@ -967,6 +978,7 @@ public class FrontMobileController extends BaseController {
 			return map;
 		} else {
 			family.setResident(resident);
+			family.setBelongOrg(resident.getBelongOrg());
 			if (null == family.getCreateBy()) {
 				family.setCreateBy(new User("1"));
 			}
@@ -1043,7 +1055,7 @@ public class FrontMobileController extends BaseController {
 			bPage.setOrderBy("star desc");
 			bPage = businessService.findPage(bPage, new Business());
 			model.addAttribute("bpage", bPage);
-			return "modules/cms/front/themes/mobile/goLogin";
+			return "modules/cms/front/themes/mobile/login";
 		}
 		return "modules/cms/front/themes/mobile/resPswdForm";
 	}
@@ -1071,7 +1083,7 @@ public class FrontMobileController extends BaseController {
 		}
 
 		residentService.updatePswd(MD5Util.getMD5(newpswd), resident.getId());
-
+		UserUtils.getSession().removeAttribute(Constants.MOBILE_USER_KEY);
 		map.put("result", true);
 		return map;
 	}
@@ -1179,10 +1191,7 @@ public class FrontMobileController extends BaseController {
 				return "false";
 			} else {
 				Resident resident2 = residents.get(0);
-				if (StringUtils.isNotEmpty(resident.getBuildingNo())
-						&& resident.getBuildingNo().equals(
-								resident2.getBuildingNo())
-						&& StringUtils.isNotEmpty(resident.getIdentityNo())
+				if ( StringUtils.isNotEmpty(resident.getIdentityNo())
 						&& resident.getIdentityNo().equals(
 								resident2.getIdentityNo())
 						&& StringUtils.isNotEmpty(resident.getTelphone())
@@ -1227,6 +1236,14 @@ public class FrontMobileController extends BaseController {
 			Orders orders = new Orders(id);
 			try {
 				orders.setStatus(DictUtils.getDictValue("已取消","goods_status", ""));
+				OrdersRecord ordersRecord=new OrdersRecord();
+				ordersRecord.setOrders(orders);
+				ordersRecord.setDealStatus(DictUtils.getDictValue("已取消","goods_status", ""));
+				ordersRecord.setBelongOrgI(orders.getBelongOrg());
+				ordersRecord.setDealUserName(resident.getName());
+				ordersRecord.setDealDate(new Date());
+				ordersRecord.setCreateBy(new User("1"));
+				ordersRecordService.save(ordersRecord);
 				ordersService.save(orders);
 				return "{\"msg\":\"true\"}";
 			} catch (Exception e) {
@@ -1269,5 +1286,69 @@ public class FrontMobileController extends BaseController {
 		map.put("result", true);
 		return map;
 	}
+	/**
+	 * 预订商家－评论update
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "delFamily.do")
+	public Map<String, Object> delFamily(String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 判断是否登录
+		Resident resident = (Resident) UserUtils.getSession().getAttribute(
+				Constants.MOBILE_USER_KEY);
+		if (resident == null || StringUtils.isEmpty(resident.getId())) {
+			map.put("result", false);
+			map.put("msg", "响应超时或用户已失效，请重新登录");
+			return map;
+		}
+		try {
+			Family family=familyService.get(id);
+			familyService.delete(family);
+		} catch (Exception e) {
+			map.put("result", false);
+			map.put("msg", "删除失败，请稍候在试……");
+			e.printStackTrace();
+			return map;
+		}
+		map.put("result", true);
+		return map;
+	}
+	
+	/**
+	 * 修改居民信息
+	 */
+	@ResponseBody
+	@RequestMapping(value = "infoSave.json", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Map<String, Object> infoSave(Resident resident) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Resident residentSave = (Resident) UserUtils.getSession().getAttribute(
+				Constants.MOBILE_USER_KEY); 
+		if (residentSave == null || StringUtils.isEmpty(residentSave.getId())) {
+			map.put("result", false);
+			map.put("msg", "响应超时或用户已失效，请重新登录");
+			return map;
+		}
+		try {
+			residentSave=residentService.get(residentSave);
+			residentSave.setTelphone(resident.getTelphone());
+			residentSave.setBuildingNo(URLDecoder.decode(resident.getBuildingNo(),"utf-8"));
+			residentSave.setBelongOrg(resident.getBelongOrg());
+			residentSave.setQqNo(resident.getQqNo());
+			residentSave.setPhone(resident.getPhone());
+			residentSave.setPersonDesc(URLDecoder.decode(resident.getPersonDesc(),"utf-8"));
+			residentService.save(residentSave);
+			UserUtils.getSession().setAttribute(Constants.MOBILE_USER_KEY, residentSave);
+		} catch (Exception e) {
+			map.put("result", false);
+			map.put("msg", "删除失败，请稍候在试……");
+			e.printStackTrace();
+			return map;
+		}
+		map.put("result", true);
+		return map;
+	}
 
+	
 }

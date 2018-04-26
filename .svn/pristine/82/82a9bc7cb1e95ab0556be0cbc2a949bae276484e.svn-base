@@ -1,0 +1,83 @@
+@charset "utf-8";
+*{
+		margin: 0;
+		padding: 0;
+		font-family:"微软雅黑";
+	}
+	a{text-decoration: none;color:#FFF}
+	.clear{clear:both;}
+    .but_left{
+		width:0vw;
+		line-height:65vh;
+		font-weight:bold;
+		font-size:4em;
+		color:#FFF;
+		float:left;
+		position: fixed;
+		position: -ms-device-fixed;
+		top:50%;
+		margin-top:-30px;
+		right:10px;
+
+	}
+	.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/indexback.png);background-size:100vw 100vh}
+	.top{width:94%;margin:0px auto;}
+	.logo{vertical-align:middle; width:55px;}
+	.top_title{color:#45ab83;font-size:2.4em; font-weight:bold;margin-left:20px;vertical-align:middle;}
+	.conLe{float:left;overflow: hidden;}
+	.conRi{float:right;overflow: hidden;}
+	.loginimg{vertical-align:middle; width:2vw;border:none;}
+	.border{font-size:1.7em;margin-left:10px;vertical-align:middle;border-right:1px solid #fff}
+	.times{font-size:2.4em;margin-left:10px;vertical-align:middle;color:#fff}
+	.content{font-size:1em;margin-left:10px;vertical-align:middle;color:#FFF}
+	
+	.bottom{width:100%;background:url(../images/bottomback.png)}
+	.bomCon{width:90%;margin:0px auto}
+	.bomHref:hover{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b}
+	.bomHref:focus{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b;outline: none;}
+	.bomHref{float:left;text-align:center;line-height:15vh;color:#FFF;}
+	.bomHrefAct{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b}
+	 p{font-size:1.7em;}
+
+	.middle{width:90%;margin:0px auto;position: relative;}
+	.middle-div{
+		position: absolute;
+		left:0;
+		top:50%;
+	}
+	.comDiv-wrap{
+		float:left;
+	}
+	.comDiv{
+		margin:0 auto;
+		background:#FFF;
+		position: relative;
+		/*float:left;*/
+		text-align:center;
+		background: #fff;
+		background-color:rgba(255,255,255,0.2);
+		filter:alpha(opacity=20);
+		/*position: static;*/
+	}
+	.imgWrap{
+		width:300px;
+		position: absolute;
+		top:50%;
+		left:50%;
+
+	}
+	.comDiv:hover{box-shadow:0px 0px  10px 5px #ec3b3b;}
+	.comDiv:focus{box-shadow:0px 0px  15px 10px #ec3b3b;outline: none;}
+	.comDiv img{width:35%;}
+	.comDiv p{
+		color:#fff;
+		font-size:2em;
+		padding-top:10px;
+		position: relative;
+		width:100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.head_focus:focus{box-shadow:0px 0px  15px 10px #ec3b3b;outline: none;}

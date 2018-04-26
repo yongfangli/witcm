@@ -1,0 +1,102 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<html>
+<head>
+	<title>评论管理</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#btnExport").click(function(){
+				top.$.jBox.confirm("确认要导出评论数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#searchForm").attr("action","${ctx}/cms/comment/export?delflag=1");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});
+		});
+	
+	
+		function view(href){
+		
+			top.$.jBox.open('iframe:'+href,'查看文档',$(top.document).width()-220,$(top.document).height()-180,{
+				buttons:{"关闭":true},
+				loaded:function(h){
+					//$(".jbox-content", top.document).css("overflow-y","hidden");
+					//$(".nav,.form-actions,[class=btn]", h.find("iframe").contents()).hide();
+				}
+			});
+			return false;
+		}
+		
+		function deleteC(id,flag){
+		var orderHtml = "<div class='orderi' style='margin-top:10px;'>备注：<input type='textarea' rows='3' test id='describe' name='describe' ></div>";
+			
+		var orderSubmit = function(v,h,f){
+		if(v==0){
+		   window.location.href="${ctx}/cms/comment/closeC?id="+id+"&describe="+$("#describe").val()+"&delflag="+flag;
+		   return true;
+		   }else{
+		   return true;
+		   }
+	   };
+		$.jBox(orderHtml, {title:"商品预订",submit:orderSubmit, buttons:{"确认":0,"关闭":1}});
+	}
+		
+		
+		function page(n,s){
+			$("#pageNo").val(n);
+			$("#pageSize").val(s);
+			$("#searchForm").submit();
+        	return false;
+        }
+	</script>
+</head>
+<body>
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="${ctx}/cms/comment/">评论列表</a></li><%--
+		<shiro:hasPermission name="cms:comment:edit"><li><a href="${ctx}/cms/comment/form?id=${comment.id}">评论添加</a></li></shiro:hasPermission> --%>
+	</ul>
+	<form:form id="searchForm" modelAttribute="comment" action="${ctx}/cms/comment/?delflag=${comment.delflag}" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+		<label>文档标题：</label><form:input path="article.title" htmlEscape="false" maxlength="50" class="input-small"/>&nbsp;
+		<label>评论人：</label><form:input path="resident.name" htmlEscape="false" maxlength="50" class="input-small"/>
+		<label>开始日期：</label><input id="startDate" name="startDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+				value="${comment.start}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+			<label>结束日期：</label><input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-small Wdate"
+				value="${comment.end}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;&nbsp;
+		
+		<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+		<c:if test="${comments.delflag==1}">
+		<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
+		</c:if>
+		<%-- <label>状态：</label><form:radiobuttons onclick="$('#searchForm').submit();" path="delFlag" items="${fns:getDictList('cms_del_flag')}" itemLabel="label" itemValue="value" htmlEscape="false" /> --%>
+	</form:form>
+	<sys:message content="${message}"/>
+	<table id="contentTable" class="table table-bordered table-condensed">
+		<thead><tr><th>评论内容</th><c:if test="${comments.delflag==1}"><th>关闭备注</th></c:if><th>文档标题</th><th>评论人</th><th>评论时间</th><th nowrap="nowrap">操作</th></tr></thead>
+		<tbody>
+		<c:forEach items="${page.list}" var="comment">
+		<tr>
+		<td><a href="${ctx}/cms/comment/formC?id=${comment.id}">${fns:abbr(fns:replaceHtml(comment.content),40)}</a></td>
+		<c:if test="${comments.delflag==1}">
+		<td>${fns:abbr(fns:replaceHtml(comment.describe),40)}</td>
+		</c:if>
+		<td>${fns:abbr(fns:replaceHtml(comment.article.title),40)}</td>
+		<td>${comment.resident.name}</td>
+		<td><fmt:formatDate value="${comment.createDate}" type="both"/></td>
+		<td>
+		<a onclick="return confirmx('确认要删除该评论吗？', this.href)"  href="${ctx}/cms/comment/deleteC?id=${comment.id}&delflag=${comments.delflag}">删除</a>
+		<c:if test="${comments.delflag==0}">
+		<a onclick="deleteC('${comment.id}','${comments.delflag}')">关闭</a>
+		</c:if></td>
+		</tr>
+		</c:forEach>
+		
+		</tbody>
+	</table>
+	<div class="pagination">${page}</div>
+</body>
+</html>

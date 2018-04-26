@@ -1,0 +1,122 @@
+@charset "utf-8";
+*{
+		margin: 0;
+		padding: 0;
+		font-family:"微软雅黑";
+	}
+	a{text-decoration: none;color:#FFF}
+	.clear{clear:both;}
+    
+	.bigdiv{ padding:0; margin:0;width:100vw; height:100vh; overflow:hidden;background:url(../images/index.png);background-size:100vw 100vh}
+	.list_left{
+		width:20%;
+		float:left;
+		border-right:2px solid #999;
+		color:#FFF;
+		background-color: #fff;
+		background-color:rgba(255, 255, 255, 0.2);
+		filter:Alpha(opacity = 20);
+		position: static;
+
+	}
+	.title{
+		font-size:2em;
+		width:85%;
+		margin-left:15%;
+		margin-top:4vh;
+		position: relative;
+	}
+	.left_p{
+		width:20vw;
+		text-align:center;
+		color:#FFF;
+		font-size:1.3em;
+		height:6vh;
+		position: relative;
+	}
+	.left_p span{line-height:6vh}
+	.left_p:hover{background:#ec3b3b;}
+	.left_p:focus{box-shadow:0px 0px  15px 10px #ec3b3b;outline: none;}
+	.left_pAct{background:#ec3b3b;}
+	.grade-ignore{
+    color: #f2eff5;
+	}
+	.left_content{
+		width:90%;
+		padding-left:5%;
+		padding-right:5%;
+		border-radius:10px;
+		background: #fff;
+		background-color:rgba(255, 255, 255, 0.6);
+		filter:Alpha(opacity = 60);
+		position: static;
+	}
+    .last_page{
+		width:100%;
+		text-align:center;
+		font-size:1.4em;
+	}
+	.left_user{float:left;}
+	.user_cont{
+		width:100%;
+		height:100%;
+		margin:0px auto;
+		position: relative;
+	}
+
+	.markDiv{
+		width:100%;
+		border-top:1px dashed #ddd;
+
+	}
+	.markDiv2{width:70vw;height:23.6vh;margin-top:1.5vh}
+	.mark_left_img{
+		width:32%;
+		border:4px solid #FFF;
+		border-radius:10px;float:left;
+		overflow: hidden;
+	}
+	.mark_img{
+		width:100%;
+	}
+	.right_mark{
+		width:66%;
+		height:100%;
+		border-radius:10px;
+		float:right;
+	}
+
+
+	.right_mark>p{
+		width:100%;
+		font-size:1.4em;
+	}
+	.markName{
+		position: relative;
+		font-size:1.8em !important;
+	}
+	.markName>span{
+		position: absolute;
+		top:0;
+		right:0;
+	}
+	.grade{color:#F00}
+
+	.markSave{
+		font-size:1em !important;
+	}
+	.save{
+		width:15%;
+		height:4vh;
+		border-radius:10px;border:1px;
+		background:#ec3b3b;
+		color:#FFF;
+		font-size:1em;
+	}
+	.read{
+		width:22%;
+		height:2vh;
+	}
+	.save:hover{box-shadow:0px 0px  5px 5px #ec3b3b}
+	.save:focus{box-shadow:0px 0px  15px 10px #ec3b3b;outline: none;}
+.head_focus:focus{box-shadow:0px 0px  15px 10px #ec3b3b;outline: none;}

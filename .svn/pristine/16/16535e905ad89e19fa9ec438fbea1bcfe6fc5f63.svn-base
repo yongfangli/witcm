@@ -1,0 +1,201 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>首页</title>
+ <link type="text/css" rel="stylesheet" href="${ctxStaticItv}/css/Pension.css" />
+	<link href="${ctxStaticItv}/css/common.css" type="text/css" rel="stylesheet" />
+ <%@include file="/WEB-INF/views/modules/cms/front/include/head_itv.jsp" %>
+ 
+ 
+	<script src="${ctxStaticItv}/js/common.js" type="text/javascript"></script>
+	<script>
+		$(function(){
+		    var wh = $(window).height();
+		    var ww = $(window).width();
+			$(".bigdiv").height(wh);
+			$(".middle ").height(wh*0.7);
+
+			$(".top").height(wh*0.15);
+            $(".bottom").height(wh*0.15);
+            $(".bottom").css("lineHeight",wh*0.15+"px");
+			$(".conLe").css("lineHeight",wh*0.15+"px");
+			$(".conRi").css("lineHeight",wh*0.15+"px");
+            $(".middle").height(wh*0.7);
+
+            var len = $(".bottom").find(".bomHref").length;
+            $(".bomHref").width(1/len*100+"%");
+            $(".comDiv").width(ww*0.2);
+            $(".comDiv").height(wh*0.5);
+            $(".middle-div").css("marginTop",  -$(".middle-div").height()/2+'px');
+            $(".imgWrap").css("marginTop",  -$(".imgWrap").height()/2+'px');
+            $(".imgWrap").css("marginLeft",  -$(".imgWrap").width()/2+'px');
+
+            var divLen = $(".middle-div").find(".comDiv-wrap").length;
+            if( divLen > 4){
+               console.log(3);
+            }else{
+
+               var bigW =  $(".middle").width();
+               var smallW =  $(".comDiv-wrap").width();
+               var marL = (bigW - smallW*divLen)/(divLen-1);
+                $(".middle-div").width(100 + "%");
+
+                $(".comDiv-wrap").width(1/divLen*100 + "%");
+                // $(".comDiv-wrap + div").css("marginLeft",marL+"px");
+			}
+
+		})
+	</script>
+</head>
+
+<body>
+   <div class="bigdiv">
+   	 <!--头部-->
+     <jsp:include page="head.jsp" />
+     <div class="clear"></div>
+      
+     <div class="middle">
+		 <div class="middle-div clearfix">
+			 <c:if test="${!page.firstPage}">
+				 <div class="but_left"><a href="${ctx}/itv/indexToggle?categoryId=${categoryId}&pageNo=${page.prev}"><</a></div>
+			 </c:if>
+			 <c:if test="${page.firstPage}">
+
+			 </c:if>
+			 <c:forEach items="${page.list}" var="category"  varStatus="status">
+				 <c:if test="${fn:length(page.list)==3}">
+
+					 <c:if test="${category.module=='link'}" >
+
+						 <div class="comDiv-wrap">
+							 <div  class="comDiv menu_two" onclick="window.location.href='${ctx}/${category.href}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+、
+							 </div>
+						 </div>
+
+					 </c:if>
+					 <c:if test="${category.module!='link'}" >
+						 <div class="comDiv-wrap">
+							 <div class="comDiv menu_two" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+							 </div>
+						 </div>
+
+					 </c:if>
+				 </c:if>
+				 <c:if test="${fn:length(page.list)==4}">
+
+					 <c:if test="${category.module=='link'}" >
+						 <div class="comDiv-wrap">
+							 <div class="comDiv menu_two" onclick="window.location.href='${ctx}/${category.href}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+							 </div>
+						 </div>
+
+					 </c:if>
+					 <c:if test="${category.module!='link'}" >
+						 <div class="comDiv-wrap">
+							 <div class="comDiv menu_two" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+							 </div>
+						 </div>
+
+					 </c:if>
+				 </c:if>
+				 <c:if test="${fn:length(page.list)==2}">
+
+					 <c:if test="${category.module=='link'}" >
+						 <div class="comDiv-wrap">
+							 <div class="comDiv menu_two" onclick="window.location.href='${ctx}/${category.href}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+							 </div>
+						 </div>
+
+					 </c:if>
+					 <c:if test="${category.module!='link'}" >
+						 <div class="comDiv-wrap">
+							 <div class="comDiv menu_two" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+
+							 </div>
+						 </div>
+
+					 </c:if>
+				 </c:if>
+				 <c:if test="${fn:length(page.list)==1}">
+
+					 <c:if test="${category.module=='link'}" >
+						 <div class="comDiv-wrap">
+							 <div  class="comDiv menu_two" onclick="window.location.href='${ctx}/${category.href}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+							 </div>
+						 </div>
+
+					 </c:if>
+					 <c:if test="${category.module!='link'}" >
+						 <div class="comDiv-wrap">
+							 <div class="comDiv menu_two" onclick="window.location.href='${ctx}/itv/categoryList?categoryId=${category.id}'" id="menu_two_${status.index}">
+
+								 <div class="imgWrap">
+										 <img src="${category.image}"/>
+									 <p>${category.name}</p>
+								 </div>
+
+							 </div>
+						 </div>
+
+
+					 </c:if>
+				 </c:if>
+			 </c:forEach>
+			 <c:if test="${!page.lastPage}">
+				 <div class="but_left"><a href="${ctx}/itv/indexToggle?categoryId=${categoryId}&pageNo=${page.next}">></a></div>
+			 </c:if>
+		 </div>
+		 </div>
+
+    
+     <!--底部123-->
+     <jsp:include page="foot.jsp" />
+     
+   </div>
+</body>
+</html>

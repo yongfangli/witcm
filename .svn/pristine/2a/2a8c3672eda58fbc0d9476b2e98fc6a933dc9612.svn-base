@@ -1,0 +1,93 @@
+@charset "utf-8";
+*{
+	margin: 0;
+	padding: 0;
+	font-family:"微软雅黑";
+}
+a{text-decoration: none;color:#FFF}
+.clear{clear:both;}
+   
+.bigdiv{
+	padding:0;
+	margin:0;
+	width:100%;
+	height:100%;
+	overflow:hidden;
+	background:url(../images/indexback.png);
+}
+.top{width:94%;margin:0px auto;}
+.logo{vertical-align:middle; width:55px;}
+.top_title{color:#45ab83;font-size:2.4em; font-weight:bold;margin-left:20px;vertical-align:middle;}
+.conLe{float:left;overflow: hidden;}
+.conRi{float:right;overflow: hidden;}
+.loginimg{vertical-align:middle; width:5%;border:none;margin-left:10px;}
+.border{font-size:1.7em;margin-left:10px;vertical-align:middle;border-right:1px solid #fff}
+.times{font-size:2.4em;margin-left:10px;vertical-align:middle;color:#fff}
+.content{font-size:1em;margin-left:10px;vertical-align:middle;color:#FFF}
+
+.bottom{width:100%;height:15%; background:url(../images/bottomback.png);}
+.bomCon{width:90%;height:100%;margin:0px auto;}
+.bomHref:hover{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b}
+.bomHref{float:left;text-align:center;color:#FFF;height:100%;}
+.bomHrefAct{background:url(../images/aindex.png);text-shadow:2px 2px 5px #ec3b3b,-2px 2px 5px #ec3b3b}
+ p{font-size:1.7em;}
+
+.but_left{width:1vw;line-height:65vh; font-weight:bold; font-size:4em;color:#FFF;float:left;}
+/*.middle{width:96vw;height:70vh;margin:0px auto}*/
+.middle{
+	width:90%;
+	margin:0 auto;
+}
+.mid_con{width:100%;float:left}
+
+.city{width:24%;height:100%; background:#9C0;float:left;margin-left:1.33333333333%;text-align:center;position: relative;}
+/*.cityimg{width:7vw;margin-top:19vh}*/
+.contentList{width:24%;height:100%;float:left;text-align:center;color:#FFF;}
+.contentList+.contentList,
+.city+.contentList
+{
+	margin-left:1.3333333%;
+}
+.content_img{width:50%;}
+.con_top{
+	width:100%;
+	background: #09C;
+	position: relative;
+}
+.con_bom{
+	width:100%;
+	background: #09C;
+	position: relative;
+}
+.con_top:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.con_bom:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.city:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.con_top1{
+	width:50%;
+	position: absolute;
+	top:50%;
+	left:50%;
+	margin-left:-25%;
+}
+.mid_con_tour {
+    width: 100%;
+	height:430px;
+	overflow: hidden;
+	margin:0px auto;
+	position: absolute;
+	top:50%;
+	margin-top:-240px;
+	}
+.contentTourList{
+	/*width:15%;*/
+	float:right;
+	text-align:center;
+	color:#FFF;
+}
+.tvimg{
+	float:left;
+	border:1px solid #dedede;
+	height:420px;
+}
+.tvimg:hover{box-shadow:0px 0px  15px 10px #ec3b3b;}
+.TVimg{height:420px;width:100%;}

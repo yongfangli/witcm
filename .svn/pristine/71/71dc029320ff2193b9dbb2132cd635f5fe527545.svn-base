@@ -1,0 +1,268 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ include file="/WEB-INF/views/modules/cms/front/include/taglib.jsp"%>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>健康档案添加</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" /><!--只是或者请求的消息不能缓存-->
+    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /><!--强制让文档与设备的宽度保持 1:1 ；
+    文档最大的宽度比列是1.0（ initial-scale 初始刻度值和 maximum-scale 最大刻度值）；user-scalable 定义用户是否可以手动缩放（ no 为不缩放），使页面固定设备上面的大小；-->
+    <meta name="apple-mobile-web-app-capable" content="yes" /><!--网站开启对 web app 程序的支持-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--（改变顶部状态条的颜色）-->
+    <link href="${ctxStaticMobile}/css/userFamilyAdd.css" rel="stylesheet" type="text/css">  
+         <script src="${ctxStatic}/client/js/jquery-1.11.3.min.js" type="text/javascript"></script> 
+         <script src="${ctxStatic}/client/js/message.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="${ctxStatic}/client/css/message.css"/>
+    <style>
+    .c-message{
+      margin-left: -145px !important;
+    }
+    .form{
+    width:90%;
+    margin:0 auto;
+         background-color: #F8F8F8;
+        padding: 10px 0px;
+    }
+    .sub{
+    justify-content:center;
+    }
+    .submit{
+     padding:8px;
+        background: red;
+    color: white;
+        width: 100%;
+    }
+   label{
+     width:145px;
+      text-align: right;
+   }
+   input {
+    outline: none;
+    border: none;
+    border-radius: 2px;
+   }
+   textarea{
+   outline: none;
+    border: none;
+        border-radius: 2px;
+   }
+    .cln{
+    display:flex;
+    line-height:30px;
+    margin-top:10px;
+    }
+    .notice{
+        width: 90%;
+    color: red;
+    margin: 0 auto;
+    text-align: center;
+    text-indent: 28px;
+    }
+    </style>
+    <script>
+    $(function(){
+    	//当输入框值变化的时候隐藏提示信息
+    	var inputs=$("input");
+    	for(var i=0;i<inputs.length;i++){
+    		$(inputs[i]).change(function(){
+    			var msg=$(this).parent(".cln").next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    		})
+    	}
+    	//提交
+    	$("#form").submit(function(){
+    		//校验
+    		var familyUser=$("input[name='familyUser.id']:checked").val();
+    		var fparent=$("input[name='familyUser.id']").parent(".cln");
+    		if(familyUser==""||familyUser==undefined){
+    			var msg=fparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			fparent.after("<div class='notice'>请选择家属</div>");
+    			return false;
+    		}
+    		
+    		var bloods=$('input[name="bloods"]').val();
+    		var bparent=$('input[name="bloods"]').parent(".cln");
+    		if(bloods==""||bloods==undefined){
+    			var msg=bparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			bparent.after("<div class='notice'>请输入收缩压</div>");
+    			return false;
+    		}
+    		
+    		var tbloods=$('input[name="tbloods"]').val();
+    		var tparent=$('input[name="tbloods"]').parent(".cln");
+    		if(tbloods==""||tbloods==undefined){
+    			var msg=tparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			tparent.after("<div class='notice'>请输入舒张压</div>");
+    			return false;
+    		}
+    		
+    		var cholesterol=$('input[name="cholesterol"]').val();
+    		var cparent=$('input[name="cholesterol"]').parent(".cln");
+    		if(cholesterol==""||cholesterol==undefined){
+    			var msg=cparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			cparent.after("<div class='notice'>请输入总胆固醇</div>");
+    			return false;
+    		}
+    		
+    		var triglyceride=$('input[name="triglyceride"]').val();
+    		var trparent=$('input[name="triglyceride"]').parent(".cln");
+    		if(triglyceride==""||triglyceride==undefined){
+    			var msg=trparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			trparent.after("<div class='notice'>请输入甘油三酯</div>");
+    			return false;
+    		}
+    		
+    		var cholest=$('input[name="cholest"]').val();
+    		var chparent=$('input[name="cholest"]').parent(".cln");
+    		if(cholest==""||cholest==undefined){
+    			var msg=chparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			chparent.after("<div class='notice'>请输入胆固醇酯</div>");
+    			return false;
+    		}
+    		
+    		var fastBloods=$('input[name="fastBloods"]').val();
+    		var fsparent=$('input[name="fastBloods"]').parent(".cln");
+    		if(fastBloods==""||fastBloods==undefined){
+    			var msg=fsparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			fsparent.after("<div class='notice'>请输入空腹血糖</div>");
+    			return false;
+    		}
+    		
+    		var oneBloods=$('input[name="oneBloods"]').val();
+    		var oparent=$('input[name="oneBloods"]').parent(".cln");
+    		if(oneBloods==""||oneBloods==undefined){
+    			var msg=oparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			oparent.after("<div class='notice'>请输入餐后一小时血糖</div>");
+    			return false;
+    		}
+    		
+    		var twoBloods=$('input[name="twoBloods"]').val();
+    		var twparent=$('input[name="twoBloods"]').parent(".cln");
+    		if(twoBloods==""||twoBloods==undefined){
+    			var msg=twparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			twparent.after("<div class='notice'>请输入餐后二小时血糖</div>");
+    			return false;
+    		}
+    		
+    		var testDate=$('input[name="testDate"]').val();
+    		var teparent=$('input[name="testDate"]').parent(".cln");
+    		if(testDate==""||testDate==undefined){
+    			var msg=teparent.next();
+    			if(msg.attr("class")=="notice"){
+    				msg.remove();
+    			}
+    			teparent.after("<div class='notice'>请输入测量时间</div>");
+    			return false;
+    		}
+    		
+    		$.ajax({
+    			url:'${ctxMobile}/healthRecordSave.json',
+    		    method:"post",
+    		    data:$("#form").serializeArray(),
+    		    success:function(result){
+    		    	
+    		    	if(result.result==true){
+    		    		$.message({
+					        message:'操作成功',
+					        type:'success',
+					        time:'1500',
+					        onClose:function(){
+					        	window.opener.location.reload();  
+        			        	window.close();
+        			        }
+					    });
+    		    	}else{
+    		    		$.message({
+					        message:result.msg,
+					        type:'error',
+					        time:'1500',
+					        onClose:function(){
+					        	window.opener.location.reload();  
+        			        	window.close();
+        			        }
+					    });
+    		    	}
+    		    	
+    		    }
+    		})
+    		return false;
+    	})
+    })
+    </script>
+</head>
+<body>
+<div class="wrap_box">
+<div class="nav_box">
+      <a class="back_but" href="${ctxMobile}/userHealth"><</a>
+     <p class="nav_title">健康档案添加</p>
+</div>
+<div class="form">
+<form id="form" >
+<div class="cln"><label>家庭用户：</label><c:forEach items="${familyList}" var="family"><input type="radio" name="familyUser.id" value="${family.id}">${family.name}</c:forEach></div>
+<div class="cln"><label>收缩压(mmHg)：</label><input type="number" name="bloods" ></div>
+<div class="cln"><label>舒张压(mmHg)：</label><input type="number" name="tbloods" ></div>
+<div class="cln"><label>总胆固醇(mmol/L)：</label><input type="number" name="cholesterol" ></div>
+<div class="cln"><label>甘油三酯(mmol/L)：</label><input type="number" name="triglyceride" ></div>
+<div class="cln"><label>胆固醇酯(mmol/L)：</label><input type="number" name="cholest" ></div>
+<div class="cln"><label>空腹血糖(mmol/L)：</label><input type="number" name="fastBloods" ></div>
+<div class="cln"><label>餐后1小时血糖(mmol/L)：</label><input type="number" name="oneBloods" ></div>
+<div class="cln"><label>餐后2小时血糖(mmol/L)：</label><input type="number" name="twoBloods" ></div>
+<div class="cln"><label>测量时间：</label><input type="date" name=testDate ></div>
+<div class="cln"><label>医嘱：</label><textarea rows="3" cols="13" name="doctorAdvice" ></textarea></div>
+<div class="cln sub"><input class="submit" type="submit"  value="提交"></div>
+</form>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
